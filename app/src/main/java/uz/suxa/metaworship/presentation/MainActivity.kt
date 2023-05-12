@@ -1,4 +1,4 @@
-package uz.suxa.metaworship
+package uz.suxa.metaworship.presentation
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -10,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
