@@ -10,14 +10,14 @@ import androidx.room.Query
 interface SongDao {
 
     @Query("SELECT * FROM songs")
-    fun getSongs(): LiveData<List<SongDBModel>>
+    fun getSongs(): LiveData<List<SongDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSong(songDBModel: SongDBModel)
+    fun addSong(songDBModel: SongDbModel)
 
     @Query("DELETE FROM songs WHERE id=:songId")
     fun deleteSong(songId: Int)
 
     @Query("SELECT * FROM songs WHERE id=:songId LIMIT 1")
-    fun getSong(songId: Int): LiveData<SongDBModel>
+    fun getSong(songId: Int): LiveData<SongDbModel>
 }

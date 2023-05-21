@@ -10,7 +10,7 @@ import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 
 class SongViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repo = SongRepoImpl()
+    private val repo = SongRepoImpl(application)
 
     private val addSongUseCase = AddSongUseCase(repo)
 
