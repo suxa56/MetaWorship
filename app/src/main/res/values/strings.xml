@@ -11,6 +11,8 @@
     <string name="song_lyrics">Слова</string>
     <string name="song_tonality">Тональность</string>
     <string name="song_chords">Аккорды</string>
+    <string name="song_tempo">Темп</string>
+    <string name="submit">Сохранить</string>
 
     <!-- Accessibility (acs = accessibility) -->
     <string name="acs_new_song_fab">Перейти на экран для добавления новой песни</string>

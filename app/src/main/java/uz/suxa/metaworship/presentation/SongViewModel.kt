@@ -24,24 +24,42 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
         fillTonalityList()
     }
 
-    fun addSong(title: String, lyrics: String, chords: String, tonality: Tonality) =
+    fun addSong(title: String, lyrics: String?, chords: String?, tonality: String?, tempo: Int?, shouldClose: ShouldClose?) {
         viewModelScope.launch {
             val song = SongModel(
                 title = title,
                 lyrics = lyrics,
                 chords = chords,
-                defaultTonality = tonality
+                defaultTonality = convertTonality(tonality),
+                tempo = tempo
             )
             addSongUseCase(song)
         }
+        shouldClose?.onComplete()
+    }
 
     private fun fillTonalityList() {
         _tonalityList.value = listOf(
             "C", "C#", "Db", "D", "D#", "Eb", "E", "F",
-            "Gb", "G", "G#", "Ab", "A", "A#", "B/Hb", "H"
+            "Gb", "G", "G#", "Ab", "A", "A#", "Hb", "H"
         )
     }
 
 
+    private fun convertTonality(tonality: String?): Tonality? {
+        return if (tonality.isNullOrBlank()) {
+            null
+        } else {
+            val refactoredTonality =
+                tonality
+                    .replace("#", "_SHARP")
+                    .replace("b", "_FLAT")
 
+            Tonality.valueOf(refactoredTonality)
+        }
+    }
+
+    interface ShouldClose {
+        fun onComplete()
+    }
 }

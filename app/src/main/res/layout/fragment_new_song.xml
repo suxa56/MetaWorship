@@ -29,8 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/songTitleTil"
+        app:layout_constraintStart_toStartOf="@+id/songTitleTil"
         app:layout_constraintTop_toBottomOf="@+id/songTitleTil">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -41,19 +41,19 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/songTonalityTil"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/songLyricsTil"
+        app:layout_constraintStart_toStartOf="@+id/songLyricsTil"
         app:layout_constraintTop_toBottomOf="@+id/songLyricsTil">
 
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="@string/song_tonality" />
+            android:hint="@string/song_tonality"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -70,6 +70,34 @@
             android:layout_height="wrap_content"
             android:hint="@string/song_chords" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/songTempoTil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/songChordsTil">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/song_tempo"
+            android:inputType="numberDecimal"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/saveSongBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:minWidth="256dp"
+        android:minHeight="48dp"
+        android:text="@string/submit"
+        app:layout_constraintEnd_toEndOf="@+id/songTempoTil"
+        app:layout_constraintStart_toStartOf="@+id/songTempoTil"
+        app:layout_constraintTop_toBottomOf="@+id/songTempoTil" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
