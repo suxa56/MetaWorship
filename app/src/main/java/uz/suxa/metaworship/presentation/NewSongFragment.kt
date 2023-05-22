@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import uz.suxa.metaworship.R
-import uz.suxa.metaworship.databinding.FragmentAddBinding
+import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 
-class AddFragment : Fragment() {
+class NewSongFragment : Fragment() {
 
-    private var _binding: FragmentAddBinding? = null
+    private var _binding: FragmentNewSongBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: SongViewModel by lazy {
@@ -27,7 +25,7 @@ class AddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentAddBinding.inflate(inflater, container, false)
+        _binding = FragmentNewSongBinding.inflate(inflater, container, false)
         return binding.root
 
     }

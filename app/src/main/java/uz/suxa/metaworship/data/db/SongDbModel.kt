@@ -9,6 +9,7 @@ data class SongDbModel(
     val id: String,
     val title: String,
     val lyrics: String? = null,
+    val defaultTonality: String? = null,
     val chords: String? = null,
     val vocalist: String? = null,
     val tonality: String? = null,

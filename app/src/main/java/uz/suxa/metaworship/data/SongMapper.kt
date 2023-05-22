@@ -16,6 +16,7 @@ class SongMapper {
         title = song.title,
         lyrics = song.lyrics,
         chords = song.chords,
+        defaultTonality = song.defaultTonality.toString(),
         vocalist = mapVocalistTonalityToVocalistString(song.vocalistTonality),
         tonality = mapVocalistTonalityToTonalityString(song.vocalistTonality),
         tempo = song.tempo,
@@ -27,6 +28,7 @@ class SongMapper {
         title = songDb.title,
         lyrics = songDb.lyrics,
         chords = songDb.chords,
+        defaultTonality = songDb.defaultTonality?.let { Tonality.valueOf(it) },
         vocalistTonality = mapStringToVocalistTonality(songDb.vocalist, songDb.tonality),
         tempo = songDb.tempo,
     )
@@ -36,12 +38,12 @@ class SongMapper {
     }
 
     private fun mapVocalistTonalityToVocalistString(vocalistTonality: List<VocalistTonality>?) =
-        vocalistTonality?.joinToString(",") {
+        vocalistTonality?.joinToString(SEPARATOR) {
             it.vocalist.toString()
         }
 
     private fun mapVocalistTonalityToTonalityString(vocalistTonality: List<VocalistTonality>?) =
-        vocalistTonality?.joinToString(",") {
+        vocalistTonality?.joinToString(SEPARATOR) {
             it.tonality.toString()
         }
 
@@ -54,8 +56,8 @@ class SongMapper {
         }
         val vocalistTonalityList = mutableListOf<VocalistTonality>()
 
-        val vocalistArray = vocalist.split(",").toTypedArray()
-        val tonalityArray = tonality.split(",").toTypedArray()
+        val vocalistArray = vocalist.split(SEPARATOR).toTypedArray()
+        val tonalityArray = tonality.split(SEPARATOR).toTypedArray()
 
         for ((index, _) in vocalistArray.withIndex()) {
             vocalistTonalityList.add(
@@ -69,5 +71,7 @@ class SongMapper {
         return vocalistTonalityList
     }
 
-
+    companion object {
+        private const val SEPARATOR = ","
+    }
 }

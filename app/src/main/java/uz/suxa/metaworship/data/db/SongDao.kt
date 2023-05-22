@@ -13,7 +13,7 @@ interface SongDao {
     fun getSongs(): LiveData<List<SongDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSong(songDBModel: SongDbModel)
+    suspend fun addSong(songDBModel: SongDbModel)
 
     @Query("DELETE FROM songs WHERE id=:songId")
     fun deleteSong(songId: Int)

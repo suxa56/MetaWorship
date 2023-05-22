@@ -14,6 +14,5 @@ class SongRepoImpl(
 
     override suspend fun addSong(song: SongModel) {
         songDao.addSong(mapper.mapEntityToDbModel(song))
-        println(song.toString())
     }
 }
