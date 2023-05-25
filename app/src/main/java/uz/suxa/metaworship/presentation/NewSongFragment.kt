@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
+import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
 
 class NewSongFragment : Fragment() {
 

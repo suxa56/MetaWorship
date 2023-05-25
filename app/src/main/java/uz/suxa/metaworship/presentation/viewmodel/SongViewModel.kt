@@ -1,7 +1,6 @@
-package uz.suxa.metaworship.presentation
+package uz.suxa.metaworship.presentation.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,7 @@ import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 
-class SongViewModel(application: Application) : AndroidViewModel(application) {
+class SongViewModel(application: Application) : TonalityViewModel(application) {
 
     private val repo = SongRepoImpl(application)
 
@@ -30,7 +29,7 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
                 title = title,
                 lyrics = lyrics,
                 chords = chords,
-                defaultTonality = convertTonality(tonality),
+                defaultTonality = convertStringToTonality(tonality),
                 tempo = tempo
             )
             addSongUseCase(song)
@@ -40,13 +39,14 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun fillTonalityList() {
         _tonalityList.value = listOf(
-            "C", "C#", "Db", "D", "D#", "Eb", "E", "F",
-            "Gb", "G", "G#", "Ab", "A", "A#", "Hb", "H"
+            "C", "C#", "D", "Eb", "E", "F",
+            "F#", "G", "Ab", "A", "Hb", "H"
         )
     }
 
+    // TODO(): implement fun's convert chords to numbers
 
-    private fun convertTonality(tonality: String?): Tonality? {
+    private fun convertStringToTonality(tonality: String?): Tonality? {
         return if (tonality.isNullOrBlank()) {
             null
         } else {

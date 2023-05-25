@@ -9,8 +9,6 @@ import java.util.*
 
 class SongMapper {
 
-    // TODO(): Test fun's
-
     fun mapEntityToDbModel(song: SongModel) = SongDbModel(
         id = song.id ?: UUID.randomUUID().toString(),
         title = song.title,
