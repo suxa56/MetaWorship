@@ -54,7 +54,7 @@ class NewSongFragment : Fragment() {
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
                 chords = binding.songChordsTil.editText?.text.toString(),
                 tonality = binding.songTonalityTil.editText?.text.toString(),
-                tempo = binding.songTempoTil.editText?.text.toString().toInt(),
+                tempo = binding.songTempoTil.editText?.text.toString(),
                 object : SongViewModel.ShouldClose {
                     override fun onComplete() {
                         findNavController().navigate(R.id.action_NewSongFragment_to_FirstFragment)
