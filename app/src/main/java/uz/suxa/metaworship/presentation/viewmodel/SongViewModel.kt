@@ -23,14 +23,15 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         fillTonalityList()
     }
 
-    fun addSong(title: String, lyrics: String?, chords: String?, tonality: String?, tempo: Int?, shouldClose: ShouldClose?) {
-        viewModelScope.launch {
+    fun addSong(title: String, lyrics: String?, chords: String?, tonalityString: String?, tempo: String?, shouldClose: ShouldClose?) {
+        val tonality = convertStringToTonality(tonalityString)
+            viewModelScope.launch {
             val song = SongModel(
                 title = title,
                 lyrics = lyrics,
-                chords = chords,
-                defaultTonality = convertStringToTonality(tonality),
-                tempo = tempo
+                chords = convertNotesToNumbers(tonality, chords),
+                defaultTonality = tonality,
+                tempo = getTempo(tempo)
             )
             addSongUseCase(song)
         }
@@ -56,6 +57,14 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                     .replace("b", "_FLAT")
 
             Tonality.valueOf(refactoredTonality)
+        }
+    }
+
+    private fun getTempo(tempo: String?): Int? {
+        return if (tempo.isNullOrBlank()) {
+            null
+        } else {
+            tempo.toInt()
         }
     }
 

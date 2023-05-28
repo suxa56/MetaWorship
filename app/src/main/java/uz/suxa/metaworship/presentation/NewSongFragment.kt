@@ -47,13 +47,14 @@ class NewSongFragment : Fragment() {
         }
     }
 
+//    TODO(): Check, when chords are exists => tonality must be too
     private fun setListener() {
         binding.saveSongBtn.setOnClickListener {
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
                 chords = binding.songChordsTil.editText?.text.toString(),
-                tonality = binding.songTonalityTil.editText?.text.toString(),
+                tonalityString = binding.songTonalityTil.editText?.text.toString(),
                 tempo = binding.songTempoTil.editText?.text.toString(),
                 object : SongViewModel.ShouldClose {
                     override fun onComplete() {
