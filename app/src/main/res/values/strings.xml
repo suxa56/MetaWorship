@@ -14,6 +14,10 @@
     <string name="song_chords">Аккорды</string>
     <string name="song_tempo">Темп</string>
     <string name="submit">Сохранить</string>
+    <string name="add_vocalist">Добавить вокалиста</string>
+    <string name="vocalist">Вокалист</string>
+    <string name="tonality">Тональность</string>
+    <string name="remove_fields">Убрать поля</string>
 
     <!-- Accessibility (acs = accessibility) -->
     <string name="acs_new_song_fab">Перейти на экран для добавления новой песни</string>

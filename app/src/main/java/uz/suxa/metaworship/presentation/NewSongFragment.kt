@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
+
 
 class NewSongFragment : Fragment() {
 
@@ -58,7 +60,6 @@ class NewSongFragment : Fragment() {
         }
     }
 
-    //    TODO(): Check, when chords are exists => tonality must be too
     private fun setListener() {
         binding.saveSongBtn.setOnClickListener {
             viewModel.addSong(
@@ -82,6 +83,20 @@ class NewSongFragment : Fragment() {
         }
         binding.songChordsTil.editText?.addTextChangedListener {
             binding.songChordsTil.error = null
+        }
+
+        binding.addVocalist.setOnClickListener {
+            val linearLayout = LinearLayout(requireContext())
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            linearLayout.layoutParams = params
+
+            val view = layoutInflater.inflate(R.layout.vocalist_tonality_field, null)
+            view.layoutParams = params
+            linearLayout.addView(view)
+            binding.vocalistContainer.addView(linearLayout)
         }
     }
 
