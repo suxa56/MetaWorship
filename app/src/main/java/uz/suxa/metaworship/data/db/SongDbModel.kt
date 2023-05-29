@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class SongDbModel(
     @PrimaryKey
     val id: String,
-    val title: String,
+    val title: String? = null,
     val lyrics: String? = null,
     val defaultTonality: String? = null,
     val chords: String? = null,

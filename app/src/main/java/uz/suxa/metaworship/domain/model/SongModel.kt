@@ -2,7 +2,7 @@ package uz.suxa.metaworship.domain.model
 
 data class SongModel(
     val id: String? = null,
-    val title: String,
+    val title: String? = null,
     val lyrics: String? = null,
     val chords: String? = null,
     val defaultTonality: Tonality? = null,
