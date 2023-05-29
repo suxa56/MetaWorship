@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -45,9 +46,13 @@ class NewSongFragment : Fragment() {
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, it)
             (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         }
+
+        viewModel.titleError.observe(viewLifecycleOwner) {
+            if (it) binding.songTitleTil.error = getString(R.string.title_error)
+        }
     }
 
-//    TODO(): Check, when chords are exists => tonality must be too
+    //    TODO(): Check, when chords are exists => tonality must be too
     private fun setListener() {
         binding.saveSongBtn.setOnClickListener {
             viewModel.addSong(
@@ -62,6 +67,9 @@ class NewSongFragment : Fragment() {
                     }
                 }
             )
+        }
+        binding.songTitleTil.editText?.addTextChangedListener {
+            binding.songTitleTil.error = null
         }
     }
 

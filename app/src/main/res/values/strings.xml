@@ -7,6 +7,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- Add song fragment fields -->
     <string name="song_title">Название</string>
     <string name="song_lyrics">Слова</string>
     <string name="song_tonality">Тональность</string>
@@ -16,4 +17,7 @@
 
     <!-- Accessibility (acs = accessibility) -->
     <string name="acs_new_song_fab">Перейти на экран для добавления новой песни</string>
+
+    <!-- Errors -->
+    <string name="title_error">Пустое название</string>
 </resources>

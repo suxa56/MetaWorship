@@ -13,29 +13,45 @@ import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 class SongViewModel(application: Application) : TonalityViewModel(application) {
 
     private val repo = SongRepoImpl(application)
-
     private val addSongUseCase = AddSongUseCase(repo)
 
     private val _tonalityList = MutableLiveData<List<String>>()
     val tonalityList: LiveData<List<String>> get() = _tonalityList
 
+    private val _titleError = MutableLiveData<Boolean>()
+    val titleError: LiveData<Boolean> get() = _titleError
+
     init {
         fillTonalityList()
     }
 
-    fun addSong(title: String, lyrics: String?, chords: String?, tonalityString: String?, tempo: String?, shouldClose: ShouldClose?) {
-        val tonality = convertStringToTonality(tonalityString)
+    fun addSong(
+        title: String?,
+        lyrics: String?,
+        chords: String?,
+        tonalityString: String?,
+        tempo: String?,
+        shouldClose: ShouldClose?
+    ) {
+        checkFields(title)
+        if (!_titleError.value!!) {
+            val tonality = convertStringToTonality(tonalityString)
             viewModelScope.launch {
-            val song = SongModel(
-                title = title,
-                lyrics = lyrics,
-                chords = convertNotesToNumbers(tonality, chords),
-                defaultTonality = tonality,
-                tempo = getTempo(tempo)
-            )
-            addSongUseCase(song)
+                val song = SongModel(
+                    title = title,
+                    lyrics = lyrics,
+                    chords = convertNotesToNumbers(tonality, chords),
+                    defaultTonality = tonality,
+                    tempo = getTempo(tempo)
+                )
+                addSongUseCase(song)
+            }
+            shouldClose?.onComplete()
         }
-        shouldClose?.onComplete()
+    }
+
+    private fun checkFields(title: String?) {
+        _titleError.value = title.isNullOrBlank()
     }
 
     private fun fillTonalityList() {
@@ -44,8 +60,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
             "F#", "G", "Ab", "A", "Hb", "H"
         )
     }
-
-    // TODO(): implement fun's convert chords to numbers
 
     private fun convertStringToTonality(tonality: String?): Tonality? {
         return if (tonality.isNullOrBlank()) {
