@@ -20,6 +20,10 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
 
     private val _titleError = MutableLiveData<Boolean>()
     val titleError: LiveData<Boolean> get() = _titleError
+    private val _tonalityError = MutableLiveData<Boolean>()
+    val tonalityError: LiveData<Boolean> get() = _tonalityError
+    private val _chordsError = MutableLiveData<Boolean>()
+    val chordsError: LiveData<Boolean> get() = _chordsError
 
     init {
         fillTonalityList()
@@ -33,8 +37,8 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         tempo: String?,
         shouldClose: ShouldClose?
     ) {
-        checkFields(title)
-        if (!_titleError.value!!) {
+        checkFields(title, tonalityString, chords)
+        if (!_titleError.value!! && !_tonalityError.value!! && !_chordsError.value!!) {
             val tonality = convertStringToTonality(tonalityString)
             viewModelScope.launch {
                 val song = SongModel(
@@ -50,8 +54,22 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         }
     }
 
-    private fun checkFields(title: String?) {
+    private fun checkFields(title: String?, tonalityString: String?, chords: String?) {
         _titleError.value = title.isNullOrBlank()
+
+        if (!tonalityString.isNullOrBlank() && chords.isNullOrBlank()) {
+            _chordsError.value = true
+        } else if (tonalityString.isNullOrBlank() && !chords.isNullOrBlank()) {
+            _tonalityError.value = true
+        }
+
+        if (
+            !tonalityString.isNullOrBlank() && !chords.isNullOrBlank() ||
+            tonalityString.isNullOrBlank() && chords.isNullOrBlank()
+        ) {
+            _chordsError.value = false
+            _tonalityError.value = false
+        }
     }
 
     private fun fillTonalityList() {

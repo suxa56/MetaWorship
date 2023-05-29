@@ -50,6 +50,12 @@ class NewSongFragment : Fragment() {
         viewModel.titleError.observe(viewLifecycleOwner) {
             if (it) binding.songTitleTil.error = getString(R.string.title_error)
         }
+        viewModel.tonalityError.observe(viewLifecycleOwner) {
+            if (it) binding.songTonalityTil.error = getString(R.string.tonality_error)
+        }
+        viewModel.chordsError.observe(viewLifecycleOwner) {
+            if (it) binding.songChordsTil.error = getString(R.string.chords_error)
+        }
     }
 
     //    TODO(): Check, when chords are exists => tonality must be too
@@ -70,6 +76,12 @@ class NewSongFragment : Fragment() {
         }
         binding.songTitleTil.editText?.addTextChangedListener {
             binding.songTitleTil.error = null
+        }
+        binding.songTonalityTil.editText?.addTextChangedListener {
+            binding.songTonalityTil.error = null
+        }
+        binding.songChordsTil.editText?.addTextChangedListener {
+            binding.songChordsTil.error = null
         }
     }
 

@@ -20,4 +20,6 @@
 
     <!-- Errors -->
     <string name="title_error">Пустое название</string>
+    <string name="tonality_error">Не выбрана тональность</string>
+    <string name="chords_error">Нет аккордов</string>
 </resources>
