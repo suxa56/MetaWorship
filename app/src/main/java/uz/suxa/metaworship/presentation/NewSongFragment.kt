@@ -11,6 +11,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
@@ -39,16 +41,21 @@ class NewSongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fillTonalityField()
         observeLiveData()
         setListener()
     }
 
-    private fun observeLiveData() {
-        viewModel.tonalityList.observe(viewLifecycleOwner) {
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, it)
-            (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-        }
+    private fun fillTonalityField() {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            resources.getStringArray(R.array.tonalities)
+        )
+        (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
 
+    private fun observeLiveData() {
         viewModel.titleError.observe(viewLifecycleOwner) {
             if (it) binding.songTitleTil.error = getString(R.string.title_error)
         }
@@ -86,18 +93,30 @@ class NewSongFragment : Fragment() {
         }
 
         binding.addVocalist.setOnClickListener {
-            val linearLayout = LinearLayout(requireContext())
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            linearLayout.layoutParams = params
-
-            val view = layoutInflater.inflate(R.layout.vocalist_tonality_field, null)
-            view.layoutParams = params
-            linearLayout.addView(view)
-            binding.vocalistContainer.addView(linearLayout)
+            createVocalistField()
         }
+    }
+
+    private fun createVocalistField() {
+        val linearLayout = LinearLayout(requireContext())
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        linearLayout.layoutParams = params
+
+        val view = layoutInflater.inflate(R.layout.vocalist_tonality_field, null)
+        view.layoutParams = params
+        (view.findViewById<TextInputLayout>(R.id.vocalist).editText
+                as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            resources.getStringArray(R.array.vocalists)
+        )
+        (view.findViewById<TextInputLayout>(R.id.tonality).editText
+                as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            resources.getStringArray(R.array.tonalities)
+        )
+        linearLayout.addView(view)
+        binding.vocalistContainer.addView(linearLayout)
     }
 
     override fun onDestroyView() {

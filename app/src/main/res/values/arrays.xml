@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="tonalities">
+        <item>C</item>
+        <item>C#</item>
+        <item>D</item>
+        <item>Eb</item>
+        <item>E</item>
+        <item>F</item>
+        <item>F#</item>
+        <item>G</item>
+        <item>Ab</item>
+        <item>A</item>
+        <item>Hb</item>
+        <item>H</item>
+    </array>
+
+    <array name="vocalists">
+        <item>Саша</item>
+        <item>Марина</item>
+        <item>Рустам</item>
+        <item>Саша Литвинов</item>
+        <item>Кети</item>
+    </array>
+</resources>
