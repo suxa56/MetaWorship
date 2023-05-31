@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
+import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,8 @@ import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
+import kotlin.streams.asStream
+import kotlin.streams.toList
 
 
 class NewSongFragment : Fragment() {
@@ -69,13 +72,21 @@ class NewSongFragment : Fragment() {
 
     private fun setListener() {
         binding.saveSongBtn.setOnClickListener {
+            val vocalists = binding.vocalistContainer.children.asStream().map { x ->
+                x.findViewById<TextInputLayout>(R.id.vocalist).editText?.text.toString()
+            }.toList()
+            val tonalities = binding.vocalistContainer.children.asStream().map { x ->
+                x.findViewById<TextInputLayout>(R.id.tonality).editText?.text.toString()
+            }.toList()
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
                 chords = binding.songChordsTil.editText?.text.toString(),
                 tonalityString = binding.songTonalityTil.editText?.text.toString(),
+                vocalists = vocalists,
+                tonalities = tonalities,
                 tempo = binding.songTempoTil.editText?.text.toString(),
-                object : SongViewModel.ShouldClose {
+                shouldClose = object : SongViewModel.ShouldClose {
                     override fun onComplete() {
                         findNavController().navigate(R.id.action_NewSongFragment_to_FirstFragment)
                     }
@@ -95,6 +106,8 @@ class NewSongFragment : Fragment() {
         binding.addVocalist.setOnClickListener {
             createVocalistField()
         }
+
+
     }
 
     private fun createVocalistField() {

@@ -15,8 +15,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val repo = SongRepoImpl(application)
     private val addSongUseCase = AddSongUseCase(repo)
 
-    private val _tonalityList = MutableLiveData<List<String>>()
-    val tonalityList: LiveData<List<String>> get() = _tonalityList
 
     private val _titleError = MutableLiveData<Boolean>()
     val titleError: LiveData<Boolean> get() = _titleError
@@ -25,15 +23,13 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val _chordsError = MutableLiveData<Boolean>()
     val chordsError: LiveData<Boolean> get() = _chordsError
 
-    init {
-        fillTonalityList()
-    }
-
     fun addSong(
         title: String?,
         lyrics: String?,
         chords: String?,
         tonalityString: String?,
+        vocalists: List<String>,
+        tonalities: List<String>,
         tempo: String?,
         shouldClose: ShouldClose?
     ) {
@@ -70,13 +66,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
             _chordsError.value = false
             _tonalityError.value = false
         }
-    }
-
-    private fun fillTonalityList() {
-        _tonalityList.value = listOf(
-            "C", "C#", "D", "Eb", "E", "F",
-            "F#", "G", "Ab", "A", "Hb", "H"
-        )
     }
 
     private fun convertStringToTonality(tonality: String?): Tonality? {
