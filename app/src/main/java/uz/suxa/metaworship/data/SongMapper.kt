@@ -3,7 +3,6 @@ package uz.suxa.metaworship.data
 import uz.suxa.metaworship.data.db.SongDbModel
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.domain.model.Vocalist
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import java.util.*
 
@@ -60,7 +59,7 @@ class SongMapper {
         for ((index, _) in vocalistArray.withIndex()) {
             vocalistTonalityList.add(
                 VocalistTonality(
-                    Vocalist.valueOf(vocalistArray[index]),
+                    vocalistArray[index],
                     Tonality.valueOf(tonalityArray[index])
                 )
             )

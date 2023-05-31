@@ -1,6 +1,6 @@
 package uz.suxa.metaworship.domain.model
 
 data class VocalistTonality(
-    val vocalist: Vocalist,
+    val vocalist: String,
     val tonality: Tonality
 )
