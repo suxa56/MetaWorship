@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
@@ -117,9 +118,13 @@ class NewSongFragment : Fragment() {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         linearLayout.layoutParams = params
+        val container = binding.vocalistContainer
 
         val view = layoutInflater.inflate(R.layout.vocalist_tonality_field, null)
         view.layoutParams = params
+        linearLayout.addView(view)
+        container.addView(linearLayout)
+        // Fill fields
         (view.findViewById<TextInputLayout>(R.id.vocalist).editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.vocalists)
@@ -128,8 +133,10 @@ class NewSongFragment : Fragment() {
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)
         )
-        linearLayout.addView(view)
-        binding.vocalistContainer.addView(linearLayout)
+        // Remove fields
+        view.findViewById<ImageButton>(R.id.removeBtn).setOnClickListener {
+            container.removeView(linearLayout)
+        }
     }
 
     override fun onDestroyView() {
