@@ -3,8 +3,12 @@ package uz.suxa.metaworship.presentation.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
+import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
+import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
@@ -35,20 +39,35 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         shouldClose: ShouldClose?
     ) {
         checkFields(title, tonalityString, chords, vocalists, tonalities)
-//        if (!_titleError.value!! && !_tonalityError.value!! && !_chordsError.value!!) {
-//            val tonality = convertStringToTonality(tonalityString)
-//            viewModelScope.launch {
-//                val song = SongModel(
-//                    title = title,
-//                    lyrics = lyrics,
-//                    chords = convertNotesToNumbers(tonality, chords),
-//                    defaultTonality = tonality,
-//                    tempo = getTempo(tempo)
-//                )
+        if (!_titleError.value!! &&
+            !_tonalityError.value!! &&
+            !_chordsError.value!! &&
+            _vocalistError.value!!.isEmpty() &&
+            _vocalistTonalityError.value!!.isEmpty()
+        ) {
+            val tonality = convertStringToTonality(tonalityString)
+            val vocalistTonality = mutableListOf<VocalistTonality>()
+            for ((index, _) in vocalists.withIndex()) {
+                vocalistTonality.add(
+                    VocalistTonality(
+                        vocalists[index],
+                        convertStringToTonality(tonalities[index])!!
+                    )
+                )
+            }
+            viewModelScope.launch {
+                val song = SongModel(
+                    title = title,
+                    lyrics = lyrics,
+                    chords = convertNotesToNumbers(tonality, chords),
+                    defaultTonality = tonality,
+                    vocalistTonality = vocalistTonality,
+                    tempo = getTempo(tempo)
+                )
 //                addSongUseCase(song)
-//            }
-//            shouldClose?.onComplete()
-//        }
+            }
+            shouldClose?.onComplete()
+        }
     }
 
     private fun checkFields(
