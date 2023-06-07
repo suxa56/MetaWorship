@@ -19,11 +19,22 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     val flatNotes = listOf("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Hb", "H")
 
+    fun convertStringToTonality(tonality: String?): Tonality? {
+        return if (tonality.isNullOrBlank()) {
+            null
+        } else {
+            val refactoredTonality =
+                tonality
+                    .replace("#", "_SHARP")
+                    .replace("b", "_FLAT")
+
+            Tonality.valueOf(refactoredTonality)
+        }
+    }
+
     // TODO(): create fun's convert chords to numbers and reverse
     // Replace all chords and notes in incoming string to numbers
     fun convertNotesToNumbers(tonality: Tonality?, chords: String?): String {
-        // TODO(): replace || with && when check(if chords are exists then tonality must be too)
-        //  on fragment will works
         if (tonality == null || chords.isNullOrEmpty()) {
             return ""
         }

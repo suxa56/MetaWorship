@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
-import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 
@@ -64,7 +63,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                     vocalistTonality = vocalistTonality,
                     tempo = getTempo(tempo)
                 )
-//                addSongUseCase(song)
+                addSongUseCase(song)
             }
             shouldClose?.onComplete()
         }
@@ -116,19 +115,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
             tonalities.add(index, REPLACED_SYMBOL)
         }
         _vocalistTonalityError.value = blankVocalistsTonality
-    }
-
-    private fun convertStringToTonality(tonality: String?): Tonality? {
-        return if (tonality.isNullOrBlank()) {
-            null
-        } else {
-            val refactoredTonality =
-                tonality
-                    .replace("#", "_SHARP")
-                    .replace("b", "_FLAT")
-
-            Tonality.valueOf(refactoredTonality)
-        }
     }
 
     private fun getTempo(tempo: String?): Int? {
