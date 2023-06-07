@@ -18,8 +18,6 @@ import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
-import kotlin.streams.asStream
-import kotlin.streams.toList
 
 
 class NewSongFragment : Fragment() {
@@ -69,16 +67,31 @@ class NewSongFragment : Fragment() {
         viewModel.chordsError.observe(viewLifecycleOwner) {
             if (it) binding.songChordsTil.error = getString(R.string.chords_error)
         }
+
+        viewModel.vocalistError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.vocalistContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.vocalist).error =
+                    getString(R.string.vocalist_error)
+            }
+        }
+        viewModel.vocalistTonalityError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.vocalistContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.tonality).error =
+                    getString(R.string.tonality_error)
+            }
+        }
     }
 
     private fun setListener() {
         binding.saveSongBtn.setOnClickListener {
-            val vocalists = binding.vocalistContainer.children.asStream().map { x ->
+            val vocalists = binding.vocalistContainer.children.map { x ->
                 x.findViewById<TextInputLayout>(R.id.vocalist).editText?.text.toString()
-            }.toList()
-            val tonalities = binding.vocalistContainer.children.asStream().map { x ->
+            }.toList().toMutableList()
+            val tonalities = binding.vocalistContainer.children.map { x ->
                 x.findViewById<TextInputLayout>(R.id.tonality).editText?.text.toString()
-            }.toList()
+            }.toList().toMutableList()
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
@@ -125,17 +138,25 @@ class NewSongFragment : Fragment() {
         linearLayout.addView(view)
         container.addView(linearLayout)
         // Fill fields
-        (view.findViewById<TextInputLayout>(R.id.vocalist).editText
+        val vocalistField = view.findViewById<TextInputLayout>(R.id.vocalist)
+        val tonalityField = view.findViewById<TextInputLayout>(R.id.tonality)
+        (vocalistField.editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.vocalists)
         )
-        (view.findViewById<TextInputLayout>(R.id.tonality).editText
+        (tonalityField.editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)
         )
         // Remove fields
         view.findViewById<ImageButton>(R.id.removeBtn).setOnClickListener {
             container.removeView(linearLayout)
+        }
+        vocalistField.editText?.addTextChangedListener {
+            vocalistField.error = null
+        }
+        tonalityField.editText?.addTextChangedListener {
+            tonalityField.error = null
         }
     }
 

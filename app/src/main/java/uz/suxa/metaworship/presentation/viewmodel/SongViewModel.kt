@@ -3,10 +3,7 @@ package uz.suxa.metaworship.presentation.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
-import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 
@@ -22,43 +19,56 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     val tonalityError: LiveData<Boolean> get() = _tonalityError
     private val _chordsError = MutableLiveData<Boolean>()
     val chordsError: LiveData<Boolean> get() = _chordsError
+    private val _vocalistError = MutableLiveData<List<Int>>()
+    val vocalistError: LiveData<List<Int>> get() = _vocalistError
+    private val _vocalistTonalityError = MutableLiveData<List<Int>>()
+    val vocalistTonalityError: LiveData<List<Int>> get() = _vocalistTonalityError
 
     fun addSong(
         title: String?,
         lyrics: String?,
         chords: String?,
         tonalityString: String?,
-        vocalists: List<String>,
-        tonalities: List<String>,
+        vocalists: MutableList<String>,
+        tonalities: MutableList<String>,
         tempo: String?,
         shouldClose: ShouldClose?
     ) {
-        checkFields(title, tonalityString, chords)
-        if (!_titleError.value!! && !_tonalityError.value!! && !_chordsError.value!!) {
-            val tonality = convertStringToTonality(tonalityString)
-            viewModelScope.launch {
-                val song = SongModel(
-                    title = title,
-                    lyrics = lyrics,
-                    chords = convertNotesToNumbers(tonality, chords),
-                    defaultTonality = tonality,
-                    tempo = getTempo(tempo)
-                )
-                addSongUseCase(song)
-            }
-            shouldClose?.onComplete()
-        }
+        checkFields(title, tonalityString, chords, vocalists, tonalities)
+//        if (!_titleError.value!! && !_tonalityError.value!! && !_chordsError.value!!) {
+//            val tonality = convertStringToTonality(tonalityString)
+//            viewModelScope.launch {
+//                val song = SongModel(
+//                    title = title,
+//                    lyrics = lyrics,
+//                    chords = convertNotesToNumbers(tonality, chords),
+//                    defaultTonality = tonality,
+//                    tempo = getTempo(tempo)
+//                )
+//                addSongUseCase(song)
+//            }
+//            shouldClose?.onComplete()
+//        }
     }
 
-    private fun checkFields(title: String?, tonalityString: String?, chords: String?) {
+    private fun checkFields(
+        title: String?,
+        tonalityString: String?,
+        chords: String?,
+        vocalists: MutableList<String>,
+        tonalities: MutableList<String>
+    ) {
+        // Title Error
         _titleError.value = title.isNullOrBlank()
 
+        // if tonality isn't empty then chords must filled and vice versa
         if (!tonalityString.isNullOrBlank() && chords.isNullOrBlank()) {
             _chordsError.value = true
         } else if (tonalityString.isNullOrBlank() && !chords.isNullOrBlank()) {
             _tonalityError.value = true
         }
 
+        // Remove tonality and chords error if both fields are empty
         if (
             !tonalityString.isNullOrBlank() && !chords.isNullOrBlank() ||
             tonalityString.isNullOrBlank() && chords.isNullOrBlank()
@@ -66,6 +76,27 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
             _chordsError.value = false
             _tonalityError.value = false
         }
+
+        var index: Int
+        // Vocalist blank error
+        val blankVocalists = mutableListOf<Int>()
+        while (vocalists.contains(BLANK_SYMBOL)) {
+            index = vocalists.indexOf(BLANK_SYMBOL)
+            blankVocalists.add(index)
+            vocalists.remove(BLANK_SYMBOL)
+            vocalists.add(index, REPLACED_SYMBOL)
+        }
+        _vocalistError.value = blankVocalists
+
+        // VocalistTonality blank error
+        val blankVocalistsTonality = mutableListOf<Int>()
+        while (tonalities.contains(BLANK_SYMBOL)) {
+            index = tonalities.indexOf(BLANK_SYMBOL)
+            blankVocalistsTonality.add(index)
+            tonalities.remove(BLANK_SYMBOL)
+            tonalities.add(index, REPLACED_SYMBOL)
+        }
+        _vocalistTonalityError.value = blankVocalistsTonality
     }
 
     private fun convertStringToTonality(tonality: String?): Tonality? {
@@ -91,5 +122,10 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
 
     interface ShouldClose {
         fun onComplete()
+    }
+
+    companion object {
+        private const val BLANK_SYMBOL = ""
+        private const val REPLACED_SYMBOL = "replace"
     }
 }
