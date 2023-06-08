@@ -155,7 +155,7 @@ class NewSongFragment : Fragment() {
             resources.getStringArray(R.array.tonalities)
         )
         // Remove fields
-        view.findViewById<ImageButton>(R.id.removeBtn).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.vocalistTonalityRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
         }
         vocalistField.editText?.addTextChangedListener {
