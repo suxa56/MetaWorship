@@ -63,10 +63,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/songTonalityTil"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/songLyricsTil"
+            app:layout_constraintEnd_toStartOf="@+id/cleatTonality"
             app:layout_constraintStart_toStartOf="@+id/songLyricsTil"
             app:layout_constraintTop_toBottomOf="@+id/songLyricsTil">
 
@@ -77,14 +77,46 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageButton
+            android:id="@+id/cleatTonality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:contentDescription="@string/remove_fields"
+            android:paddingHorizontal="8dp"
+            android:src="@drawable/ic_clear"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/songTonalityTil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/songTonalityTil" />
+
+        <LinearLayout
+            android:id="@+id/modulationContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/songTonalityTil" />
+
+        <Button
+            android:id="@+id/addModulation"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/add_modulation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/modulationContainer" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/songChordsTil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/songTonalityTil">
+            app:layout_constraintTop_toBottomOf="@+id/addModulation">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

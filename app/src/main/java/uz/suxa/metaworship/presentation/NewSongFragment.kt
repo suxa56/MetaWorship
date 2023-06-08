@@ -113,20 +113,60 @@ class NewSongFragment : Fragment() {
                 }
             )
         }
+
+        // clear error on field change
         binding.songTitleTil.editText?.addTextChangedListener {
             binding.songTitleTil.error = null
         }
         binding.songTonalityTil.editText?.addTextChangedListener {
             binding.songTonalityTil.error = null
+            binding.cleatTonality.visibility = View.VISIBLE
         }
         binding.songChordsTil.editText?.addTextChangedListener {
             binding.songChordsTil.error = null
         }
+        binding.cleatTonality.setOnClickListener {
+            binding.songTonalityTil.editText?.text = null
+            binding.cleatTonality.visibility = View.GONE
+        }
 
+        // add fields
         binding.addVocalist.setOnClickListener {
             createVocalistField()
         }
+        binding.addModulation.setOnClickListener {
+            createModulationField()
+        }
 
+    }
+
+    private fun createModulationField() {
+        val linearLayout = LinearLayout(requireContext())
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        linearLayout.layoutParams = params
+        val container = binding.modulationContainer
+
+        val view = layoutInflater.inflate(R.layout.modulation_field, null)
+        view.layoutParams = params
+        linearLayout.addView(view)
+        container.addView(linearLayout)
+        // Fill fields
+        val modulationField = view.findViewById<TextInputLayout>(R.id.modulation)
+        (modulationField.editText
+                as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            resources.getStringArray(R.array.tonalities)
+        )
+        // Remove fields
+        view.findViewById<ImageButton>(R.id.modulationRemoveBtn).setOnClickListener {
+            container.removeView(linearLayout)
+        }
+        // Clear error on change
+        modulationField.editText?.addTextChangedListener {
+            modulationField.error = null
+        }
 
     }
 
@@ -161,6 +201,7 @@ class NewSongFragment : Fragment() {
         vocalistField.editText?.addTextChangedListener {
             vocalistField.error = null
         }
+        // Clear error on change
         tonalityField.editText?.addTextChangedListener {
             tonalityField.error = null
         }
