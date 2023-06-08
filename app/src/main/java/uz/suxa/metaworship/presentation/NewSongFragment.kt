@@ -43,6 +43,12 @@ class NewSongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.title = findNavController().currentDestination?.label
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigate(R.id.action_NewSongFragment_to_FirstFragment)
+        }
+
+
         fillTonalityField()
         observeLiveData()
         setListener()
