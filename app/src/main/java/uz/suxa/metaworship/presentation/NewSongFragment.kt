@@ -74,6 +74,13 @@ class NewSongFragment : Fragment() {
             if (it) binding.songChordsTil.error = getString(R.string.chords_error)
         }
 
+        viewModel.modulationError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.modulationContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.modulation).error =
+                    getString(R.string.tonality_error)
+            }
+        }
         viewModel.vocalistError.observe(viewLifecycleOwner) { list ->
             list.forEach { index ->
                 binding.vocalistContainer.getChildAt(index)
@@ -98,11 +105,15 @@ class NewSongFragment : Fragment() {
             val tonalities = binding.vocalistContainer.children.map { x ->
                 x.findViewById<TextInputLayout>(R.id.tonality).editText?.text.toString()
             }.toList().toMutableList()
+            val modulations = binding.modulationContainer.children.map { x ->
+                x.findViewById<TextInputLayout>(R.id.modulation).editText?.text.toString()
+            }.toList().toMutableList()
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
                 chords = binding.songChordsTil.editText?.text.toString(),
                 tonalityString = binding.songTonalityTil.editText?.text.toString(),
+                modulations = modulations,
                 vocalists = vocalists,
                 tonalities = tonalities,
                 tempo = binding.songTempoTil.editText?.text.toString(),

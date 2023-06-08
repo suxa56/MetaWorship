@@ -22,6 +22,8 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     val tonalityError: LiveData<Boolean> get() = _tonalityError
     private val _chordsError = MutableLiveData<Boolean>()
     val chordsError: LiveData<Boolean> get() = _chordsError
+    private val _modulationError = MutableLiveData<List<Int>>()
+    val modulationError: LiveData<List<Int>> get() = _modulationError
     private val _vocalistError = MutableLiveData<List<Int>>()
     val vocalistError: LiveData<List<Int>> get() = _vocalistError
     private val _vocalistTonalityError = MutableLiveData<List<Int>>()
@@ -32,19 +34,24 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         lyrics: String?,
         chords: String?,
         tonalityString: String?,
+        modulations: MutableList<String>,
         vocalists: MutableList<String>,
         tonalities: MutableList<String>,
         tempo: String?,
         shouldClose: ShouldClose?
     ) {
-        checkFields(title, tonalityString, chords, vocalists, tonalities)
+        checkFields(title, tonalityString, chords, modulations, vocalists, tonalities)
         if (!_titleError.value!! &&
             !_tonalityError.value!! &&
             !_chordsError.value!! &&
+            _modulationError.value!!.isEmpty() &&
             _vocalistError.value!!.isEmpty() &&
             _vocalistTonalityError.value!!.isEmpty()
         ) {
             val tonality = convertStringToTonality(tonalityString)
+            val convertedModulations = modulations.map {
+                convertStringToTonality(it)
+            }.toList()
             val vocalistTonality = mutableListOf<VocalistTonality>()
             for ((index, _) in vocalists.withIndex()) {
                 vocalistTonality.add(
@@ -55,6 +62,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                 )
             }
             viewModelScope.launch {
+                // TODO(): add modulation field to model, DbModel, refactor mapper
                 val song = SongModel(
                     title = title,
                     lyrics = lyrics,
@@ -63,7 +71,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                     vocalistTonality = vocalistTonality,
                     tempo = getTempo(tempo)
                 )
-                addSongUseCase(song)
+//                addSongUseCase(song)
             }
             shouldClose?.onComplete()
         }
@@ -73,6 +81,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         title: String?,
         tonalityString: String?,
         chords: String?,
+        modulations: MutableList<String>,
         vocalists: MutableList<String>,
         tonalities: MutableList<String>
     ) {
@@ -82,7 +91,9 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         // if tonality isn't empty then chords must filled and vice versa
         if (!tonalityString.isNullOrBlank() && chords.isNullOrBlank()) {
             _chordsError.value = true
+            _tonalityError.value = false
         } else if (tonalityString.isNullOrBlank() && !chords.isNullOrBlank()) {
+            _chordsError.value = false
             _tonalityError.value = true
         }
 
@@ -96,6 +107,16 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         }
 
         var index: Int
+        // Modulation blank error
+        val blankModulation = mutableListOf<Int>()
+        while (modulations.contains(BLANK_SYMBOL)) {
+            index = modulations.indexOf(BLANK_SYMBOL)
+            blankModulation.add(index)
+            modulations.remove(BLANK_SYMBOL)
+            modulations.add(index, REPLACED_SYMBOL)
+        }
+        _modulationError.value = blankModulation
+
         // Vocalist blank error
         val blankVocalists = mutableListOf<Int>()
         while (vocalists.contains(BLANK_SYMBOL)) {
