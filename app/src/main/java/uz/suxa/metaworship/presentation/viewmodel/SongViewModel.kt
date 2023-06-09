@@ -49,9 +49,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
             _vocalistTonalityError.value!!.isEmpty()
         ) {
             val tonality = convertStringToTonality(tonalityString)
-            val convertedModulations = modulations.map {
-                convertStringToTonality(it)
-            }.toList()
             val vocalistTonality = mutableListOf<VocalistTonality>()
             for ((index, _) in vocalists.withIndex()) {
                 vocalistTonality.add(
@@ -62,16 +59,16 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                 )
             }
             viewModelScope.launch {
-                // TODO(): add modulation field to model, DbModel, refactor mapper
                 val song = SongModel(
                     title = title,
                     lyrics = lyrics,
                     chords = convertNotesToNumbers(tonality, chords),
                     defaultTonality = tonality,
+                    modulations = convertModulationToString(tonality, modulations),
                     vocalistTonality = vocalistTonality,
                     tempo = getTempo(tempo)
                 )
-//                addSongUseCase(song)
+                addSongUseCase(song)
             }
             shouldClose?.onComplete()
         }

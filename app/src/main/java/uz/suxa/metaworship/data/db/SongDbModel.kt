@@ -11,6 +11,7 @@ data class SongDbModel(
     val lyrics: String? = null,
     val defaultTonality: String? = null,
     val chords: String? = null,
+    val modulations: String? = null,
     val vocalist: String? = null,
     val tonality: String? = null,
     val tempo: Int? = null,

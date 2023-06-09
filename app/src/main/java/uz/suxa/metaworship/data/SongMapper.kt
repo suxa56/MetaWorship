@@ -14,6 +14,7 @@ class SongMapper {
         lyrics = song.lyrics,
         chords = song.chords,
         defaultTonality = song.defaultTonality.toString(),
+        modulations = mapModulationsToString(song.modulations),
         vocalist = mapVocalistTonalityToVocalistString(song.vocalistTonality),
         tonality = mapVocalistTonalityToTonalityString(song.vocalistTonality),
         tempo = song.tempo,
@@ -34,9 +35,14 @@ class SongMapper {
         mapDbModelToEntity(it)
     }
 
+    private fun mapModulationsToString(modulations: List<String>?) =
+        modulations?.joinToString(SEPARATOR) {
+            it
+        }
+
     private fun mapVocalistTonalityToVocalistString(vocalistTonality: List<VocalistTonality>?) =
         vocalistTonality?.joinToString(SEPARATOR) {
-            it.vocalist.toString()
+            it.vocalist
         }
 
     private fun mapVocalistTonalityToTonalityString(vocalistTonality: List<VocalistTonality>?) =

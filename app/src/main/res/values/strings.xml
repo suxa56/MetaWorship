@@ -16,6 +16,7 @@
     <string name="submit">Сохранить</string>
     <string name="add_vocalist">Добавить вокалиста</string>
     <string name="add_modulation">Добавить модуляцию</string>
+    <string name="modulation">Модуляция</string>
     <string name="vocalist">Вокалист</string>
     <string name="tonality">Тональность</string>
     <string name="remove_fields">Убрать поля</string>

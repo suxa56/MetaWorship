@@ -19,6 +19,8 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     val flatNotes = listOf("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Hb", "H")
 
+    val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
+
     fun convertStringToTonality(tonality: String?): Tonality? {
         return if (tonality.isNullOrBlank()) {
             null
@@ -51,6 +53,37 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
         }
         return converted!!
 
+    }
+
+    fun convertModulationToString(tonality: Tonality?, modulation: List<String>?): List<String>? {
+        if (modulation.isNullOrEmpty() || tonality == null) {
+            return listOf("")
+        }
+        val correctNotesList = arrayListOf<String>()
+        val fragment = arrayListOf<String>()
+        var startAnotherList = false
+        tonalitiesList.map { c ->
+            if (c == convertTonalityToSymbol(tonality) || startAnotherList) {
+                startAnotherList = true
+                correctNotesList.add(c)
+            } else {
+                fragment.add(c)
+            }
+        }
+        correctNotesList.addAll(fragment)
+
+        val numberedNotes = convertListToNumberedMap(correctNotesList)
+
+        var converted = modulation.joinToString(",") {
+            it
+        }
+
+        numberedNotes.forEach {
+            it.forEach { (index, value) ->
+                converted = converted.replace(value, index)
+            }
+        }
+        return converted.split(",").toList()
     }
 
     // Build right notes queue with its number
