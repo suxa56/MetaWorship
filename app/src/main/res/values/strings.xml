@@ -29,4 +29,8 @@
     <string name="tonality_error">Не выбрана тональность</string>
     <string name="chords_error">Нет аккордов</string>
     <string name="vocalist_error">Не выбран вокалист</string>
+    <string name="card_title_temp">Я буду петь среди шторма и волн</string>
+    <string name="card_tonality_temp">G</string>
+    <string name="card_lyrics_temp">Пою я аллилуя всем что есть внутри меня, пою я аллилуя и прочь уйдут сомнения</string>
+    <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
 </resources>
