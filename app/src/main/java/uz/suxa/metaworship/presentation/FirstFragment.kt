@@ -26,8 +26,11 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        binding.toolbar.title = findNavController().currentDestination?.label
+        binding.toolbar.inflateMenu(R.menu.menu_main)
+
+        binding.addNewSongFab.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_NewSongFragment)
         }
     }
 
