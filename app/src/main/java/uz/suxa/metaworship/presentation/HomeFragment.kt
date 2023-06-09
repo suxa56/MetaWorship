@@ -7,19 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import uz.suxa.metaworship.R
-import uz.suxa.metaworship.databinding.FragmentFirstBinding
-import java.util.UUID
+import uz.suxa.metaworship.databinding.FragmentHomeBinding
 
-class FirstFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,7 +29,7 @@ class FirstFragment : Fragment() {
         binding.toolbar.inflateMenu(R.menu.menu_main)
 
         binding.addNewSongFab.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_NewSongFragment)
+            findNavController().navigate(R.id.action_HomeFragment_to_NewSongFragment)
         }
     }
 
