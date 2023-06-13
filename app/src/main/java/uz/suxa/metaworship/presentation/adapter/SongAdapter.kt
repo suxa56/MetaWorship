@@ -8,6 +8,9 @@ import uz.suxa.metaworship.domain.model.SongModel
 
 class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
 
+    var onSongItemClickListener: ((SongModel) -> Unit)? = null
+    var onSongItemLongClickListener: ((SongModel) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val binding = SongCardBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -26,6 +29,19 @@ class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
                 songLyrics.text = lyrics
                 songVocalists.text = vocalistTonality.toString()
             }
+            root.setOnClickListener {
+                onSongItemClickListener?.invoke(song)
+            }
+            root.setOnLongClickListener {
+                onSongItemLongClickListener?.invoke(song)
+                true
+            }
         }
+
+    }
+
+    interface OnClickListener {
+
+        fun onClick(songModel: SongModel)
     }
 }
