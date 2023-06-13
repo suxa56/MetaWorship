@@ -1,7 +1,6 @@
 package uz.suxa.metaworship.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,19 +59,18 @@ class HomeFragment : Fragment() {
         val rvSongList = binding.rvSongList
         adapter = SongAdapter()
         rvSongList.adapter = adapter
-
         adapter.onSongItemClickListener = {
-            Log.d("onSongClick", it.id.toString())
+            // TODO(): On click open new fragment with selected song
         }
         adapter.onSongItemLongClickListener = {
-            Log.d("onSongLongClick", it.id.toString())
+            // TODO(): On long click show menu with actions: add to list, edit...
         }
     }
 
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.getSongs().observe(viewLifecycleOwner) { list ->
-//                adapter.submitList(list)
+                adapter.submitList(list)
             }
         }
     }

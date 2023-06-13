@@ -1,10 +1,12 @@
 package uz.suxa.metaworship.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import uz.suxa.metaworship.databinding.SongCardBinding
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 
 class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
 
@@ -25,9 +27,22 @@ class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
         with(holder.binding) {
             with(song) {
                 songTitle.text = title
-                songTonality.text = defaultTonality.toString()
-                songLyrics.text = lyrics
-                songVocalists.text = vocalistTonality.toString()
+                if (defaultTonality == Tonality.UNDEFINED) {
+                    songTonality.visibility = View.GONE
+                } else {
+                    songTonality.text = defaultTonality.toString()
+                }
+                if (lyrics.isBlank()) {
+                    songLyrics.visibility = View.GONE
+                } else {
+                    songLyrics.text = lyrics
+                }
+                if (vocalistTonality.isEmpty()) {
+                    materialDivider.visibility = View.GONE
+                    songVocalists.visibility = View.GONE
+                } else {
+                    songVocalists.text = vocalistTonality.toString()
+                }
             }
             root.setOnClickListener {
                 onSongItemClickListener?.invoke(song)
@@ -37,11 +52,5 @@ class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
                 true
             }
         }
-
-    }
-
-    interface OnClickListener {
-
-        fun onClick(songModel: SongModel)
     }
 }

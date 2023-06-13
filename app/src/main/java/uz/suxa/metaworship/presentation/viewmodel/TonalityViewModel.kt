@@ -5,25 +5,25 @@ import androidx.lifecycle.AndroidViewModel
 import uz.suxa.metaworship.domain.model.Tonality
 
 abstract class TonalityViewModel(application: Application) : AndroidViewModel(application) {
-    val sharpTonalities = listOf(
+    private val sharpTonalities = listOf(
         Tonality.C, Tonality.C_SHARP, Tonality.D, Tonality.E,
         Tonality.F_SHARP, Tonality.G, Tonality.A, Tonality.H
     )
 
-    val flatTonalities = listOf(
+    private val flatTonalities = listOf(
         Tonality.E_FLAT, Tonality.F,
         Tonality.A_FLAT, Tonality.H_FLAT
     )
 
-    val sharpNotes = listOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "H")
+    private val sharpNotes = listOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "H")
 
-    val flatNotes = listOf("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Hb", "H")
+    private val flatNotes = listOf("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Hb", "H")
 
-    val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
+    private val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
 
-    fun convertStringToTonality(tonality: String?): Tonality? {
+    fun convertStringToTonality(tonality: String?): Tonality {
         return if (tonality.isNullOrBlank()) {
-            null
+            Tonality.UNDEFINED
         } else {
             val refactoredTonality =
                 tonality
@@ -55,7 +55,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     }
 
-    fun convertModulationToString(tonality: Tonality?, modulation: List<String>?): List<String>? {
+    fun convertModulationToString(tonality: Tonality?, modulation: List<String>?): List<String> {
         if (modulation.isNullOrEmpty() || tonality == null) {
             return listOf("")
         }

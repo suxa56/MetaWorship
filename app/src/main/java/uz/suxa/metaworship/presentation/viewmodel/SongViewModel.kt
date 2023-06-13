@@ -54,14 +54,14 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                 vocalistTonality.add(
                     VocalistTonality(
                         vocalists[index],
-                        convertStringToTonality(tonalities[index])!!
+                        convertStringToTonality(tonalities[index])
                     )
                 )
             }
             viewModelScope.launch {
                 val song = SongModel(
-                    title = title,
-                    lyrics = lyrics,
+                    title = title ?: "",
+                    lyrics = lyrics ?: "",
                     chords = convertNotesToNumbers(tonality, chords),
                     defaultTonality = tonality,
                     modulations = convertModulationToString(tonality, modulations),
@@ -103,6 +103,11 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
             _tonalityError.value = false
         }
 
+        // If vocalist or his(her) tonality added -> default tonality must be defined
+        if ((vocalists.isNotEmpty() || tonalities.isNotEmpty()) && tonalityString.isNullOrBlank()) {
+            _tonalityError.value = true
+        }
+
         var index: Int
         // Modulation blank error
         val blankModulation = mutableListOf<Int>()
@@ -135,9 +140,9 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         _vocalistTonalityError.value = blankVocalistsTonality
     }
 
-    private fun getTempo(tempo: String?): Int? {
+    private fun getTempo(tempo: String?): Int {
         return if (tempo.isNullOrBlank()) {
-            null
+            UNDEFINED_TEMPO
         } else {
             tempo.toInt()
         }
@@ -148,6 +153,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     }
 
     companion object {
+        private const val UNDEFINED_TEMPO = -1
         private const val BLANK_SYMBOL = ""
         private const val REPLACED_SYMBOL = "replace"
     }

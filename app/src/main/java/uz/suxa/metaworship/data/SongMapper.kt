@@ -1,5 +1,6 @@
 package uz.suxa.metaworship.data
 
+import android.util.Log
 import uz.suxa.metaworship.data.db.SongDbModel
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
@@ -26,8 +27,8 @@ class SongMapper {
         title = songDb.title,
         lyrics = songDb.lyrics,
         chords = songDb.chords,
-        defaultTonality = songDb.defaultTonality?.let { Tonality.valueOf(it) },
-        modulations = songDb.modulations?.split(SEPARATOR),
+        defaultTonality = mapStringToTonality(songDb.defaultTonality),
+        modulations = songDb.modulations.split(SEPARATOR),
         vocalistTonality = mapStringToVocalistTonality(songDb.vocalist, songDb.tonality),
         tempo = songDb.tempo,
     )
@@ -36,27 +37,27 @@ class SongMapper {
         mapDbModelToEntity(it)
     }
 
-    private fun mapModulationsToString(modulations: List<String>?) =
-        modulations?.joinToString(SEPARATOR) {
+    private fun mapModulationsToString(modulations: List<String>) =
+        modulations.joinToString(SEPARATOR) {
             it
         }
 
-    private fun mapVocalistTonalityToVocalistString(vocalistTonality: List<VocalistTonality>?) =
-        vocalistTonality?.joinToString(SEPARATOR) {
+    private fun mapVocalistTonalityToVocalistString(vocalistTonality: List<VocalistTonality>) =
+        vocalistTonality.joinToString(SEPARATOR) {
             it.vocalist
         }
 
-    private fun mapVocalistTonalityToTonalityString(vocalistTonality: List<VocalistTonality>?) =
-        vocalistTonality?.joinToString(SEPARATOR) {
+    private fun mapVocalistTonalityToTonalityString(vocalistTonality: List<VocalistTonality>) =
+        vocalistTonality.joinToString(SEPARATOR) {
             it.tonality.toString()
         }
 
     private fun mapStringToVocalistTonality(
         vocalist: String?,
         tonality: String?
-    ): List<VocalistTonality>? {
+    ): List<VocalistTonality> {
         if (vocalist.isNullOrBlank() || tonality.isNullOrBlank()) {
-            return null
+            return listOf()
         }
         val vocalistTonalityList = mutableListOf<VocalistTonality>()
 
@@ -73,6 +74,15 @@ class SongMapper {
         }
 
         return vocalistTonalityList
+    }
+
+    private fun mapStringToTonality(tonality: String): Tonality {
+        return if (tonality.isBlank()) {
+            Tonality.UNDEFINED
+        } else {
+            Log.d("mapper", tonality)
+            Tonality.valueOf(tonality)
+        }
     }
 
     companion object {

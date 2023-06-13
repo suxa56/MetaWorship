@@ -12,5 +12,6 @@ enum class Tonality {
     A_FLAT,
     A,
     H_FLAT,
-    H
+    H,
+    UNDEFINED
 }
