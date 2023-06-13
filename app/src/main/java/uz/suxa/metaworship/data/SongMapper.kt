@@ -27,6 +27,7 @@ class SongMapper {
         lyrics = songDb.lyrics,
         chords = songDb.chords,
         defaultTonality = songDb.defaultTonality?.let { Tonality.valueOf(it) },
+        modulations = songDb.modulations?.split(SEPARATOR),
         vocalistTonality = mapStringToVocalistTonality(songDb.vocalist, songDb.tonality),
         tempo = songDb.tempo,
     )
@@ -54,7 +55,7 @@ class SongMapper {
         vocalist: String?,
         tonality: String?
     ): List<VocalistTonality>? {
-        if (vocalist == null || tonality == null) {
+        if (vocalist.isNullOrBlank() || tonality.isNullOrBlank()) {
             return null
         }
         val vocalistTonalityList = mutableListOf<VocalistTonality>()
