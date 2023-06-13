@@ -62,7 +62,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
                 val song = SongModel(
                     title = title ?: "",
                     lyrics = lyrics ?: "",
-                    chords = convertNotesToNumbers(tonality, chords),
+                    chords = convertNotesToNumbers(tonality, chords ?: ""),
                     defaultTonality = tonality,
                     modulations = convertModulationToString(tonality, modulations),
                     vocalistTonality = vocalistTonality,

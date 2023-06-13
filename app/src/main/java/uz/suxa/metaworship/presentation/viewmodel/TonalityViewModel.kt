@@ -36,27 +36,29 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     // TODO(): create fun's convert chords to numbers and reverse
     // Replace all chords and notes in incoming string to numbers
-    fun convertNotesToNumbers(tonality: Tonality?, chords: String?): String {
-        if (tonality == null || chords.isNullOrEmpty()) {
+    fun convertNotesToNumbers(tonality: Tonality, chords: String): String {
+        if (tonality == Tonality.UNDEFINED || chords.isBlank()) {
             return ""
         }
         val notes = getTonalityNotes(tonality)
         val numberedNotes = convertListToNumberedMap(notes)
-        var converted = chords
+        var converted = chords.uppercase()
 
         // For first checks non-Tonality notes, then check Tonality notes
         // After every iteration save result to variable
         numberedNotes.forEach {
             it.forEach { (index, value) ->
-                converted = converted!!.replace(value, index)
+                converted = converted.replace(value, "-$index-")
             }
         }
-        return converted!!
+        converted = converted.replace(" ", "-")
+
+        return converted
 
     }
 
-    fun convertModulationToString(tonality: Tonality?, modulation: List<String>?): List<String> {
-        if (modulation.isNullOrEmpty() || tonality == null) {
+    fun convertModulationToString(tonality: Tonality, modulation: List<String>): List<String> {
+        if (modulation.isEmpty() || tonality == Tonality.UNDEFINED) {
             return listOf("")
         }
         val correctNotesList = arrayListOf<String>()
