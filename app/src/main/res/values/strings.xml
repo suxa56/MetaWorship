@@ -1,11 +1,8 @@
 <resources>
-    <string name="app_name">MetaWorship</string>
+    <string name="app_name">Meta Worship</string>
     <string name="menu_add_vocalist">Создать вокалиста</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
     <string name="new_song_fragment_label">Новая песня</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <!-- Add song fragment fields -->
     <string name="song_title">Название</string>
