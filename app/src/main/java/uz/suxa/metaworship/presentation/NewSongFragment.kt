@@ -17,7 +17,7 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
-import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
+import uz.suxa.metaworship.presentation.viewmodel.AddSongViewModel
 
 
 class NewSongFragment : Fragment() {
@@ -25,11 +25,11 @@ class NewSongFragment : Fragment() {
     private var _binding: FragmentNewSongBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SongViewModel by lazy {
+    private val viewModel: AddSongViewModel by lazy {
         ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[SongViewModel::class.java]
+        )[AddSongViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -117,7 +117,7 @@ class NewSongFragment : Fragment() {
                 vocalists = vocalists,
                 tonalities = tonalities,
                 tempo = binding.songTempoTil.editText?.text.toString(),
-                shouldClose = object : SongViewModel.ShouldClose {
+                shouldClose = object : AddSongViewModel.ShouldClose {
                     override fun onComplete() {
                         findNavController().navigate(R.id.action_NewSongFragment_to_HomeFragment)
                     }
