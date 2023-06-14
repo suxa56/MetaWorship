@@ -47,6 +47,16 @@ class HomeFragment : Fragment() {
     private fun setupToolbar() {
         binding.toolbar.title = findNavController().currentDestination?.label
         binding.toolbar.inflateMenu(R.menu.menu_main)
+
+        binding.toolbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.createVocalist -> {
+                    CreateVocalistBottomSheet().show(childFragmentManager, CreateVocalistBottomSheet.TAG)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupFab() {

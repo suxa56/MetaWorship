@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="uz.suxa.metaworship.presentation.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/createVocalist"
         android:icon="@drawable/ic_add_person"
         android:title="@string/menu_add_vocalist"
         app:showAsAction="always" />
