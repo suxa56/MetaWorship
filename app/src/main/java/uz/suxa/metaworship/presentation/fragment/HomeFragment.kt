@@ -74,15 +74,15 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val rvSongList = binding.rvSongList
-        adapter = SongAdapter()
+        adapter = SongAdapter(requireContext())
         rvSongList.adapter = adapter
         adapter.onSongItemClickListener = {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToSongFragment(it.id)
             )
         }
-        adapter.onSongItemLongClickListener = {
-            // TODO(): On long click show menu with actions: add to list, edit...
+        adapter.onSongItemDelete = {
+            viewModel.deleteSong(it)
         }
     }
 

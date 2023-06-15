@@ -32,4 +32,5 @@
     <string name="card_lyrics_temp">Пою я аллилуя всем что есть внутри меня, пою я аллилуя и прочь уйдут сомнения</string>
     <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
     <string name="new_vocalist">Новый вокалист</string>
+    <string name="action_delete">Удалить</string>
 </resources>
