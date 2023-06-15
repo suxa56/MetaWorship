@@ -9,6 +9,7 @@ import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
+import java.util.UUID
 
 class AddSongViewModel(application: Application) : TonalityViewModel(application) {
 
@@ -60,6 +61,7 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
             }
             viewModelScope.launch {
                 val song = SongModel(
+                    id = UUID.randomUUID().toString(),
                     title = title ?: "",
                     lyrics = lyrics ?: "",
                     chords = convertNotesToNumbers(tonality, chords ?: ""),

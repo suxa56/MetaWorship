@@ -10,7 +10,7 @@ import java.util.*
 class SongMapper {
 
     fun mapEntityToDbModel(song: SongModel) = SongDbModel(
-        id = song.id ?: UUID.randomUUID().toString(),
+        id = song.id,
         title = song.title,
         lyrics = song.lyrics,
         chords = song.chords,
