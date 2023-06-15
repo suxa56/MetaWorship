@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import kotlinx.coroutines.launch
 import uz.suxa.metaworship.databinding.FragmentSongBinding
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
 
@@ -33,7 +35,15 @@ class SongFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.lol.text = args.songId
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        lifecycleScope.launch {
+            viewModel.getSong(args.songId).observe(viewLifecycleOwner) { song ->
+                binding.lol.text = song.toString()
+            }
+        }
     }
 
     override fun onDestroyView() {

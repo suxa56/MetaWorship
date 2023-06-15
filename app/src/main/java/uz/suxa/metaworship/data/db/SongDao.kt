@@ -19,5 +19,5 @@ interface SongDao {
     fun deleteSong(songId: String)
 
     @Query("SELECT * FROM songs WHERE id=:songId LIMIT 1")
-    fun getSong(songId: Int): LiveData<SongDbModel>
+    fun getSong(songId: String): LiveData<SongDbModel>
 }
