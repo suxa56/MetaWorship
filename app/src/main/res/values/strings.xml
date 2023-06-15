@@ -3,6 +3,7 @@
     <string name="menu_add_vocalist">Создать вокалиста</string>
     <!-- Strings used for fragments for navigation -->
     <string name="new_song_fragment_label">Новая песня</string>
+    <string name="song_fragment_label">Песня</string>
 
     <!-- Add song fragment fields -->
     <string name="song_title">Название</string>
