@@ -50,13 +50,15 @@ class HomeFragment : Fragment() {
         binding.toolbar.inflateMenu(R.menu.menu_main)
 
         binding.toolbar.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.createVocalist -> {
-                    CreateVocalistBottomSheet().show(childFragmentManager,
+                    CreateVocalistBottomSheet().show(
+                        childFragmentManager,
                         CreateVocalistBottomSheet.TAG
                     )
                     true
                 }
+
                 else -> false
             }
         }
@@ -64,7 +66,9 @@ class HomeFragment : Fragment() {
 
     private fun setupFab() {
         binding.addNewSongFab.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_NewSongFragment)
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToNewSongFragment()
+            )
         }
     }
 
@@ -73,7 +77,9 @@ class HomeFragment : Fragment() {
         adapter = SongAdapter()
         rvSongList.adapter = adapter
         adapter.onSongItemClickListener = {
-            // TODO(): On click open new fragment with selected song
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToSongFragment(it.id)
+            )
         }
         adapter.onSongItemLongClickListener = {
             // TODO(): On long click show menu with actions: add to list, edit...

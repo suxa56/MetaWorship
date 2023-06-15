@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import uz.suxa.metaworship.databinding.FragmentSongBinding
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
 
 class SongFragment : Fragment() {
+
+    private val args by navArgs<SongFragmentArgs>()
 
     private var _binding: FragmentSongBinding? = null
     private val binding get() = _binding!!
@@ -29,4 +32,12 @@ class SongFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.lol.text = args.songId
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

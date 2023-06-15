@@ -29,5 +29,9 @@
         android:id="@+id/songFragment"
         android:name="uz.suxa.metaworship.presentation.fragment.SongFragment"
         android:label="@string/song_fragment_label"
-        tools:layout="@layout/fragment_song"/>
+        tools:layout="@layout/fragment_song">
+        <argument
+            android:name="songId"
+            app:argType="string" />
+    </fragment>
 </navigation>
