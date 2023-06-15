@@ -45,7 +45,7 @@ class NewSongFragment : Fragment() {
 
         binding.toolbar.title = findNavController().currentDestination?.label
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigate(R.id.action_NewSongFragment_to_HomeFragment)
+            findNavController().popBackStack()
         }
 
 
@@ -119,7 +119,7 @@ class NewSongFragment : Fragment() {
                 tempo = binding.songTempoTil.editText?.text.toString(),
                 shouldClose = object : AddSongViewModel.ShouldClose {
                     override fun onComplete() {
-                        findNavController().navigate(R.id.action_NewSongFragment_to_HomeFragment)
+                        findNavController().popBackStack()
                     }
                 }
             )

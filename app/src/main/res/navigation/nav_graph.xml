@@ -13,28 +13,21 @@
 
         <action
             android:id="@+id/action_HomeFragment_to_NewSongFragment"
-            app:destination="@id/NewSongFragment" />
+            app:destination="@id/NewSongFragment"
+            app:popUpTo="@id/songFragment" />
         <action
             android:id="@+id/action_HomeFragment_to_songFragment"
-            app:destination="@id/songFragment" />
+            app:destination="@id/songFragment"
+            app:popUpTo="@id/HomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/NewSongFragment"
         android:name="uz.suxa.metaworship.presentation.fragment.NewSongFragment"
         android:label="@string/new_song_fragment_label"
-        tools:layout="@layout/fragment_new_song">
-
-        <action
-            android:id="@+id/action_NewSongFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_new_song"/>
     <fragment
         android:id="@+id/songFragment"
         android:name="uz.suxa.metaworship.presentation.fragment.SongFragment"
         android:label="@string/song_fragment_label"
-        tools:layout="@layout/fragment_song" >
-        <action
-            android:id="@+id/action_songFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_song"/>
 </navigation>
