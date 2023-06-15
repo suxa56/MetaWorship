@@ -78,7 +78,7 @@ class HomeFragment : Fragment() {
         rvSongList.adapter = adapter
         adapter.onSongItemClickListener = {
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToSongFragment(it.id)
+                HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
             )
         }
         adapter.onSongItemDelete = {

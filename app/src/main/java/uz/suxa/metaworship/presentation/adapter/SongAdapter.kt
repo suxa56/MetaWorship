@@ -14,8 +14,8 @@ import uz.suxa.metaworship.domain.model.Tonality
 
 class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
 
-    var onSongItemClickListener: ((SongModel) -> Unit)? = null
-    var onSongItemDelete: ((SongModel) -> Unit)? = null
+    var onSongItemClickListener: ((String) -> Unit)? = null
+    var onSongItemDelete: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val binding = SongCardBinding.inflate(
@@ -49,7 +49,7 @@ class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>
                 }
             }
             root.setOnClickListener {
-                onSongItemClickListener?.invoke(song)
+                onSongItemClickListener?.invoke(song.id)
             }
             root.setOnLongClickListener {
                 val popup = PopupMenu(context, root)
@@ -57,7 +57,7 @@ class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>
                 popup.setOnMenuItemClickListener {menuItem: MenuItem ->
                     when(menuItem.itemId) {
                         R.id.deleteSong -> {
-                            onSongItemDelete?.invoke(song)
+                            onSongItemDelete?.invoke(song.id)
                             true
                         }
                         else -> false

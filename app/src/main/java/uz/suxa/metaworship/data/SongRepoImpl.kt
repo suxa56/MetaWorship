@@ -26,7 +26,7 @@ class SongRepoImpl(
         songDao.addSong(mapper.mapEntityToDbModel(song))
     }
 
-    override suspend fun deleteSong(song: SongModel) {
-        songDao.deleteSong(mapper.mapEntityToDbModel(song).id)
+    override suspend fun deleteSong(songId: String) {
+        songDao.deleteSong(songId)
     }
 }

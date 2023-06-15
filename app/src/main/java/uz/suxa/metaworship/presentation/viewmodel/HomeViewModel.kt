@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
-import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongListUseCase
 
@@ -18,9 +17,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun getSongs() = getSongList()
 
-    fun deleteSong(song: SongModel) {
+    fun deleteSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteSongUseCase(song)
+            deleteSongUseCase(songId)
         }
     }
 }
