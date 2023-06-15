@@ -1,4 +1,4 @@
-package uz.suxa.metaworship.presentation
+package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
+import uz.suxa.metaworship.presentation.CreateVocalistBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.viewmodel.HomeViewModel
 
@@ -51,7 +52,9 @@ class HomeFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.createVocalist -> {
-                    CreateVocalistBottomSheet().show(childFragmentManager, CreateVocalistBottomSheet.TAG)
+                    CreateVocalistBottomSheet().show(childFragmentManager,
+                        CreateVocalistBottomSheet.TAG
+                    )
                     true
                 }
                 else -> false
