@@ -45,7 +45,11 @@ class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>
                     materialDivider.visibility = View.GONE
                     songVocalists.visibility = View.GONE
                 } else {
-                    songVocalists.text = vocalistTonality.toString()
+                    var vocalists = ""
+                    vocalistTonality.forEach {
+                        vocalists += "\n${it.vocalist}: ${it.tonality}"
+                    }
+                    songVocalists.text = vocalists.replaceFirst("\n", "")
                 }
             }
             root.setOnClickListener {
