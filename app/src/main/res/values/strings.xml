@@ -33,4 +33,8 @@
     <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
     <string name="new_vocalist">Новый вокалист</string>
     <string name="action_delete">Удалить</string>
+
+    <string name="chip_chords">Аккорды</string>
+    <string name="chip_lyrics">Слова</string>
+    <string name="chip_tonality">Тональность: %s</string>
 </resources>
