@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentSongBinding
 import uz.suxa.metaworship.domain.model.Tonality
@@ -34,6 +32,7 @@ class SongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSongBinding.inflate(inflater, container, false)
+        viewModel.getSong(args.songId)
         return binding.root
     }
 
@@ -49,19 +48,17 @@ class SongFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        lifecycleScope.launch {
-            viewModel.getSong(args.songId).observe(viewLifecycleOwner) {
-                binding.toolbar.title = it.title
-                if (it.defaultTonality != Tonality.UNDEFINED) {
-                    binding.chipTonality.text =
-                        String.format(
-                            getString(R.string.chip_tonality),
-                            it.defaultTonality.toString()
-                        )
-                } else {
-                    binding.chipChords.visibility = View.GONE
-                    binding.chipTonality.visibility = View.GONE
-                }
+        viewModel.song.observe(viewLifecycleOwner) {
+            binding.toolbar.title = it.title
+
+            if (it.defaultTonality == Tonality.UNDEFINED) {
+                binding.chipTonality.visibility = View.GONE
+                binding.chipGroupSongTonalities.visibility = View.GONE
+                binding.chipChords.visibility = View.GONE
+            } else {
+                binding.chipTonality.text = String.format(
+                    getString(R.string.chip_tonality, it.defaultTonality)
+                )
             }
         }
     }

@@ -38,7 +38,7 @@
             android:paddingHorizontal="16dp">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/songControlChipGroup"
+                android:id="@+id/chipGroupSongControl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,13 +71,14 @@
 
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/songTonalitiesChipGroup"
+                android:id="@+id/chipGroupSongTonalities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:chipSpacingVertical="0dp"
+                app:selectionRequired="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/songControlChipGroup"
+                app:layout_constraintTop_toBottomOf="@id/chipGroupSongControl"
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip

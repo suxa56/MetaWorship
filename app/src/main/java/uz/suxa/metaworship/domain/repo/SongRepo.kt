@@ -7,7 +7,7 @@ interface SongRepo {
 
     suspend fun getSongList(): LiveData<List<SongModel>>
 
-    suspend fun getSong(songId: String): LiveData<SongModel>
+    suspend fun getSong(songId: String): SongModel
 
     suspend fun addSong(song: SongModel)
 
