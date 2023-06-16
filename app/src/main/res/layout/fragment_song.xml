@@ -69,17 +69,104 @@
 
             </com.google.android.material.chip.ChipGroup>
 
-            <!--                <com.google.android.material.chip.ChipGroup-->
-            <!--                    android:id="@+id/songTonalitiesChipGroup"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@id/songControlChipGroup"-->
-            <!--                    app:singleSelection="true">-->
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/songTonalitiesChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingVertical="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/songControlChipGroup"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityC"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_c" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityCSharp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_c_sharp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityD"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_d" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityEFlat"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_e_flat" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityE"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_e" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityF"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_f" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityFSharp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_f_sharp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityG"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_g" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityAFlat"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_a_flat" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityA"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_a" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityHFlat"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_h_flat" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTonalityH"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip_tonality_h" />
 
 
-            <!--                </com.google.android.material.chip.ChipGroup>-->
+            </com.google.android.material.chip.ChipGroup>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
