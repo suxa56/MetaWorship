@@ -57,47 +57,64 @@ class SongFragment : Fragment() {
                 binding.chipChords.visibility = View.GONE
             } else {
                 binding.chipTonality.text = String.format(
-                    getString(R.string.chip_tonality, it.defaultTonality)
+                    getString(
+                        R.string.chip_tonality,
+                        it.defaultTonality.toString()
+                            .replace("_FLAT", "b")
+                            .replace("_SHARP", "#")
+                    )
                 )
             }
 
-            when(it.defaultTonality) {
+            when (it.defaultTonality) {
                 Tonality.C -> {
                     binding.chipTonalityC.isChecked = true
                 }
+
                 Tonality.C_SHARP -> {
                     binding.chipTonalityCSharp.isChecked = true
                 }
+
                 Tonality.D -> {
                     binding.chipTonalityD.isChecked = true
                 }
+
                 Tonality.E_FLAT -> {
                     binding.chipTonalityEFlat.isChecked = true
                 }
+
                 Tonality.E -> {
                     binding.chipTonalityE.isChecked = true
                 }
+
                 Tonality.F -> {
                     binding.chipTonalityF.isChecked = true
                 }
+
                 Tonality.F_SHARP -> {
                     binding.chipTonalityFSharp.isChecked = true
                 }
+
                 Tonality.G -> {
                     binding.chipTonalityG.isChecked = true
                 }
+
                 Tonality.A_FLAT -> {
                     binding.chipTonalityAFlat.isChecked = true
                 }
+
                 Tonality.A -> {
                     binding.chipTonalityA.isChecked = true
                 }
+
                 Tonality.H_FLAT -> {
                     binding.chipTonalityHFlat.isChecked = true
                 }
+
                 Tonality.H -> {
                     binding.chipTonalityH.isChecked = true
                 }
+
                 else -> {}
             }
         }
