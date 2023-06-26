@@ -39,6 +39,7 @@ class SongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupToolbar()
         observeLiveData()
+        setupClickListener()
     }
 
     private fun setupToolbar() {
@@ -54,7 +55,8 @@ class SongFragment : Fragment() {
             if (it.defaultTonality == Tonality.UNDEFINED) {
                 binding.chipTonality.visibility = View.GONE
                 binding.chipGroupSongTonalities.visibility = View.GONE
-                binding.chipChords.visibility = View.GONE
+                binding.chipChords.isChecked = false
+                binding.chipChords.isEnabled = false
             } else {
                 binding.chipTonality.text = String.format(
                     getString(
@@ -116,6 +118,34 @@ class SongFragment : Fragment() {
                 }
 
                 else -> {}
+            }
+
+            if (it.lyrics.isBlank()) {
+                binding.lyricsCard.visibility = View.GONE
+                binding.chipLyrics.isChecked = false
+                binding.chipLyrics.isEnabled = false
+            } else {
+                binding.lyrics.text = it.lyrics
+            }
+        }
+    }
+
+    private fun setupClickListener() {
+        binding.chipLyrics.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.lyricsCard.visibility = View.VISIBLE
+            } else {
+                binding.lyricsCard.visibility = View.GONE
+            }
+        }
+
+        binding.chipChords.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.chipGroupSongTonalities.visibility = View.VISIBLE
+                binding.chordsCard.visibility = View.VISIBLE
+            } else {
+                binding.chipGroupSongTonalities.visibility = View.GONE
+                binding.chordsCard.visibility = View.GONE
             }
         }
     }
