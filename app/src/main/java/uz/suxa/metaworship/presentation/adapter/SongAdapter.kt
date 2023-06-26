@@ -35,6 +35,8 @@ class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>
                     songTonality.visibility = View.GONE
                 } else {
                     songTonality.text = defaultTonality.toString()
+                        .replace("_FLAT", "b")
+                        .replace("_SHARP", "#")
                 }
                 if (lyrics.isBlank()) {
                     songLyrics.visibility = View.GONE
