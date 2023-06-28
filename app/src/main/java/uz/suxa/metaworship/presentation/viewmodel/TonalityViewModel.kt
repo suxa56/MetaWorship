@@ -57,6 +57,24 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     }
 
+    fun convertNumbersToNotes(tonality: Tonality, chords: String): String {
+        if (tonality == Tonality.UNDEFINED || chords.isBlank()) {
+            return ""
+        }
+        val notes = getTonalityNotes(tonality)
+        val numberedNotes = convertListToNumberedMap(notes)
+        var converted = chords.replace("M", "m")
+
+        numberedNotes.forEach {
+            it.forEach { (index, value) ->
+                converted = converted.replace("-$index-", value)
+            }
+        }
+        converted = converted.replace("-", " ")
+
+        return converted
+    }
+
     fun convertModulationToString(tonality: Tonality, modulation: List<String>): List<String> {
         if (modulation.isEmpty() || tonality == Tonality.UNDEFINED) {
             return listOf("")

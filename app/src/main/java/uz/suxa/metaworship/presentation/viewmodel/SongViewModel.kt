@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
@@ -18,9 +19,18 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val _song = MutableLiveData<SongModel>()
     val song: LiveData<SongModel> get() = _song
 
+    private val _chords = MutableLiveData<String>()
+    val chords: LiveData<String> get() = _chords
+
     fun getSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _song.postValue(getSongUseCase.invoke(songId))
+            val song = getSongUseCase.invoke(songId)
+            _song.postValue(song)
+            _chords.postValue(convertNumbersToNotes(song.defaultTonality, song.chords))
         }
+    }
+
+    fun transpose(tonality: Tonality) {
+        _chords.value = _song.value?.chords?.let { convertNumbersToNotes(tonality, it) }
     }
 }

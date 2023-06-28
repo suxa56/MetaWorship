@@ -50,8 +50,10 @@ class SongFragment : Fragment() {
 
     private fun observeLiveData() {
         viewModel.song.observe(viewLifecycleOwner) {
+            // Title
             binding.toolbar.title = it.title
 
+            // Tonality
             if (it.defaultTonality == Tonality.UNDEFINED) {
                 binding.chipTonality.visibility = View.GONE
                 binding.chipGroupSongTonalities.visibility = View.GONE
@@ -66,66 +68,75 @@ class SongFragment : Fragment() {
                             .replace("_SHARP", "#")
                     )
                 )
+
+                when (it.defaultTonality) {
+                    Tonality.C -> {
+                        binding.chipTonalityC.isChecked = true
+                    }
+
+                    Tonality.C_SHARP -> {
+                        binding.chipTonalityCSharp.isChecked = true
+                    }
+
+                    Tonality.D -> {
+                        binding.chipTonalityD.isChecked = true
+                    }
+
+                    Tonality.E_FLAT -> {
+                        binding.chipTonalityEFlat.isChecked = true
+                    }
+
+                    Tonality.E -> {
+                        binding.chipTonalityE.isChecked = true
+                    }
+
+                    Tonality.F -> {
+                        binding.chipTonalityF.isChecked = true
+                    }
+
+                    Tonality.F_SHARP -> {
+                        binding.chipTonalityFSharp.isChecked = true
+                    }
+
+                    Tonality.G -> {
+                        binding.chipTonalityG.isChecked = true
+                    }
+
+                    Tonality.A_FLAT -> {
+                        binding.chipTonalityAFlat.isChecked = true
+                    }
+
+                    Tonality.A -> {
+                        binding.chipTonalityA.isChecked = true
+                    }
+
+                    Tonality.H_FLAT -> {
+                        binding.chipTonalityHFlat.isChecked = true
+                    }
+
+                    Tonality.H -> {
+                        binding.chipTonalityH.isChecked = true
+                    }
+
+                    else -> {}
+                }
             }
 
-            when (it.defaultTonality) {
-                Tonality.C -> {
-                    binding.chipTonalityC.isChecked = true
-                }
-
-                Tonality.C_SHARP -> {
-                    binding.chipTonalityCSharp.isChecked = true
-                }
-
-                Tonality.D -> {
-                    binding.chipTonalityD.isChecked = true
-                }
-
-                Tonality.E_FLAT -> {
-                    binding.chipTonalityEFlat.isChecked = true
-                }
-
-                Tonality.E -> {
-                    binding.chipTonalityE.isChecked = true
-                }
-
-                Tonality.F -> {
-                    binding.chipTonalityF.isChecked = true
-                }
-
-                Tonality.F_SHARP -> {
-                    binding.chipTonalityFSharp.isChecked = true
-                }
-
-                Tonality.G -> {
-                    binding.chipTonalityG.isChecked = true
-                }
-
-                Tonality.A_FLAT -> {
-                    binding.chipTonalityAFlat.isChecked = true
-                }
-
-                Tonality.A -> {
-                    binding.chipTonalityA.isChecked = true
-                }
-
-                Tonality.H_FLAT -> {
-                    binding.chipTonalityHFlat.isChecked = true
-                }
-
-                Tonality.H -> {
-                    binding.chipTonalityH.isChecked = true
-                }
-
-                else -> {}
-            }
-
+            // Lyrics
             if (it.lyrics.isBlank()) {
                 binding.lyricsCard.visibility = View.GONE
                 binding.chipLyrics.isChecked = false
                 binding.chipLyrics.isEnabled = false
             } else {
                 binding.lyrics.text = it.lyrics
+            }
+        }
+
+        viewModel.chords.observe(viewLifecycleOwner) {
+            if (it.isBlank()) {
+                binding.chordsCard.visibility = View.GONE
+            } else {
+                binding.chords.text = it
             }
         }
     }
@@ -146,6 +157,48 @@ class SongFragment : Fragment() {
             } else {
                 binding.chipGroupSongTonalities.visibility = View.GONE
                 binding.chordsCard.visibility = View.GONE
+            }
+        }
+
+        binding.chipGroupSongTonalities.setOnCheckedStateChangeListener { _, checkedIds ->
+            when (checkedIds[0]) {
+                R.id.chipTonalityC -> {
+                    viewModel.transpose(Tonality.C)
+                }
+                R.id.chipTonalityCSharp -> {
+                    viewModel.transpose(Tonality.C_SHARP)
+                }
+                R.id.chipTonalityD -> {
+                    viewModel.transpose(Tonality.D)
+                }
+                R.id.chipTonalityEFlat -> {
+                    viewModel.transpose(Tonality.E_FLAT)
+                }
+                R.id.chipTonalityE -> {
+                    viewModel.transpose(Tonality.E)
+                }
+                R.id.chipTonalityF -> {
+                    viewModel.transpose(Tonality.F)
+                }
+                R.id.chipTonalityFSharp -> {
+                    viewModel.transpose(Tonality.F_SHARP)
+                }
+                R.id.chipTonalityG -> {
+                    viewModel.transpose(Tonality.G)
+                }
+                R.id.chipTonalityAFlat -> {
+                    viewModel.transpose(Tonality.A_FLAT)
+                }
+                R.id.chipTonalityA -> {
+                    viewModel.transpose(Tonality.A)
+                }
+                R.id.chipTonalityHFlat -> {
+                    viewModel.transpose(Tonality.H_FLAT)
+                }
+                R.id.chipTonalityH -> {
+                    viewModel.transpose(Tonality.H)
+                }
+
             }
         }
     }
