@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.core.view.children
@@ -106,7 +105,7 @@ class NewSongFragment : Fragment() {
         viewModel.soloError.observe(viewLifecycleOwner) { list ->
             list.forEach { index ->
                 binding.soloContainer.getChildAt(index)
-                    .findViewById<TextInputLayout>(R.id.solo).error =
+                    .findViewById<TextInputLayout>(R.id.soloTil).error =
                     getString(R.string.solo_error)
             }
         }
@@ -127,7 +126,7 @@ class NewSongFragment : Fragment() {
                 x.findViewById<TextInputLayout>(R.id.part).editText?.text.toString()
             }.toList().toMutableList()
             val solos = binding.soloContainer.children.map { x ->
-                x.findViewById<TextInputLayout>(R.id.solo).editText?.text.toString()
+                x.findViewById<TextInputLayout>(R.id.soloTil).editText?.text.toString()
             }.toList().toMutableList()
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
@@ -259,7 +258,7 @@ class NewSongFragment : Fragment() {
         container.addView(linearLayout)
         // Fill fields
         val partField = view.findViewById<TextInputLayout>(R.id.part)
-        val soloField = view.findViewById<TextInputLayout>(R.id.solo)
+        val soloField = view.findViewById<TextInputLayout>(R.id.soloTil)
         (partField.editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.part)

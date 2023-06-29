@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
+import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
@@ -24,12 +26,17 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val _capo = MutableLiveData(0)
     private val _tonalityPosition = MutableLiveData<Int>()
 
+    private val _soloParts = MutableLiveData<List<SoloPart>>()
+    val soloParts: LiveData<List<SoloPart>> get() = _soloParts
+
     fun getSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val song = getSongUseCase.invoke(songId)
             _song.postValue(song)
             _chords.postValue(convertNumbersToNotes(song.defaultTonality, song.chords))
             _tonalityPosition.postValue(getTonalityPosition(convertTonalityToSymbol(song.defaultTonality)))
+
+            transposeSolo(song.soloPart, song.defaultTonality)
         }
     }
 
@@ -40,6 +47,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
 
     fun changeTonality(tonality: String) {
         _tonalityPosition.value = getTonalityPosition(tonality)
+        transposeSolo(_song.value?.soloPart!!, convertStringToTonality(tonality))
         transpose()
     }
 
@@ -49,5 +57,12 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         _chords.value = _song.value?.chords?.let {
             convertNumbersToNotes(convertStringToTonality(getTonality(newTonalityPosition)), it)
         }
+    }
+
+    private fun transposeSolo(soloParts: List<SoloPart>, tonality: Tonality) {
+        val convertedSoloParts = soloParts.map {
+            SoloPart(it.part, convertNumbersToNotes(tonality, it.solo))
+        }.toList()
+        _soloParts.postValue(convertedSoloParts)
     }
 }

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentSongBinding
 import uz.suxa.metaworship.domain.model.Tonality
+import uz.suxa.metaworship.presentation.adapter.solo.SoloPartAdapter
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
 
 class SongFragment : Fragment() {
@@ -22,6 +23,8 @@ class SongFragment : Fragment() {
 
     private var _binding: FragmentSongBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var adapter: SoloPartAdapter
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -41,6 +44,7 @@ class SongFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupToolbar()
+        setupRecyclerView()
         observeLiveData()
         setupClickListener()
         fillExposedMenus()
@@ -50,6 +54,12 @@ class SongFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    private fun setupRecyclerView() {
+        val rvSongList = binding.rvSolo
+        adapter = SoloPartAdapter()
+        rvSongList.adapter = adapter
     }
 
     private fun observeLiveData() {
@@ -96,6 +106,10 @@ class SongFragment : Fragment() {
             } else {
                 binding.chords.text = it
             }
+        }
+
+        viewModel.soloParts.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
     }
 
