@@ -14,6 +14,8 @@ data class SongDbModel(
     val modulations: String,
     val vocalist: String,
     val tonality: String,
+    val soloPart: String,
+    val solo: String,
     val tempo: Int,
     val lastUpdate: Long
 )

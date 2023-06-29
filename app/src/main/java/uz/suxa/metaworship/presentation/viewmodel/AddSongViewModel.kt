@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
+import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
@@ -67,6 +68,16 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                     )
                 )
             }
+
+            val soloPartList = mutableListOf<SoloPart>()
+            for ((index, _) in soloParts.withIndex()) {
+                soloPartList.add(
+                    SoloPart(
+                        soloParts[index],
+                        convertNotesToNumbers(tonality, solos[index])
+                    )
+                )
+            }
             viewModelScope.launch {
                 val song = SongModel(
                     id = UUID.randomUUID().toString(),
@@ -76,11 +87,12 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                     defaultTonality = tonality,
                     modulations = convertModulationToString(tonality, modulations),
                     vocalistTonality = vocalistTonality,
+                    soloPart = soloPartList,
                     tempo = getTempo(tempo)
                 )
-//                addSongUseCase(song)
+                addSongUseCase(song)
             }
-//            shouldClose?.onComplete()
+            shouldClose?.onComplete()
         }
     }
 
