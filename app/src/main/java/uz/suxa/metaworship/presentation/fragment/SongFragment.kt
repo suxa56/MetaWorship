@@ -43,7 +43,7 @@ class SongFragment : Fragment() {
         setupToolbar()
         observeLiveData()
         setupClickListener()
-        fillTonalityField()
+        fillExposedMenus()
     }
 
     private fun setupToolbar() {
@@ -61,6 +61,7 @@ class SongFragment : Fragment() {
             if (it.defaultTonality == Tonality.UNDEFINED) {
                 binding.chipTonality.visibility = View.GONE
                 binding.songTonalityTil.visibility = View.GONE
+                binding.capoTil.visibility = View.GONE
                 binding.chipChords.isChecked = false
                 binding.chipChords.isEnabled = false
             } else {
@@ -74,7 +75,7 @@ class SongFragment : Fragment() {
                 )
 
                 (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
-                    viewModel.parseTonality(it.defaultTonality),
+                    viewModel.convertTonalityToSymbol(it.defaultTonality),
                     false
                 )
             }
@@ -110,9 +111,11 @@ class SongFragment : Fragment() {
         binding.chipChords.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.songTonalityTil.visibility = View.VISIBLE
+                binding.capoTil.visibility = View.VISIBLE
                 binding.chordsCard.visibility = View.VISIBLE
             } else {
                 binding.songTonalityTil.visibility = View.GONE
+                binding.capoTil.visibility = View.GONE
                 binding.chordsCard.visibility = View.GONE
             }
         }
@@ -120,8 +123,18 @@ class SongFragment : Fragment() {
         (binding.songTonalityTil.editText as? AutoCompleteTextView)
             ?.setOnItemClickListener { _, view, _, _ ->
                 val tonality = (view as TextView).text
-                viewModel.transpose(tonality.toString())
+                viewModel.changeTonality(tonality.toString())
             }
+
+        (binding.capoTil.editText as? AutoCompleteTextView)
+            ?.setOnItemClickListener { _, _, position, _ ->
+                viewModel.changeCapo(position)
+            }
+    }
+
+    private fun fillExposedMenus() {
+        fillTonalityField()
+        fillCapoField()
     }
 
     private fun fillTonalityField() {
@@ -131,6 +144,20 @@ class SongFragment : Fragment() {
             resources.getStringArray(R.array.tonalities)
         )
         (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+    private fun fillCapoField() {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            resources.getStringArray(R.array.capo)
+        )
+        (binding.capoTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+
+        (binding.capoTil.editText as? AutoCompleteTextView)?.setText(
+            "0",
+            false
+        )
     }
 
     override fun onDestroyView() {

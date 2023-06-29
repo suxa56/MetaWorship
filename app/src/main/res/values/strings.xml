@@ -9,6 +9,7 @@
     <string name="song_title">Название</string>
     <string name="song_lyrics">Слова</string>
     <string name="song_tonality">Тональность</string>
+    <string name="capo">Каподастр</string>
     <string name="song_chords">Аккорды</string>
     <string name="song_tempo">Темп</string>
     <string name="submit">Сохранить</string>

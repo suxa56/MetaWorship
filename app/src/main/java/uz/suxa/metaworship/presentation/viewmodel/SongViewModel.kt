@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
-import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
@@ -22,24 +21,33 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val _chords = MutableLiveData<String>()
     val chords: LiveData<String> get() = _chords
 
+    private val _capo = MutableLiveData(0)
+    private val _tonalityPosition = MutableLiveData<Int>()
+
     fun getSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val song = getSongUseCase.invoke(songId)
             _song.postValue(song)
             _chords.postValue(convertNumbersToNotes(song.defaultTonality, song.chords))
+            _tonalityPosition.postValue(getTonalityPosition(convertTonalityToSymbol(song.defaultTonality)))
         }
     }
 
-    fun transpose(tonality: String) {
-        val castedTonality = Tonality.valueOf(
-            tonality.replace("b", "_FLAT").replace("#", "_SHARP")
-        )
-        _chords.value = _song.value?.chords?.let { convertNumbersToNotes(castedTonality, it) }
+    fun changeCapo(position: Int) {
+        _capo.value = position
+        transpose()
     }
 
-    fun parseTonality(tonality: Tonality): String {
-        return tonality.toString()
-            .replace("_SHARP", "#")
-            .replace("_FLAT", "b")
+    fun changeTonality(tonality: String) {
+        _tonalityPosition.value = getTonalityPosition(tonality)
+        transpose()
+    }
+
+    private fun transpose() {
+        var newTonalityPosition = _tonalityPosition.value!! - _capo.value!!
+        if (newTonalityPosition < 0) newTonalityPosition += 12
+        _chords.value = _song.value?.chords?.let {
+            convertNumbersToNotes(convertStringToTonality(getTonality(newTonalityPosition)), it)
+        }
     }
 }
