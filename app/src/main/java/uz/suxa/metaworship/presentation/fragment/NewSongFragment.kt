@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.core.view.children
@@ -148,6 +149,9 @@ class NewSongFragment : Fragment() {
         binding.addModulation.setOnClickListener {
             createModulationField()
         }
+        binding.addSolo.setOnClickListener {
+            createSoloField()
+        }
 
     }
 
@@ -216,6 +220,40 @@ class NewSongFragment : Fragment() {
         tonalityField.editText?.addTextChangedListener {
             tonalityField.error = null
         }
+    }
+
+    private fun createSoloField() {
+        val linearLayout = LinearLayout(requireContext())
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        linearLayout.layoutParams = params
+        val container = binding.soloContainer
+
+        val view = layoutInflater.inflate(R.layout.solo_field, null)
+        view.layoutParams = params
+        linearLayout.addView(view)
+        container.addView(linearLayout)
+        // Fill fields
+        val partField = view.findViewById<TextInputLayout>(R.id.part)
+        val soloField = view.findViewById<EditText>(R.id.solo)
+        (partField.editText
+                as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            resources.getStringArray(R.array.part)
+        )
+
+        // Remove fields
+        view.findViewById<ImageButton>(R.id.soloPartRemoveBtn).setOnClickListener {
+            container.removeView(linearLayout)
+        }
+//        vocalistField.editText?.addTextChangedListener {
+//            vocalistField.error = null
+//        }
+//        // Clear error on change
+//        tonalityField.editText?.addTextChangedListener {
+//            tonalityField.error = null
+//        }
     }
 
     override fun onDestroyView() {

@@ -38,4 +38,10 @@
         <item>"11"</item>
         <item>"12"</item>
     </array>
+
+    <array name="part">
+        <item>Клавиши</item>
+        <item>Гитара</item>
+        <item>Бас</item>
+    </array>
 </resources>
