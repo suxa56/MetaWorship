@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -40,6 +43,7 @@ class SongFragment : Fragment() {
         setupToolbar()
         observeLiveData()
         setupClickListener()
+        fillTonalityField()
     }
 
     private fun setupToolbar() {
@@ -56,7 +60,7 @@ class SongFragment : Fragment() {
             // Tonality
             if (it.defaultTonality == Tonality.UNDEFINED) {
                 binding.chipTonality.visibility = View.GONE
-                binding.chipGroupSongTonalities.visibility = View.GONE
+                binding.songTonalityTil.visibility = View.GONE
                 binding.chipChords.isChecked = false
                 binding.chipChords.isEnabled = false
             } else {
@@ -69,57 +73,10 @@ class SongFragment : Fragment() {
                     )
                 )
 
-                when (it.defaultTonality) {
-                    Tonality.C -> {
-                        binding.chipTonalityC.isChecked = true
-                    }
-
-                    Tonality.C_SHARP -> {
-                        binding.chipTonalityCSharp.isChecked = true
-                    }
-
-                    Tonality.D -> {
-                        binding.chipTonalityD.isChecked = true
-                    }
-
-                    Tonality.E_FLAT -> {
-                        binding.chipTonalityEFlat.isChecked = true
-                    }
-
-                    Tonality.E -> {
-                        binding.chipTonalityE.isChecked = true
-                    }
-
-                    Tonality.F -> {
-                        binding.chipTonalityF.isChecked = true
-                    }
-
-                    Tonality.F_SHARP -> {
-                        binding.chipTonalityFSharp.isChecked = true
-                    }
-
-                    Tonality.G -> {
-                        binding.chipTonalityG.isChecked = true
-                    }
-
-                    Tonality.A_FLAT -> {
-                        binding.chipTonalityAFlat.isChecked = true
-                    }
-
-                    Tonality.A -> {
-                        binding.chipTonalityA.isChecked = true
-                    }
-
-                    Tonality.H_FLAT -> {
-                        binding.chipTonalityHFlat.isChecked = true
-                    }
-
-                    Tonality.H -> {
-                        binding.chipTonalityH.isChecked = true
-                    }
-
-                    else -> {}
-                }
+                (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
+                    viewModel.parseTonality(it.defaultTonality),
+                    false
+                )
             }
 
             // Lyrics
@@ -152,55 +109,28 @@ class SongFragment : Fragment() {
 
         binding.chipChords.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.chipGroupSongTonalities.visibility = View.VISIBLE
+                binding.songTonalityTil.visibility = View.VISIBLE
                 binding.chordsCard.visibility = View.VISIBLE
             } else {
-                binding.chipGroupSongTonalities.visibility = View.GONE
+                binding.songTonalityTil.visibility = View.GONE
                 binding.chordsCard.visibility = View.GONE
             }
         }
 
-        binding.chipGroupSongTonalities.setOnCheckedStateChangeListener { _, checkedIds ->
-            when (checkedIds[0]) {
-                R.id.chipTonalityC -> {
-                    viewModel.transpose(Tonality.C)
-                }
-                R.id.chipTonalityCSharp -> {
-                    viewModel.transpose(Tonality.C_SHARP)
-                }
-                R.id.chipTonalityD -> {
-                    viewModel.transpose(Tonality.D)
-                }
-                R.id.chipTonalityEFlat -> {
-                    viewModel.transpose(Tonality.E_FLAT)
-                }
-                R.id.chipTonalityE -> {
-                    viewModel.transpose(Tonality.E)
-                }
-                R.id.chipTonalityF -> {
-                    viewModel.transpose(Tonality.F)
-                }
-                R.id.chipTonalityFSharp -> {
-                    viewModel.transpose(Tonality.F_SHARP)
-                }
-                R.id.chipTonalityG -> {
-                    viewModel.transpose(Tonality.G)
-                }
-                R.id.chipTonalityAFlat -> {
-                    viewModel.transpose(Tonality.A_FLAT)
-                }
-                R.id.chipTonalityA -> {
-                    viewModel.transpose(Tonality.A)
-                }
-                R.id.chipTonalityHFlat -> {
-                    viewModel.transpose(Tonality.H_FLAT)
-                }
-                R.id.chipTonalityH -> {
-                    viewModel.transpose(Tonality.H)
-                }
-
+        (binding.songTonalityTil.editText as? AutoCompleteTextView)
+            ?.setOnItemClickListener { _, view, _, _ ->
+                val tonality = (view as TextView).text
+                viewModel.transpose(tonality.toString())
             }
-        }
+    }
+
+    private fun fillTonalityField() {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            resources.getStringArray(R.array.tonalities)
+        )
+        (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
     override fun onDestroyView() {

@@ -73,104 +73,21 @@
 
             </com.google.android.material.chip.ChipGroup>
 
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupSongTonalities"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/songTonalityTil"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="172dp"
                 android:layout_height="wrap_content"
-                app:chipSpacingVertical="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chipGroupSongControl"
-                app:selectionRequired="true"
-                app:singleSelection="true">
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="@+id/chipGroupSongControl"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupSongControl">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityC"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_c" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityCSharp"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_c_sharp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityD"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_d" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityEFlat"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_e_flat" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityE"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_e" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityF"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_f" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityFSharp"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_f_sharp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityG"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_g" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityAFlat"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_a_flat" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityA"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_a" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityHFlat"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_h_flat" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTonalityH"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_tonality_h" />
-
-
-            </com.google.android.material.chip.ChipGroup>
+                    android:hint="@string/song_tonality"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/lyricsCard"
@@ -179,7 +96,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chipGroupSongTonalities">
+                app:layout_constraintTop_toBottomOf="@id/songTonalityTil">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

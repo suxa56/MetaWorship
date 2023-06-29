@@ -30,7 +30,16 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         }
     }
 
-    fun transpose(tonality: Tonality) {
-        _chords.value = _song.value?.chords?.let { convertNumbersToNotes(tonality, it) }
+    fun transpose(tonality: String) {
+        val castedTonality = Tonality.valueOf(
+            tonality.replace("b", "_FLAT").replace("#", "_SHARP")
+        )
+        _chords.value = _song.value?.chords?.let { convertNumbersToNotes(castedTonality, it) }
+    }
+
+    fun parseTonality(tonality: Tonality): String {
+        return tonality.toString()
+            .replace("_SHARP", "#")
+            .replace("_FLAT", "b")
     }
 }
