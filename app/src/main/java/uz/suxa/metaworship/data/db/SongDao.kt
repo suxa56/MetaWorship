@@ -16,8 +16,8 @@ interface SongDao {
     suspend fun addSong(songDBModel: SongDbModel)
 
     @Query("DELETE FROM songs WHERE id=:songId")
-    fun deleteSong(songId: Int)
+    fun deleteSong(songId: String)
 
     @Query("SELECT * FROM songs WHERE id=:songId LIMIT 1")
-    fun getSong(songId: Int): LiveData<SongDbModel>
+    fun getSong(songId: String): SongDbModel
 }

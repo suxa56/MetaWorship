@@ -22,7 +22,15 @@ class SongRepoImpl(
         }
     }
 
+    override suspend fun getSong(songId: String): SongModel {
+        return mapper.mapDbModelToEntity(songDao.getSong(songId))
+    }
+
     override suspend fun addSong(song: SongModel) {
         songDao.addSong(mapper.mapEntityToDbModel(song))
+    }
+
+    override suspend fun deleteSong(songId: String) {
+        songDao.deleteSong(songId)
     }
 }

@@ -1,16 +1,15 @@
 package uz.suxa.metaworship.data
 
-import android.util.Log
 import uz.suxa.metaworship.data.db.SongDbModel
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
-import java.util.*
+import java.util.Calendar
 
 class SongMapper {
 
     fun mapEntityToDbModel(song: SongModel) = SongDbModel(
-        id = song.id ?: UUID.randomUUID().toString(),
+        id = song.id,
         title = song.title,
         lyrics = song.lyrics,
         chords = song.chords,
@@ -80,7 +79,6 @@ class SongMapper {
         return if (tonality.isBlank()) {
             Tonality.UNDEFINED
         } else {
-            Log.d("mapper", tonality)
             Tonality.valueOf(tonality)
         }
     }

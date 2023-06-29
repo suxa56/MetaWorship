@@ -1,17 +1,21 @@
 package uz.suxa.metaworship.presentation.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
+import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.SongCardBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 
-class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
+class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
 
-    var onSongItemClickListener: ((SongModel) -> Unit)? = null
-    var onSongItemLongClickListener: ((SongModel) -> Unit)? = null
+    var onSongItemClickListener: ((String) -> Unit)? = null
+    var onSongItemDelete: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val binding = SongCardBinding.inflate(
@@ -31,6 +35,8 @@ class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
                     songTonality.visibility = View.GONE
                 } else {
                     songTonality.text = defaultTonality.toString()
+                        .replace("_FLAT", "b")
+                        .replace("_SHARP", "#")
                 }
                 if (lyrics.isBlank()) {
                     songLyrics.visibility = View.GONE
@@ -41,14 +47,30 @@ class SongAdapter : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
                     materialDivider.visibility = View.GONE
                     songVocalists.visibility = View.GONE
                 } else {
-                    songVocalists.text = vocalistTonality.toString()
+                    var vocalists = ""
+                    vocalistTonality.forEach {
+                        vocalists += "\n${it.vocalist}: ${it.tonality}"
+                    }
+                    songVocalists.text = vocalists.replaceFirst("\n", "")
                 }
             }
             root.setOnClickListener {
-                onSongItemClickListener?.invoke(song)
+                onSongItemClickListener?.invoke(song.id)
             }
             root.setOnLongClickListener {
-                onSongItemLongClickListener?.invoke(song)
+                val popup = PopupMenu(context, root)
+                popup.menuInflater.inflate(R.menu.menu_song_list, popup.menu)
+                popup.setOnMenuItemClickListener {menuItem: MenuItem ->
+                    when(menuItem.itemId) {
+                        R.id.deleteSong -> {
+                            onSongItemDelete?.invoke(song.id)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popup.show()
+
                 true
             }
         }

@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/songTonality"
-            style="@style/TextAppearance.Material3.DisplayMedium"
+            style="@style/TextAppearance.Material3.DisplaySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_tonality_temp"

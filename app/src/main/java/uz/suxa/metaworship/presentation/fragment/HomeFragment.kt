@@ -1,4 +1,4 @@
-package uz.suxa.metaworship.presentation
+package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
+import uz.suxa.metaworship.presentation.CreateVocalistBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.viewmodel.HomeViewModel
 
@@ -49,11 +50,15 @@ class HomeFragment : Fragment() {
         binding.toolbar.inflateMenu(R.menu.menu_main)
 
         binding.toolbar.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.createVocalist -> {
-                    CreateVocalistBottomSheet().show(childFragmentManager, CreateVocalistBottomSheet.TAG)
+                    CreateVocalistBottomSheet().show(
+                        childFragmentManager,
+                        CreateVocalistBottomSheet.TAG
+                    )
                     true
                 }
+
                 else -> false
             }
         }
@@ -61,19 +66,23 @@ class HomeFragment : Fragment() {
 
     private fun setupFab() {
         binding.addNewSongFab.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_NewSongFragment)
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToNewSongFragment()
+            )
         }
     }
 
     private fun setupRecyclerView() {
         val rvSongList = binding.rvSongList
-        adapter = SongAdapter()
+        adapter = SongAdapter(requireContext())
         rvSongList.adapter = adapter
         adapter.onSongItemClickListener = {
-            // TODO(): On click open new fragment with selected song
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
+            )
         }
-        adapter.onSongItemLongClickListener = {
-            // TODO(): On long click show menu with actions: add to list, edit...
+        adapter.onSongItemDelete = {
+            viewModel.deleteSong(it)
         }
     }
 
