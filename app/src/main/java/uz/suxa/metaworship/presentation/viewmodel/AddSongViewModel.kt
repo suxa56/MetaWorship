@@ -29,6 +29,10 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
     val vocalistError: LiveData<List<Int>> get() = _vocalistError
     private val _vocalistTonalityError = MutableLiveData<List<Int>>()
     val vocalistTonalityError: LiveData<List<Int>> get() = _vocalistTonalityError
+    private val _soloPartError = MutableLiveData<List<Int>>()
+    val soloPartError: LiveData<List<Int>> get() = _soloPartError
+    private val _soloError = MutableLiveData<List<Int>>()
+    val soloError: LiveData<List<Int>> get() = _soloError
 
     fun addSong(
         title: String?,
@@ -38,16 +42,20 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
         modulations: MutableList<String>,
         vocalists: MutableList<String>,
         tonalities: MutableList<String>,
+        soloParts: MutableList<String>,
+        solos: MutableList<String>,
         tempo: String?,
         shouldClose: ShouldClose?
     ) {
-        checkFields(title, tonalityString, chords, modulations, vocalists, tonalities)
+        checkFields(title, tonalityString, chords, modulations, vocalists, tonalities, soloParts, solos)
         if (!_titleError.value!! &&
             !_tonalityError.value!! &&
             !_chordsError.value!! &&
             _modulationError.value!!.isEmpty() &&
             _vocalistError.value!!.isEmpty() &&
-            _vocalistTonalityError.value!!.isEmpty()
+            _vocalistTonalityError.value!!.isEmpty() &&
+            _soloPartError.value!!.isEmpty() &&
+            _soloError.value!!.isEmpty()
         ) {
             val tonality = convertStringToTonality(tonalityString)
             val vocalistTonality = mutableListOf<VocalistTonality>()
@@ -70,9 +78,9 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                     vocalistTonality = vocalistTonality,
                     tempo = getTempo(tempo)
                 )
-                addSongUseCase(song)
+//                addSongUseCase(song)
             }
-            shouldClose?.onComplete()
+//            shouldClose?.onComplete()
         }
     }
 
@@ -82,7 +90,9 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
         chords: String?,
         modulations: MutableList<String>,
         vocalists: MutableList<String>,
-        tonalities: MutableList<String>
+        tonalities: MutableList<String>,
+        soloParts: MutableList<String>,
+        solos: MutableList<String>
     ) {
         // Title Error
         _titleError.value = title.isNullOrBlank()
@@ -140,6 +150,26 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
             tonalities.add(index, REPLACED_SYMBOL)
         }
         _vocalistTonalityError.value = blankVocalistsTonality
+
+        // VocalistTonality blank error
+        val blankSoloParts = mutableListOf<Int>()
+        while (soloParts.contains(BLANK_SYMBOL)) {
+            index = soloParts.indexOf(BLANK_SYMBOL)
+            blankSoloParts.add(index)
+            soloParts.remove(BLANK_SYMBOL)
+            soloParts.add(index, REPLACED_SYMBOL)
+        }
+        _soloPartError.value = blankSoloParts
+
+        // VocalistTonality blank error
+        val blankSolos = mutableListOf<Int>()
+        while (solos.contains(BLANK_SYMBOL)) {
+            index = solos.indexOf(BLANK_SYMBOL)
+            blankSolos.add(index)
+            solos.remove(BLANK_SYMBOL)
+            solos.add(index, REPLACED_SYMBOL)
+        }
+        _soloError.value = blankSolos
     }
 
     private fun getTempo(tempo: String?): Int {

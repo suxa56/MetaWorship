@@ -96,6 +96,20 @@ class NewSongFragment : Fragment() {
                     getString(R.string.tonality_error)
             }
         }
+        viewModel.soloPartError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.soloContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.part).error =
+                    getString(R.string.solo_part_error)
+            }
+        }
+        viewModel.soloError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.soloContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.solo).error =
+                    getString(R.string.solo_error)
+            }
+        }
     }
 
     private fun setListener() {
@@ -109,6 +123,12 @@ class NewSongFragment : Fragment() {
             val modulations = binding.modulationContainer.children.map { x ->
                 x.findViewById<TextInputLayout>(R.id.modulation).editText?.text.toString()
             }.toList().toMutableList()
+            val soloParts = binding.soloContainer.children.map { x ->
+                x.findViewById<TextInputLayout>(R.id.part).editText?.text.toString()
+            }.toList().toMutableList()
+            val solos = binding.soloContainer.children.map { x ->
+                x.findViewById<TextInputLayout>(R.id.solo).editText?.text.toString()
+            }.toList().toMutableList()
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
@@ -117,6 +137,8 @@ class NewSongFragment : Fragment() {
                 modulations = modulations,
                 vocalists = vocalists,
                 tonalities = tonalities,
+                soloParts = soloParts,
+                solos = solos,
                 tempo = binding.songTempoTil.editText?.text.toString(),
                 shouldClose = object : AddSongViewModel.ShouldClose {
                     override fun onComplete() {
@@ -237,7 +259,7 @@ class NewSongFragment : Fragment() {
         container.addView(linearLayout)
         // Fill fields
         val partField = view.findViewById<TextInputLayout>(R.id.part)
-        val soloField = view.findViewById<EditText>(R.id.solo)
+        val soloField = view.findViewById<TextInputLayout>(R.id.solo)
         (partField.editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.part)
@@ -247,13 +269,13 @@ class NewSongFragment : Fragment() {
         view.findViewById<ImageButton>(R.id.soloPartRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
         }
-//        vocalistField.editText?.addTextChangedListener {
-//            vocalistField.error = null
-//        }
-//        // Clear error on change
-//        tonalityField.editText?.addTextChangedListener {
-//            tonalityField.error = null
-//        }
+        // Clear error on change
+        partField.editText?.addTextChangedListener {
+            partField.error = null
+        }
+        soloField.editText?.addTextChangedListener {
+            soloField.error = null
+        }
     }
 
     override fun onDestroyView() {

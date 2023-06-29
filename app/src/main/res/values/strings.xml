@@ -28,6 +28,8 @@
     <!-- Errors -->
     <string name="title_error">Пустое название</string>
     <string name="tonality_error">Не выбрана тональность</string>
+    <string name="solo_part_error">Не выбран инструмент</string>
+    <string name="solo_error">Пустая партия</string>
     <string name="chords_error">Нет аккордов</string>
     <string name="vocalist_error">Не выбран вокалист</string>
     <string name="card_title_temp">Я буду петь среди шторма и волн</string>
