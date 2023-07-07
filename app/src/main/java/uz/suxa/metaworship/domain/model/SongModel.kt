@@ -8,6 +8,7 @@ data class SongModel(
     val defaultTonality: Tonality,
     val modulations: List<String>,
     val vocalistTonality: List<VocalistTonality>,
+    val soloPart: List<SoloPart>,
     val tempo: Int
 ) {
     companion object {

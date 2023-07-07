@@ -95,6 +95,20 @@ class NewSongFragment : Fragment() {
                     getString(R.string.tonality_error)
             }
         }
+        viewModel.soloPartError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.soloContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.part).error =
+                    getString(R.string.solo_part_error)
+            }
+        }
+        viewModel.soloError.observe(viewLifecycleOwner) { list ->
+            list.forEach { index ->
+                binding.soloContainer.getChildAt(index)
+                    .findViewById<TextInputLayout>(R.id.soloTil).error =
+                    getString(R.string.solo_error)
+            }
+        }
     }
 
     private fun setListener() {
@@ -108,6 +122,12 @@ class NewSongFragment : Fragment() {
             val modulations = binding.modulationContainer.children.map { x ->
                 x.findViewById<TextInputLayout>(R.id.modulation).editText?.text.toString()
             }.toList().toMutableList()
+            val soloParts = binding.soloContainer.children.map { x ->
+                x.findViewById<TextInputLayout>(R.id.part).editText?.text.toString()
+            }.toList().toMutableList()
+            val solos = binding.soloContainer.children.map { x ->
+                x.findViewById<TextInputLayout>(R.id.soloTil).editText?.text.toString()
+            }.toList().toMutableList()
             viewModel.addSong(
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
@@ -116,6 +136,8 @@ class NewSongFragment : Fragment() {
                 modulations = modulations,
                 vocalists = vocalists,
                 tonalities = tonalities,
+                soloParts = soloParts,
+                solos = solos,
                 tempo = binding.songTempoTil.editText?.text.toString(),
                 shouldClose = object : AddSongViewModel.ShouldClose {
                     override fun onComplete() {
@@ -147,6 +169,9 @@ class NewSongFragment : Fragment() {
         }
         binding.addModulation.setOnClickListener {
             createModulationField()
+        }
+        binding.addSolo.setOnClickListener {
+            createSoloField()
         }
 
     }
@@ -215,6 +240,40 @@ class NewSongFragment : Fragment() {
         // Clear error on change
         tonalityField.editText?.addTextChangedListener {
             tonalityField.error = null
+        }
+    }
+
+    private fun createSoloField() {
+        val linearLayout = LinearLayout(requireContext())
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        linearLayout.layoutParams = params
+        val container = binding.soloContainer
+
+        val view = layoutInflater.inflate(R.layout.solo_field, null)
+        view.layoutParams = params
+        linearLayout.addView(view)
+        container.addView(linearLayout)
+        // Fill fields
+        val partField = view.findViewById<TextInputLayout>(R.id.part)
+        val soloField = view.findViewById<TextInputLayout>(R.id.soloTil)
+        (partField.editText
+                as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            resources.getStringArray(R.array.part)
+        )
+
+        // Remove fields
+        view.findViewById<ImageButton>(R.id.soloPartRemoveBtn).setOnClickListener {
+            container.removeView(linearLayout)
+        }
+        // Clear error on change
+        partField.editText?.addTextChangedListener {
+            partField.error = null
+        }
+        soloField.editText?.addTextChangedListener {
+            soloField.error = null
         }
     }
 

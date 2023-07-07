@@ -1,6 +1,7 @@
 package uz.suxa.metaworship.data
 
 import uz.suxa.metaworship.data.db.SongDbModel
+import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
@@ -17,6 +18,8 @@ class SongMapper {
         modulations = mapModulationsToString(song.modulations),
         vocalist = mapVocalistTonalityToVocalistString(song.vocalistTonality),
         tonality = mapVocalistTonalityToTonalityString(song.vocalistTonality),
+        soloPart = mapSoloPartToPartString(song.soloPart),
+        solo = mapSoloPartToSoloString(song.soloPart),
         tempo = song.tempo,
         lastUpdate = Calendar.getInstance().timeInMillis
     )
@@ -29,6 +32,7 @@ class SongMapper {
         defaultTonality = mapStringToTonality(songDb.defaultTonality),
         modulations = songDb.modulations.split(SEPARATOR),
         vocalistTonality = mapStringToVocalistTonality(songDb.vocalist, songDb.tonality),
+        soloPart = mapStringToSoloPart(songDb.soloPart, songDb.solo),
         tempo = songDb.tempo,
     )
 
@@ -49,6 +53,16 @@ class SongMapper {
     private fun mapVocalistTonalityToTonalityString(vocalistTonality: List<VocalistTonality>) =
         vocalistTonality.joinToString(SEPARATOR) {
             it.tonality.toString()
+        }
+
+    private fun mapSoloPartToPartString(soloPart: List<SoloPart>) =
+        soloPart.joinToString(SEPARATOR) {
+            it.part
+        }
+
+    private fun mapSoloPartToSoloString(soloPart: List<SoloPart>) =
+        soloPart.joinToString(SEPARATOR) {
+            it.solo
         }
 
     private fun mapStringToVocalistTonality(
@@ -73,6 +87,30 @@ class SongMapper {
         }
 
         return vocalistTonalityList
+    }
+
+    private fun mapStringToSoloPart(
+        part: String?,
+        solo: String?
+    ): List<SoloPart> {
+        if (part.isNullOrBlank() || solo.isNullOrBlank()) {
+            return listOf()
+        }
+        val soloPartList = mutableListOf<SoloPart>()
+
+        val partArray = part.split(SEPARATOR).toTypedArray()
+        val soloArray = solo.split(SEPARATOR).toTypedArray()
+
+        for ((index, _) in partArray.withIndex()) {
+            soloPartList.add(
+                SoloPart(
+                    partArray[index],
+                    soloArray[index]
+                )
+            )
+        }
+
+        return soloPartList
     }
 
     private fun mapStringToTonality(tonality: String): Tonality {
