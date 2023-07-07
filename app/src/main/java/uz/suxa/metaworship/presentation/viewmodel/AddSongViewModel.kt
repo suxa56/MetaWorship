@@ -64,7 +64,7 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                 vocalistTonality.add(
                     VocalistTonality(
                         vocalists[index],
-                        convertStringToTonality(tonalities[index])
+                        tonalities[index]
                     )
                 )
             }

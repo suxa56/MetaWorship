@@ -10,6 +10,7 @@ import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
+import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
@@ -29,12 +30,16 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val _soloParts = MutableLiveData<List<SoloPart>>()
     val soloParts: LiveData<List<SoloPart>> get() = _soloParts
 
+    private val _vocalistTonality = MutableLiveData<List<VocalistTonality>>()
+    val vocalistTonality: LiveData<List<VocalistTonality>> get() = _vocalistTonality
+
     fun getSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val song = getSongUseCase.invoke(songId)
             _song.postValue(song)
             _chords.postValue(convertNumbersToNotes(song.defaultTonality, song.chords))
             _tonalityPosition.postValue(getTonalityPosition(convertTonalityToSymbol(song.defaultTonality)))
+            _vocalistTonality.postValue(song.vocalistTonality)
 
             transposeSolo(song.soloPart, song.defaultTonality)
         }
@@ -43,6 +48,22 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     fun changeCapo(position: Int) {
         _capo.value = position
         transpose()
+    }
+
+    fun fillTonalities(tonalities: Array<String>, vocalistTonality: List<VocalistTonality>): Array<String> {
+        val map = hashMapOf<String, String>()
+        vocalistTonality.forEach { item ->
+            if (map[item.tonality].isNullOrBlank()) {
+                map[item.tonality] = item.vocalist
+            } else {
+                map[item.tonality] += ", ${item.vocalist}"
+            }
+        }
+
+        map.forEach { (tonality, vocalist) ->
+            tonalities[tonalities.indexOf(tonality)] += " - $vocalist"
+        }
+        return tonalities
     }
 
     fun changeTonality(tonality: String) {

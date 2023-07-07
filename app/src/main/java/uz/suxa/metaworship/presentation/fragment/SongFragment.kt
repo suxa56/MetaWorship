@@ -24,7 +24,7 @@ class SongFragment : Fragment() {
     private var _binding: FragmentSongBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: SoloPartAdapter
+    private lateinit var soloAdapter: SoloPartAdapter
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -58,8 +58,8 @@ class SongFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val rvSongList = binding.rvSolo
-        adapter = SoloPartAdapter()
-        rvSongList.adapter = adapter
+        soloAdapter = SoloPartAdapter()
+        rvSongList.adapter = soloAdapter
     }
 
     private fun observeLiveData() {
@@ -109,7 +109,19 @@ class SongFragment : Fragment() {
         }
 
         viewModel.soloParts.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            soloAdapter.submitList(it)
+        }
+
+        viewModel.vocalistTonality.observe(viewLifecycleOwner) { list ->
+            val tonalities =
+                viewModel.fillTonalities(resources.getStringArray(R.array.tonalities), list)
+
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                tonalities
+            )
+            (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         }
     }
 
@@ -137,7 +149,7 @@ class SongFragment : Fragment() {
         (binding.songTonalityTil.editText as? AutoCompleteTextView)
             ?.setOnItemClickListener { _, view, _, _ ->
                 val tonality = (view as TextView).text
-                viewModel.changeTonality(tonality.toString())
+                viewModel.changeTonality(tonality[0].toString())
             }
 
         (binding.capoTil.editText as? AutoCompleteTextView)
@@ -147,17 +159,7 @@ class SongFragment : Fragment() {
     }
 
     private fun fillExposedMenus() {
-        fillTonalityField()
         fillCapoField()
-    }
-
-    private fun fillTonalityField() {
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            resources.getStringArray(R.array.tonalities)
-        )
-        (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
     private fun fillCapoField() {

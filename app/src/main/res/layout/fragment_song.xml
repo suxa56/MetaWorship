@@ -94,10 +94,9 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="172dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintStart_toEndOf="@id/songTonalityTil"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroupSongControl">
+                app:layout_constraintStart_toEndOf="@id/songTonalityTil"
+                app:layout_constraintTop_toTopOf="@+id/songTonalityTil">
 
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
@@ -108,9 +107,9 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/lyricsCard"
-                android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/songTonalityTil">
@@ -133,11 +132,11 @@
 
                     <TextView
                         android:id="@+id/lyrics"
+                        style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
-                        style="@style/TextAppearance.Material3.BodyLarge"
-                        app:layout_constraintTop_toBottomOf="@id/lyricsLabel"/>
+                        app:layout_constraintTop_toBottomOf="@id/lyricsLabel" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -171,27 +170,27 @@
 
                     <TextView
                         android:id="@+id/chords"
+                        style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
-                        style="@style/TextAppearance.Material3.BodyLarge"
-                        app:layout_constraintTop_toBottomOf="@id/chordsLabel"/>
+                        app:layout_constraintTop_toBottomOf="@id/chordsLabel" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.cardview.widget.CardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSolo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/chordsCard" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSolo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chordsCard" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
