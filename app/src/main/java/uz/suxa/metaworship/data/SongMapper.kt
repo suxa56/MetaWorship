@@ -52,7 +52,7 @@ class SongMapper {
 
     private fun mapVocalistTonalityToTonalityString(vocalistTonality: List<VocalistTonality>) =
         vocalistTonality.joinToString(SEPARATOR) {
-            it.tonality.toString()
+            it.tonality
         }
 
     private fun mapSoloPartToPartString(soloPart: List<SoloPart>) =
@@ -81,7 +81,7 @@ class SongMapper {
             vocalistTonalityList.add(
                 VocalistTonality(
                     vocalistArray[index],
-                    Tonality.valueOf(tonalityArray[index])
+                    tonalityArray[index]
                 )
             )
         }
