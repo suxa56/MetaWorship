@@ -1,6 +1,7 @@
 package uz.suxa.metaworship.data
 
 import uz.suxa.metaworship.data.db.SongDbModel
+import uz.suxa.metaworship.data.db.SongDbModelDto
 import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
@@ -36,9 +37,21 @@ class SongMapper {
         tempo = songDb.tempo,
     )
 
-    fun mapListDbModelToListEntity(list: List<SongDbModel>) = list.map {
-        mapDbModelToEntity(it)
+    fun mapListDbModelDtoToListEntity(list: List<SongDbModelDto>) = list.map {
+        mapDbModelDtoToEntityDto(it)
     }
+
+    private fun mapDbModelDtoToEntityDto(songDb: SongDbModelDto) = SongModel(
+        id = songDb.id,
+        title = songDb.title,
+        lyrics = songDb.lyrics,
+        chords = "",
+        defaultTonality = mapStringToTonality(songDb.defaultTonality),
+        modulations = listOf<String>(),
+        vocalistTonality = mapStringToVocalistTonality(songDb.vocalist, songDb.tonality),
+        soloPart = listOf<SoloPart>(),
+        tempo = -1,
+    )
 
     private fun mapModulationsToString(modulations: List<String>) =
         modulations.joinToString(SEPARATOR) {
