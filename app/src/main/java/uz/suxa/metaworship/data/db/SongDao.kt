@@ -9,8 +9,8 @@ import androidx.room.Query
 @Dao
 interface SongDao {
 
-    @Query("SELECT * FROM songs")
-    fun getSongs(): LiveData<List<SongDbModel>>
+    @Query("SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, defaultTonality, vocalist, tonality FROM songs")
+    fun getSongs(): LiveData<List<SongDbModelDto>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSong(songDBModel: SongDbModel)

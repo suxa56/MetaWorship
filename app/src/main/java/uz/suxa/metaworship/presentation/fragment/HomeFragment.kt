@@ -99,3 +99,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
+
+///D:/Projects/Kotlin/MetaWorship/app/src/main/java/uz/suxa/metaworship/presentation/fragment/HomeFragment.kt:92:36
+// Type mismatch: inferred type is List<SongModelDto>! but (Mutable)List<SongModel!>? was expected
+// Type mismatch: inferred type is List<SongModel>! but (Mutable)List<SongModelDto!>? was expected

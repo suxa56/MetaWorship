@@ -12,7 +12,7 @@ import uz.suxa.metaworship.databinding.SongCardBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 
-class SongAdapter(val context: Context) : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
+class SongAdapter(private val context: Context) : ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {
 
     var onSongItemClickListener: ((String) -> Unit)? = null
     var onSongItemDelete: ((String) -> Unit)? = null
