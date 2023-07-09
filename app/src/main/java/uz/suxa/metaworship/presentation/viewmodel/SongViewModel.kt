@@ -11,12 +11,14 @@ import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
+import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
 
     private val repo = SongRepoImpl(application)
     private val getSongUseCase = GetSongUseCase(repo)
+    private val deleteSongUseCase = DeleteSongUseCase(repo)
 
     private val _song = MutableLiveData<SongModel>()
     val song: LiveData<SongModel> get() = _song
@@ -70,6 +72,12 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         _tonalityPosition.value = getTonalityPosition(tonality)
         transposeSolo(_song.value?.soloPart!!, convertStringToTonality(tonality))
         transpose()
+    }
+
+    fun deleteSong(songId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteSongUseCase(songId)
+        }
     }
 
     private fun transpose() {

@@ -281,4 +281,8 @@ class NewSongFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        const val NEW_MODE = "new"
+    }
 }
