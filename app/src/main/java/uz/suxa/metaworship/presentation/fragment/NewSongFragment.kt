@@ -18,6 +18,7 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
+import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.presentation.viewmodel.AddSongViewModel
 
 
@@ -86,7 +87,14 @@ class NewSongFragment : Fragment() {
 
             binding.songChordsTil.editText?.setText(song.chords)
             binding.songTempoTil.editText?.setText(song.tempo)
-            // TODO(): Add vocalist tonality and solo fields
+            // TODO(): Add vocalist tonality
+
+            val soloParts = song.soloPart
+            soloParts?.forEach { soloPart ->
+                if (soloPart.part.isNotBlank()) {
+                    createSoloField(soloPart)
+                }
+            }
         }
 
         viewModel.titleError.observe(viewLifecycleOwner) {
@@ -194,10 +202,10 @@ class NewSongFragment : Fragment() {
             createVocalistField()
         }
         binding.addModulation.setOnClickListener {
-            createModulationField(EMPTY_STRING)
+            createModulationField(null)
         }
         binding.addSolo.setOnClickListener {
-            createSoloField()
+            createSoloField(null)
         }
 
     }
@@ -273,7 +281,7 @@ class NewSongFragment : Fragment() {
         }
     }
 
-    private fun createSoloField() {
+    private fun createSoloField(soloPart: SoloPart?) {
         val linearLayout = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -293,6 +301,9 @@ class NewSongFragment : Fragment() {
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.part)
         )
+        (partField.editText
+                as? MaterialAutoCompleteTextView)?.setText(soloPart?.part)
+        soloField.editText?.setText(soloPart?.solo)
 
         // Remove fields
         view.findViewById<ImageButton>(R.id.soloPartRemoveBtn).setOnClickListener {
@@ -314,6 +325,5 @@ class NewSongFragment : Fragment() {
 
     companion object {
         const val NEW_MODE = "new"
-        const val EMPTY_STRING = ""
     }
 }
