@@ -21,7 +21,6 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     private val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
 
-    // TODO(): create fun's convert chords to numbers and reverse
     // Replace all chords and notes in incoming string to numbers
     fun convertNotesToNumbers(tonality: Tonality, chords: String): String {
         if (tonality == Tonality.UNDEFINED || chords.isBlank()) {
