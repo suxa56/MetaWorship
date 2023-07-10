@@ -75,21 +75,17 @@ class NewSongFragment : Fragment() {
             binding.songTitleTil.editText?.setText(song.title)
             binding.songLyricsTil.editText?.setText(song.lyrics)
             (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
-                viewModel.convertTonalityToSymbol(song.defaultTonality),
-                false
+                song.defaultTonality
             )
 
-            val modulations = viewModel.convertStringToModulation(song.defaultTonality, song.modulations)
-            modulations.forEach { modulation ->
-                createModulationField(modulation)
+            val modulations = song.modulations
+            modulations?.forEach { modulation ->
+                if (modulation.isNotBlank())
+                    createModulationField(modulation)
             }
 
-            binding.songChordsTil.editText?.setText(
-                viewModel.convertNumbersToNotes(song.defaultTonality, song.chords)
-            )
-            if (song.tempo != -1) {
-                binding.songTempoTil.editText?.setText(song.tempo)
-            }
+            binding.songChordsTil.editText?.setText(song.chords)
+            binding.songTempoTil.editText?.setText(song.tempo)
             // TODO(): Add vocalist tonality and solo fields
         }
 

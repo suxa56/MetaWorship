@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
+import uz.suxa.metaworship.domain.dto.SongDto
 import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
@@ -21,8 +23,8 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
     private val addSongUseCase = AddSongUseCase(repo)
     private val getSongUseCase = GetSongUseCase(repo)
 
-    private val _song = MutableLiveData<SongModel>()
-    val song: LiveData<SongModel> get() = _song
+    private val _song = MutableLiveData<SongDto>()
+    val song: LiveData<SongDto> get() = _song
 
     private val _titleError = MutableLiveData<Boolean>()
     val titleError: LiveData<Boolean> get() = _titleError
@@ -119,7 +121,17 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
     fun getSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val song = getSongUseCase.invoke(songId)
-            _song.postValue(song)
+            val dto = SongDto(
+                title = song.title,
+                lyrics = song.lyrics,
+                chords = convertNumbersToNotes(song.defaultTonality, song.chords),
+                defaultTonality = convertTonalityToSymbol(song.defaultTonality),
+                modulations = convertStringToModulation(song.defaultTonality, song.modulations),
+                vocalistTonality = song.vocalistTonality,
+                soloPart = convertSoloParts(song.defaultTonality, song.soloPart),
+                tempo = if (song.tempo == UNDEFINED_TEMPO) "" else song.tempo.toString()
+            )
+            _song.postValue(dto)
         }
     }
 
@@ -217,6 +229,25 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
         } else {
             tempo.toInt()
         }
+    }
+
+    private fun convertSoloParts(tonality: Tonality, soloParts: List<SoloPart>): List<SoloPart> {
+        if (soloParts.isEmpty()) {
+            return listOf()
+        }
+        val parts = soloParts.map { it.part }.toTypedArray()
+        val solos = soloParts.map { convertNumbersToNotes(tonality, it.solo) }.toTypedArray()
+        val convertedSoloParts = mutableListOf<SoloPart>()
+
+        for ((index, _) in parts.withIndex()) {
+            convertedSoloParts.add(
+                SoloPart(
+                    parts[index],
+                    solos[index]
+                )
+            )
+        }
+        return convertedSoloParts
     }
 
     interface ShouldClose {
