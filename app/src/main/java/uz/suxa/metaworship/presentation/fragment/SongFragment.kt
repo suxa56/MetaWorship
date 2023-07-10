@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentSongBinding
 import uz.suxa.metaworship.domain.model.Tonality
@@ -53,6 +54,34 @@ class SongFragment : Fragment() {
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.toolbar.inflateMenu(R.menu.menu_song_list)
+
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.editSong -> {
+                    findNavController().navigate(
+                        SongFragmentDirections.actionSongFragmentToNewSongFragment(args.songId)
+                    )
+                    true
+                }
+                R.id.deleteSong -> {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.delete_song_confirmation_title)
+                        .setMessage(R.string.delete_song_confirmation_message)
+                        .setNegativeButton(R.string.action_cancel) {dialog, _ ->
+                            dialog.cancel()
+                        }
+                        .setPositiveButton(R.string.action_delete) {dialog, _ ->
+                            viewModel.deleteSong(args.songId)
+                            findNavController().popBackStack()
+                            dialog.cancel()
+                        }
+                        .show()
+                    true
+                }
+                else -> false
+            }
         }
     }
 

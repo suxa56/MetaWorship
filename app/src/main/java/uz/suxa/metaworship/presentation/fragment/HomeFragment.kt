@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
@@ -67,7 +68,7 @@ class HomeFragment : Fragment() {
     private fun setupFab() {
         binding.addNewSongFab.setOnClickListener {
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToNewSongFragment()
+                HomeFragmentDirections.actionHomeFragmentToNewSongFragment(NewSongFragment.NEW_MODE)
             )
         }
     }
@@ -81,8 +82,23 @@ class HomeFragment : Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
             )
         }
+        adapter.onSongItemEdit = {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
+            )
+        }
         adapter.onSongItemDelete = {
-            viewModel.deleteSong(it)
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.delete_song_confirmation_title)
+                .setMessage(R.string.delete_song_confirmation_message)
+                .setNegativeButton(R.string.action_cancel) {dialog, _ ->
+                    dialog.cancel()
+                }
+                .setPositiveButton(R.string.action_delete) {dialog, _ ->
+                    viewModel.deleteSong(it)
+                    dialog.cancel()
+                }
+                .show()
         }
     }
 
@@ -99,7 +115,3 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
-
-///D:/Projects/Kotlin/MetaWorship/app/src/main/java/uz/suxa/metaworship/presentation/fragment/HomeFragment.kt:92:36
-// Type mismatch: inferred type is List<SongModelDto>! but (Mutable)List<SongModel!>? was expected
-// Type mismatch: inferred type is List<SongModel>! but (Mutable)List<SongModelDto!>? was expected

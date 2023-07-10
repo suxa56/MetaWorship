@@ -16,6 +16,7 @@ class SongAdapter(private val context: Context) : ListAdapter<SongModel, SongVie
 
     var onSongItemClickListener: ((String) -> Unit)? = null
     var onSongItemDelete: ((String) -> Unit)? = null
+    var onSongItemEdit: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val binding = SongCardBinding.inflate(
@@ -64,6 +65,10 @@ class SongAdapter(private val context: Context) : ListAdapter<SongModel, SongVie
                     when(menuItem.itemId) {
                         R.id.deleteSong -> {
                             onSongItemDelete?.invoke(song.id)
+                            true
+                        }
+                        R.id.editSong -> {
+                            onSongItemEdit?.invoke(song.id)
                             true
                         }
                         else -> false

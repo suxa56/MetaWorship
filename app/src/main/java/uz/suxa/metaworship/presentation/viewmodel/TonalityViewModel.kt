@@ -21,7 +21,6 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     private val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
 
-    // TODO(): create fun's convert chords to numbers and reverse
     // Replace all chords and notes in incoming string to numbers
     fun convertNotesToNumbers(tonality: Tonality, chords: String): String {
         if (tonality == Tonality.UNDEFINED || chords.isBlank()) {
@@ -88,6 +87,37 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
         numberedNotes.forEach {
             it.forEach { (index, value) ->
                 converted = converted.replace(value, index)
+            }
+        }
+        return converted.split(",").toList()
+    }
+
+    fun convertStringToModulation(tonality: Tonality, modulation: List<String>): List<String> {
+        if (modulation.isEmpty() || tonality == Tonality.UNDEFINED) {
+            return listOf("")
+        }
+        val correctNotesList = arrayListOf<String>()
+        val fragment = arrayListOf<String>()
+        var startAnotherList = false
+        tonalitiesList.map { c ->
+            if (c == convertTonalityToSymbol(tonality) || startAnotherList) {
+                startAnotherList = true
+                correctNotesList.add(c)
+            } else {
+                fragment.add(c)
+            }
+        }
+        correctNotesList.addAll(fragment)
+
+        val numberedNotes = convertListToNumberedMap(correctNotesList)
+
+        var converted = modulation.joinToString(",") {
+            it
+        }
+
+        numberedNotes.forEach {
+            it.forEach { (index, value) ->
+                converted = converted.replace(index, value)
             }
         }
         return converted.split(",").toList()

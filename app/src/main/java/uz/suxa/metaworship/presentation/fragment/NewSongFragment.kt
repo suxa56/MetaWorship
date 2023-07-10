@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.core.view.children
@@ -13,14 +12,19 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
+import uz.suxa.metaworship.domain.model.SoloPart
+import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.presentation.viewmodel.AddSongViewModel
 
 
 class NewSongFragment : Fragment() {
+
+    private val args by navArgs<NewSongFragmentArgs>()
 
     private var _binding: FragmentNewSongBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +41,9 @@ class NewSongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewSongBinding.inflate(inflater, container, false)
+        if (args.songId != NEW_MODE) {
+            viewModel.getSong(args.songId)
+        }
         return binding.root
     }
 
@@ -60,10 +67,43 @@ class NewSongFragment : Fragment() {
             android.R.layout.simple_list_item_1,
             resources.getStringArray(R.array.tonalities)
         )
-        (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+        (binding.songTonalityTil.editText as? MaterialAutoCompleteTextView)?.setAdapter(adapter)
     }
 
     private fun observeLiveData() {
+        viewModel.song.observe(viewLifecycleOwner) { song ->
+            binding.toolbar.title = song.title
+            binding.songTitleTil.editText?.setText(song.title)
+            binding.songLyricsTil.editText?.setText(song.lyrics)
+            (binding.songTonalityTil.editText as? MaterialAutoCompleteTextView)?.setText(
+                song.defaultTonality,
+                false
+            )
+
+            val modulations = song.modulations
+            modulations?.forEach {
+                if (it.isNotBlank())
+                    createModulationField(it)
+            }
+
+            binding.songChordsTil.editText?.setText(song.chords)
+            binding.songTempoTil.editText?.setText(song.tempo)
+
+            val vocalistTonality = song.vocalistTonality
+            vocalistTonality?.forEach {
+                if (it.vocalist.isNotBlank()) {
+                    createVocalistField(it)
+                }
+            }
+
+            val soloParts = song.soloPart
+            soloParts?.forEach {
+                if (it.part.isNotBlank()) {
+                    createSoloField(it)
+                }
+            }
+        }
+
         viewModel.titleError.observe(viewLifecycleOwner) {
             if (it) binding.songTitleTil.error = getString(R.string.title_error)
         }
@@ -129,6 +169,7 @@ class NewSongFragment : Fragment() {
                 x.findViewById<TextInputLayout>(R.id.soloTil).editText?.text.toString()
             }.toList().toMutableList()
             viewModel.addSong(
+                id = args.songId,
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
                 chords = binding.songChordsTil.editText?.text.toString(),
@@ -165,18 +206,18 @@ class NewSongFragment : Fragment() {
 
         // add fields
         binding.addVocalist.setOnClickListener {
-            createVocalistField()
+            createVocalistField(null)
         }
         binding.addModulation.setOnClickListener {
-            createModulationField()
+            createModulationField(null)
         }
         binding.addSolo.setOnClickListener {
-            createSoloField()
+            createSoloField(null)
         }
 
     }
 
-    private fun createModulationField() {
+    private fun createModulationField(modulation: String?) {
         val linearLayout = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -195,6 +236,10 @@ class NewSongFragment : Fragment() {
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)
         )
+        if (!modulation.isNullOrBlank()) {
+            (modulationField.editText
+                    as? MaterialAutoCompleteTextView)?.setText(modulation, false)
+        }
         // Remove fields
         view.findViewById<ImageButton>(R.id.modulationRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
@@ -206,7 +251,7 @@ class NewSongFragment : Fragment() {
 
     }
 
-    private fun createVocalistField() {
+    private fun createVocalistField(vocalistTonality: VocalistTonality?) {
         val linearLayout = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -230,6 +275,10 @@ class NewSongFragment : Fragment() {
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)
         )
+        (vocalistField.editText
+                as? MaterialAutoCompleteTextView)?.setText(vocalistTonality?.vocalist, false)
+        (tonalityField.editText
+                as? MaterialAutoCompleteTextView)?.setText(vocalistTonality?.tonality, false)
         // Remove fields
         view.findViewById<ImageButton>(R.id.vocalistTonalityRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
@@ -243,7 +292,7 @@ class NewSongFragment : Fragment() {
         }
     }
 
-    private fun createSoloField() {
+    private fun createSoloField(soloPart: SoloPart?) {
         val linearLayout = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -263,6 +312,9 @@ class NewSongFragment : Fragment() {
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.part)
         )
+        (partField.editText
+                as? MaterialAutoCompleteTextView)?.setText(soloPart?.part, false)
+        soloField.editText?.setText(soloPart?.solo)
 
         // Remove fields
         view.findViewById<ImageButton>(R.id.soloPartRemoveBtn).setOnClickListener {
@@ -280,5 +332,9 @@ class NewSongFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val NEW_MODE = "new"
     }
 }
