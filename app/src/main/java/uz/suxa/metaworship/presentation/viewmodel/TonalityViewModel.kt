@@ -93,6 +93,37 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
         return converted.split(",").toList()
     }
 
+    fun convertStringToModulation(tonality: Tonality, modulation: List<String>): List<String> {
+        if (modulation.isEmpty() || tonality == Tonality.UNDEFINED) {
+            return listOf("")
+        }
+        val correctNotesList = arrayListOf<String>()
+        val fragment = arrayListOf<String>()
+        var startAnotherList = false
+        tonalitiesList.map { c ->
+            if (c == convertTonalityToSymbol(tonality) || startAnotherList) {
+                startAnotherList = true
+                correctNotesList.add(c)
+            } else {
+                fragment.add(c)
+            }
+        }
+        correctNotesList.addAll(fragment)
+
+        val numberedNotes = convertListToNumberedMap(correctNotesList)
+
+        var converted = modulation.joinToString(",") {
+            it
+        }
+
+        numberedNotes.forEach {
+            it.forEach { (index, value) ->
+                converted = converted.replace(index, value)
+            }
+        }
+        return converted.split(",").toList()
+    }
+
     // Build right notes queue with its number
     private fun getTonalityNotes(tonality: Tonality): List<String> {
         val notes = if (sharpTonalities.contains(tonality)) {

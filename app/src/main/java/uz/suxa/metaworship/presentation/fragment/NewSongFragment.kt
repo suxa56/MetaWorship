@@ -13,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import uz.suxa.metaworship.R
@@ -21,6 +22,8 @@ import uz.suxa.metaworship.presentation.viewmodel.AddSongViewModel
 
 
 class NewSongFragment : Fragment() {
+
+    private val args by navArgs<NewSongFragmentArgs>()
 
     private var _binding: FragmentNewSongBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +40,9 @@ class NewSongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewSongBinding.inflate(inflater, container, false)
+        if (args.songId != NEW_MODE) {
+            viewModel.getSong(args.songId)
+        }
         return binding.root
     }
 
@@ -64,6 +70,29 @@ class NewSongFragment : Fragment() {
     }
 
     private fun observeLiveData() {
+        viewModel.song.observe(viewLifecycleOwner) { song ->
+            binding.toolbar.title = song.title
+            binding.songTitleTil.editText?.setText(song.title)
+            binding.songLyricsTil.editText?.setText(song.lyrics)
+            (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
+                viewModel.convertTonalityToSymbol(song.defaultTonality),
+                false
+            )
+
+            val modulations = viewModel.convertStringToModulation(song.defaultTonality, song.modulations)
+            modulations.forEach { modulation ->
+                createModulationField(modulation)
+            }
+
+            binding.songChordsTil.editText?.setText(
+                viewModel.convertNumbersToNotes(song.defaultTonality, song.chords)
+            )
+            if (song.tempo != -1) {
+                binding.songTempoTil.editText?.setText(song.tempo)
+            }
+            // TODO(): Add vocalist tonality and solo fields
+        }
+
         viewModel.titleError.observe(viewLifecycleOwner) {
             if (it) binding.songTitleTil.error = getString(R.string.title_error)
         }
@@ -129,6 +158,7 @@ class NewSongFragment : Fragment() {
                 x.findViewById<TextInputLayout>(R.id.soloTil).editText?.text.toString()
             }.toList().toMutableList()
             viewModel.addSong(
+                id = args.songId,
                 title = binding.songTitleTil.editText?.text.toString(),
                 lyrics = binding.songLyricsTil.editText?.text.toString(),
                 chords = binding.songChordsTil.editText?.text.toString(),
@@ -168,7 +198,7 @@ class NewSongFragment : Fragment() {
             createVocalistField()
         }
         binding.addModulation.setOnClickListener {
-            createModulationField()
+            createModulationField(EMPTY_STRING)
         }
         binding.addSolo.setOnClickListener {
             createSoloField()
@@ -176,7 +206,7 @@ class NewSongFragment : Fragment() {
 
     }
 
-    private fun createModulationField() {
+    private fun createModulationField(modulation: String?) {
         val linearLayout = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -195,6 +225,10 @@ class NewSongFragment : Fragment() {
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)
         )
+        if (!modulation.isNullOrBlank()) {
+            (modulationField.editText
+                    as? MaterialAutoCompleteTextView)?.setText(modulation)
+        }
         // Remove fields
         view.findViewById<ImageButton>(R.id.modulationRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
@@ -284,5 +318,6 @@ class NewSongFragment : Fragment() {
 
     companion object {
         const val NEW_MODE = "new"
+        const val EMPTY_STRING = ""
     }
 }
