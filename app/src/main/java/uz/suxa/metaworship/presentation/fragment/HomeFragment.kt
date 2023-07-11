@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
@@ -53,10 +55,20 @@ class HomeFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.createVocalist -> {
-                    CreateVocalistBottomSheet().show(
+                    val bottomSheet = CreateVocalistBottomSheet()
+                    bottomSheet.show(
                         childFragmentManager,
                         CreateVocalistBottomSheet.TAG
                     )
+                    bottomSheet.onSave = {
+                        lifecycleScope.launch {
+                            delay(50)
+                            Snackbar.make(binding.root, R.string.vocalist_saved, Snackbar.LENGTH_SHORT)
+                                .setAction(R.string.snackbar_dismiss) {}
+                                .setAnchorView(binding.addNewSongFab)
+                                .show()
+                        }
+                    }
                     true
                 }
 
@@ -91,10 +103,10 @@ class HomeFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.delete_song_confirmation_title)
                 .setMessage(R.string.delete_song_confirmation_message)
-                .setNegativeButton(R.string.action_cancel) {dialog, _ ->
+                .setNegativeButton(R.string.action_cancel) { dialog, _ ->
                     dialog.cancel()
                 }
-                .setPositiveButton(R.string.action_delete) {dialog, _ ->
+                .setPositiveButton(R.string.action_delete) { dialog, _ ->
                     viewModel.deleteSong(it)
                     dialog.cancel()
                 }

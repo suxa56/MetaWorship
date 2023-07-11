@@ -32,6 +32,11 @@
     <string name="delete_song_confirmation_title">Удалить песню?</string>
     <string name="delete_song_confirmation_message">Песня будет удалена со всех устройств.</string>
 
+    <!-- Bottom sheet -->
+    <string name="vocalist_saved">Вокалист добавлен</string>
+
+    <!-- SnackBar -->
+    <string name="snackbar_dismiss">Закрыть</string>
 
     <!-- Accessibility (acs = accessibility) -->
     <string name="acs_new_song_fab">Перейти на экран для добавления новой песни</string>
