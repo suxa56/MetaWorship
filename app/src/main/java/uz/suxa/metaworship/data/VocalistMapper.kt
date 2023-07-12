@@ -9,7 +9,7 @@ class VocalistMapper {
         name = vocalist.name
     )
 
-    fun mapDbModelToEntity(vocalist: VocalistDbModel) = VocalistDbModel(
+    fun mapDbModelToEntity(vocalist: VocalistDbModel) = VocalistModel(
         id = vocalist.id,
         name = vocalist.name
     )

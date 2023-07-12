@@ -2,6 +2,7 @@ package uz.suxa.metaworship.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import uz.suxa.metaworship.data.db.AppDatabase
 import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.repo.VocalistRepo
@@ -14,7 +15,11 @@ class VocalistRepoImpl(
     private val mapper = VocalistMapper()
 
     override suspend fun getVocalistList(): LiveData<List<VocalistModel>> {
-        TODO("Not yet implemented")
+        return MediatorLiveData<List<VocalistModel>>().apply {
+            addSource(vocalistDao.getVocalists()) {
+                value = mapper.mapListDbModelToListEntity(it)
+            }
+        }
     }
 
     override suspend fun getVocalist(vocalistId: String): VocalistModel {

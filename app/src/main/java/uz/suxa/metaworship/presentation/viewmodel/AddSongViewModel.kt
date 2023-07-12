@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
+import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.SongDto
 import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
@@ -14,17 +15,21 @@ import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
+import uz.suxa.metaworship.domain.usecase.GetVocalistListUseCase
 import uz.suxa.metaworship.presentation.fragment.NewSongFragment
 import java.util.UUID
 
 class AddSongViewModel(application: Application) : TonalityViewModel(application) {
 
-    private val repo = SongRepoImpl(application)
-    private val addSongUseCase = AddSongUseCase(repo)
-    private val getSongUseCase = GetSongUseCase(repo)
+    private val songRepo = SongRepoImpl(application)
+    private val vocalistRepo = VocalistRepoImpl(application)
+    private val addSongUseCase = AddSongUseCase(songRepo)
+    private val getSongUseCase = GetSongUseCase(songRepo)
+    private val getVocalistListUseCase = GetVocalistListUseCase(vocalistRepo)
 
     private val _song = MutableLiveData<SongDto>()
     val song: LiveData<SongDto> get() = _song
+
 
     private val _titleError = MutableLiveData<Boolean>()
     val titleError: LiveData<Boolean> get() = _titleError
@@ -42,6 +47,9 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
     val soloPartError: LiveData<List<Int>> get() = _soloPartError
     private val _soloError = MutableLiveData<List<Int>>()
     val soloError: LiveData<List<Int>> get() = _soloError
+
+
+    suspend fun getVocalists() = getVocalistListUseCase()
 
     fun addSong(
         id: String?,
@@ -102,7 +110,7 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
 
             viewModelScope.launch {
                 val song = SongModel(
-                    id = modeId ?: UUID.randomUUID().toString(),
+                    id = modeId ?: ("voc_" + UUID.randomUUID().toString()),
                     title = title ?: "",
                     lyrics = lyrics ?: "",
                     chords = convertNotesToNumbers(tonality, chords ?: ""),

@@ -9,7 +9,7 @@ interface VocalistRepo {
 
     suspend fun getVocalist(vocalistId: String): VocalistModel
 
-    suspend fun addVocalist(vocalistModel: VocalistModel)
+    suspend fun addVocalist(vocalist: VocalistModel)
 
     suspend fun deleteVocalist(vocalistId: String)
 }

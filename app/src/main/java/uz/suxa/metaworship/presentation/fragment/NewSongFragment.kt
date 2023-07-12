@@ -11,10 +11,12 @@ import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 import uz.suxa.metaworship.domain.model.SoloPart
@@ -149,6 +151,11 @@ class NewSongFragment : Fragment() {
                     getString(R.string.solo_error)
             }
         }
+//        lifecycleScope.launch {
+//            viewModel.getVocalists().observe(viewLifecycleOwner) {list ->
+//                list.map { it.name }.toTypedArray()
+//            }
+//        }
     }
 
     private fun setListener() {
@@ -267,10 +274,17 @@ class NewSongFragment : Fragment() {
         // Fill fields
         val vocalistField = view.findViewById<TextInputLayout>(R.id.vocalist)
         val tonalityField = view.findViewById<TextInputLayout>(R.id.tonality)
-        (vocalistField.editText
-                as? MaterialAutoCompleteTextView)?.setSimpleItems(
-            resources.getStringArray(R.array.vocalists)
-        )
+
+
+        lifecycleScope.launch {
+            viewModel.getVocalists().observe(viewLifecycleOwner) {list ->
+                (vocalistField.editText
+                        as? MaterialAutoCompleteTextView)?.setSimpleItems(
+                    list.map { it.name }.toTypedArray()
+                )
+            }
+        }
+
         (tonalityField.editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)

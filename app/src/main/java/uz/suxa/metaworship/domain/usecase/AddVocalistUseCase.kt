@@ -6,5 +6,5 @@ import uz.suxa.metaworship.domain.repo.VocalistRepo
 class AddVocalistUseCase(
     private val repo: VocalistRepo
 ) {
-    suspend operator fun invoke(vocalistModel: VocalistModel) = repo.addVocalist(vocalistModel)
+    suspend operator fun invoke(vocalist: VocalistModel) = repo.addVocalist(vocalist)
 }
