@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -56,6 +57,7 @@ class HomeFragment : Fragment() {
             binding.drawerLayout.open()
         }
 
+        binding.navView.menu[0].subMenu?.findItem(R.id.drawerHome)?.isChecked = true
 
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {

@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="uz.suxa.metaworship.presentation.MainActivity">
+    <item
+        android:id="@+id/mainCategory"
+        android:title="@string/navigation">
+        <menu>
+            <item
+                android:id="@+id/drawerHome"
+                android:title="@string/main"
+                app:showAsAction="ifRoom"
+                android:icon="@drawable/ic_home"
+                android:checkable="true"/>
+            <item
+                android:id="@+id/drawerVocalists"
+                android:title="@string/vocalists"
+                app:showAsAction="ifRoom"
+                android:icon="@drawable/ic_person"
+                android:checkable="true"/>
+        </menu>
+    </item>
+
+</menu>

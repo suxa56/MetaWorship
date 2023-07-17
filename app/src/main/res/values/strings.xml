@@ -18,6 +18,7 @@
     <string name="add_modulation">Добавить модуляцию</string>
     <string name="modulation">Модуляция</string>
     <string name="vocalist">Вокалист</string>
+    <string name="vocalists">Вокалисты</string>
     <string name="part">Партия</string>
     <string name="tonality">Тональность</string>
     <string name="remove_fields">Убрать поля</string>
@@ -60,4 +61,6 @@
     <string name="card_tonality_temp">G</string>
     <string name="card_lyrics_temp">Пою я аллилуя всем что есть внутри меня, пою я аллилуя и прочь уйдут сомнения</string>
     <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
+    <string name="navigation">Навигация</string>
+    <string name="main">Главная</string>
 </resources>
