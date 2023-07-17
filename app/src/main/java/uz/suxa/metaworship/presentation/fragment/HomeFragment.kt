@@ -63,7 +63,11 @@ class HomeFragment : Fragment() {
                     bottomSheet.onSave = {
                         lifecycleScope.launch {
                             delay(50)
-                            Snackbar.make(binding.root, R.string.vocalist_saved, Snackbar.LENGTH_SHORT)
+                            Snackbar.make(
+                                binding.root,
+                                R.string.vocalist_saved,
+                                Snackbar.LENGTH_SHORT
+                            )
                                 .setAction(R.string.snackbar_dismiss) {}
                                 .setAnchorView(binding.addNewSongFab)
                                 .show()
@@ -115,10 +119,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.getSongs().observe(viewLifecycleOwner) { list ->
-                adapter.submitList(list)
-            }
+        viewModel.songs.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(list)
         }
     }
 
