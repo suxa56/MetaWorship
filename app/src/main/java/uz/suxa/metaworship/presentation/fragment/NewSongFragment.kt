@@ -11,12 +11,10 @@ import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentNewSongBinding
 import uz.suxa.metaworship.domain.model.SoloPart
@@ -276,13 +274,11 @@ class NewSongFragment : Fragment() {
         val tonalityField = view.findViewById<TextInputLayout>(R.id.tonality)
 
 
-        lifecycleScope.launch {
-            viewModel.getVocalists().observe(viewLifecycleOwner) {list ->
-                (vocalistField.editText
-                        as? MaterialAutoCompleteTextView)?.setSimpleItems(
-                    list.map { it.name }.toTypedArray()
-                )
-            }
+        viewModel.vocalists.observe(viewLifecycleOwner) {
+            (vocalistField.editText
+                    as? MaterialAutoCompleteTextView)?.setSimpleItems(
+                it
+            )
         }
 
         (tonalityField.editText

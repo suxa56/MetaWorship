@@ -2,7 +2,9 @@ package uz.suxa.metaworship.presentation.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,6 +14,7 @@ import uz.suxa.metaworship.domain.dto.SongDto
 import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
+import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.model.VocalistTonality
 import uz.suxa.metaworship.domain.usecase.AddSongUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongUseCase
@@ -48,8 +51,19 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
     private val _soloError = MutableLiveData<List<Int>>()
     val soloError: LiveData<List<Int>> get() = _soloError
 
+    private val _vocalists = MediatorLiveData<List<VocalistModel>>()
+    val vocalists: LiveData<Array<String>>
+        get() = _vocalists.map { list ->
+            list.map { it.name }.toTypedArray()
+        }
 
-    suspend fun getVocalists() = getVocalistListUseCase()
+    init {
+        viewModelScope.launch {
+            _vocalists.addSource(getVocalistListUseCase()) {
+                _vocalists.value = it
+            }
+        }
+    }
 
     fun addSong(
         id: String?,
@@ -110,7 +124,7 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
 
             viewModelScope.launch {
                 val song = SongModel(
-                    id = modeId ?: ("voc_" + UUID.randomUUID().toString()),
+                    id = modeId ?: ("song_" + UUID.randomUUID().toString()),
                     title = title ?: "",
                     lyrics = lyrics ?: "",
                     chords = convertNotesToNumbers(tonality, chords ?: ""),
