@@ -52,6 +52,11 @@ class HomeFragment : Fragment() {
         binding.toolbar.title = findNavController().currentDestination?.label
         binding.toolbar.inflateMenu(R.menu.menu_main)
 
+        binding.toolbar.setNavigationOnClickListener {
+            binding.drawerLayout.open()
+        }
+
+
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.createVocalist -> {
