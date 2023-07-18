@@ -29,6 +29,10 @@
     <string name="lyrics">Слова</string>
     <string name="solo">Соло</string>
 
+    <!-- Drawer Layout -->
+    <string name="navigation">Навигация</string>
+    <string name="main">Главная</string>
+
     <!-- Dialog -->
     <string name="delete_song_confirmation_title">Удалить песню?</string>
     <string name="delete_song_confirmation_message">Песня будет удалена со всех устройств.</string>
@@ -61,6 +65,6 @@
     <string name="card_tonality_temp">G</string>
     <string name="card_lyrics_temp">Пою я аллилуя всем что есть внутри меня, пою я аллилуя и прочь уйдут сомнения</string>
     <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
-    <string name="navigation">Навигация</string>
-    <string name="main">Главная</string>
+    <string name="card_vocalist_icon_temp">А</string>
+    <string name="card_vocalist_song_count_temp">100</string>
 </resources>
