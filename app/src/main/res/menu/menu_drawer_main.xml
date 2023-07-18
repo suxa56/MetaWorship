@@ -16,7 +16,7 @@
                 android:id="@+id/drawerVocalists"
                 android:title="@string/vocalists"
                 app:showAsAction="ifRoom"
-                android:icon="@drawable/ic_person"
+                android:icon="@drawable/ic_group"
                 android:checkable="true"/>
         </menu>
     </item>
