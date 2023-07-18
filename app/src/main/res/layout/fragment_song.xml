@@ -73,37 +73,47 @@
 
             </com.google.android.material.chip.ChipGroup>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/songTonalityTil"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="172dp"
+            <LinearLayout
+                android:id="@+id/tonalityLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@+id/chipGroupSongControl"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroupSongControl">
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/chipGroupSongControl"
+                android:baselineAligned="false">
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/songTonalityTil"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/song_tonality"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/capoTil"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="172dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/songTonalityTil"
-                app:layout_constraintTop_toTopOf="@+id/songTonalityTil">
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/song_tonality"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/capoTil"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/capo"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1">
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/capo"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/lyricsCard"
@@ -112,7 +122,7 @@
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/songTonalityTil">
+                app:layout_constraintTop_toBottomOf="@id/tonalityLayout">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
