@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
 import uz.suxa.metaworship.presentation.CreateVocalistBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
+import uz.suxa.metaworship.presentation.adapter.vocalist.VocalistAdapter
 import uz.suxa.metaworship.presentation.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -24,7 +26,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: SongAdapter
+    private lateinit var songAdapter: SongAdapter
+    private lateinit var vocalistAdapter: VocalistAdapter
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(
             this,
@@ -49,6 +52,12 @@ class HomeFragment : Fragment() {
         observeViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.navView.menu[0].subMenu?.children?.forEach { it.isChecked = false }
+        binding.navView.menu[0].subMenu?.findItem(R.id.drawerHome)?.isChecked = true
+    }
+
     private fun setupToolbar() {
         binding.toolbar.title = findNavController().currentDestination?.label
         binding.toolbar.inflateMenu(R.menu.menu_main)
@@ -57,15 +66,27 @@ class HomeFragment : Fragment() {
             binding.drawerLayout.open()
         }
 
-        binding.navView.menu[0].subMenu?.findItem(R.id.drawerHome)?.isChecked = true
 
         binding.navView.setNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.drawerVocalists -> {
-                    findNavController().navigate(R.id.action_HomeFragment_to_VocalistsFragment)
+            binding.navView.menu[0].subMenu?.findItem(R.id.drawerHome)?.isChecked = false
+            when (it.itemId) {
+                R.id.drawerHome -> {
+                    binding.rvSongList.adapter = songAdapter
+                    it.isChecked = true
+                    binding.toolbar.title = findNavController().currentDestination?.label
                     binding.drawerLayout.close()
                     true
                 }
+
+                R.id.drawerVocalists -> {
+                    viewModel.getVocalists()
+                    binding.rvSongList.adapter = vocalistAdapter
+                    it.isChecked = true
+                    binding.toolbar.title = getString(R.string.vocalists)
+                    binding.drawerLayout.close()
+                    true
+                }
+
                 else -> false
             }
         }
@@ -80,7 +101,7 @@ class HomeFragment : Fragment() {
                     )
                     bottomSheet.onSave = {
                         lifecycleScope.launch {
-                            delay(50)
+                            delay(500)
                             Snackbar.make(
                                 binding.root,
                                 R.string.vocalist_saved,
@@ -109,19 +130,20 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val rvSongList = binding.rvSongList
-        adapter = SongAdapter(requireContext())
-        rvSongList.adapter = adapter
-        adapter.onSongItemClickListener = {
+        songAdapter = SongAdapter(requireContext())
+        vocalistAdapter = VocalistAdapter(requireContext())
+        rvSongList.adapter = songAdapter
+        songAdapter.onSongItemClickListener = {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
             )
         }
-        adapter.onSongItemEdit = {
+        songAdapter.onSongItemEdit = {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
             )
         }
-        adapter.onSongItemDelete = {
+        songAdapter.onSongItemDelete = {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.delete_song_confirmation_title)
                 .setMessage(R.string.delete_song_confirmation_message)
@@ -137,8 +159,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.songs.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list)
+        viewModel.songs.observe(viewLifecycleOwner) {
+            songAdapter.submitList(it)
+        }
+
+        viewModel.vocalistsDto.observe(viewLifecycleOwner) {
+            vocalistAdapter.submitList(it)
         }
     }
 

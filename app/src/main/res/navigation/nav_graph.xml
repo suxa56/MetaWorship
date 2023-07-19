@@ -14,24 +14,18 @@
         <action
             android:id="@+id/action_HomeFragment_to_NewSongFragment"
             app:destination="@id/NewSongFragment"
-            app:popUpTo="@id/HomeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/HomeFragment" />
         <action
             android:id="@+id/action_HomeFragment_to_SongFragment"
             app:destination="@id/SongFragment"
-            app:popUpTo="@id/HomeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_HomeFragment_to_VocalistsFragment"
-            app:destination="@id/VocalistsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/HomeFragment" />
@@ -58,18 +52,9 @@
             app:destination="@id/NewSongFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/HomeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/VocalistsFragment"
-        android:name="uz.suxa.metaworship.presentation.fragment.VocalistsFragment"
-        android:label="@string/vocalists" >
-        <action
-            android:id="@+id/action_VocalistsFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 </navigation>
