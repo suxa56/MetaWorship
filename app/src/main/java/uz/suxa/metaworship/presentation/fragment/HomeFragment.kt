@@ -59,11 +59,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        binding.toolbar.title = findNavController().currentDestination?.label
         binding.toolbar.inflateMenu(R.menu.menu_main)
 
         binding.toolbar.setNavigationOnClickListener {
             binding.drawerLayout.open()
+        }
+
+        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
+            binding.toolbar.text = binding.searchView.text
+            binding.searchView.hide()
+            return@setOnEditorActionListener false
         }
 
 
@@ -74,7 +79,7 @@ class HomeFragment : Fragment() {
                     viewModel.getAllSongs()
                     binding.rvSongList.adapter = songAdapter
                     it.isChecked = true
-                    binding.toolbar.title = findNavController().currentDestination?.label
+                    binding.toolbar.hint = getString(R.string.search_hint)
                     binding.drawerLayout.close()
                     true
                 }
@@ -83,7 +88,7 @@ class HomeFragment : Fragment() {
                     viewModel.getVocalists()
                     binding.rvSongList.adapter = vocalistAdapter
                     it.isChecked = true
-                    binding.toolbar.title = getString(R.string.vocalists)
+                    binding.toolbar.hint = getString(R.string.vocalists)
                     binding.drawerLayout.close()
                     true
                 }
@@ -159,7 +164,7 @@ class HomeFragment : Fragment() {
         }
 
         vocalistAdapter.onItemClick = {
-            binding.toolbar.title = it
+            binding.toolbar.hint = it
             viewModel.getSongsByVocalist(it)
             rvSongList.adapter = songAdapter
         }

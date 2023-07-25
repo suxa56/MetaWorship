@@ -33,6 +33,9 @@
     <string name="navigation">Навигация</string>
     <string name="main">Главная</string>
 
+    <!-- Search -->
+    <string name="search_hint">Поиск песен</string>
+
     <!-- Dialog -->
     <string name="delete_song_confirmation_title">Удалить песню?</string>
     <string name="delete_song_confirmation_message">Песня будет удалена со всех устройств.</string>
