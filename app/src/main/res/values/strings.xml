@@ -35,6 +35,7 @@
 
     <!-- Search -->
     <string name="search_hint">Поиск песен</string>
+    <string name="search_clear">Очистить поиск</string>
 
     <!-- Dialog -->
     <string name="delete_song_confirmation_title">Удалить песню?</string>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.core.view.get
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -60,6 +61,7 @@ class HomeFragment : Fragment() {
 
     private fun setupToolbar() {
         binding.searchBar.inflateMenu(R.menu.menu_main)
+        binding.searchBar.menu[0].isVisible = false
 
         binding.searchBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
@@ -69,6 +71,13 @@ class HomeFragment : Fragment() {
             binding.searchBar.text = binding.searchView.text
             binding.searchView.hide()
             return@setOnEditorActionListener false
+        }
+
+        binding.searchBar.textView.addTextChangedListener {
+            viewModel.getSongsByQuery(it.toString())
+
+            binding.searchBar.menu[0].isVisible = it.toString().isNotEmpty()
+
         }
 
 
@@ -118,6 +127,11 @@ class HomeFragment : Fragment() {
                                 .show()
                         }
                     }
+                    true
+                }
+
+                R.id.clearText -> {
+                    binding.searchBar.text = null
                     true
                 }
 

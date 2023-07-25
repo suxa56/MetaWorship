@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="uz.suxa.metaworship.presentation.MainActivity">
     <item
+        android:id="@+id/clearText"
+        android:icon="@drawable/ic_close"
+        android:title="@string/search_clear"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/createVocalist"
         android:icon="@drawable/ic_add_person"
         android:title="@string/menu_add_vocalist"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>
