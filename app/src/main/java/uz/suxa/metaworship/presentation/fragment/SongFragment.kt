@@ -1,6 +1,7 @@
 package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -177,8 +178,14 @@ class SongFragment : Fragment() {
 
         (binding.songTonalityTil.editText as? AutoCompleteTextView)
             ?.setOnItemClickListener { _, view, _, _ ->
-                val tonality = (view as TextView).text
-                viewModel.changeTonality(tonality[0].toString())
+                val tilText = (view as TextView).text
+                Log.d("loool", tilText.toString())
+                val tonality: String = if (tilText.length == 1) {
+                    tilText[0].toString()
+                } else {
+                    tilText[0].toString() + tilText[1].toString()
+                }
+                viewModel.changeTonality(tonality)
             }
 
         (binding.capoTil.editText as? AutoCompleteTextView)
