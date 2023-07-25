@@ -20,4 +20,7 @@ interface SongDao {
 
     @Query("SELECT * FROM songs WHERE id=:songId LIMIT 1")
     fun getSong(songId: String): SongDbModel
+
+    @Query("SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, defaultTonality, vocalist, tonality FROM songs WHERE vocalist LIKE '%'||:vocalist||'%'")
+    fun getSongsByVocalist(vocalist: String): LiveData<List<SongDbModelDto>>
 }

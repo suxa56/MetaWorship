@@ -27,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/material_dynamic_neutral99"
+        android:contentDescription="@string/remove_fields"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close"
-        android:contentDescription="@string/remove_fields"/>
+        app:srcCompat="@drawable/ic_close" />
 </androidx.constraintlayout.widget.ConstraintLayout>

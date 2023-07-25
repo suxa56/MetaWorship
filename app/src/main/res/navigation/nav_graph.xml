@@ -14,19 +14,21 @@
         <action
             android:id="@+id/action_HomeFragment_to_NewSongFragment"
             app:destination="@id/NewSongFragment"
-            app:popUpTo="@id/HomeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/HomeFragment" />
         <action
-            android:id="@+id/action_HomeFragment_to_songFragment"
-            app:destination="@id/songFragment"
-            app:popUpTo="@id/HomeFragment"
+            android:id="@+id/action_HomeFragment_to_SongFragment"
+            app:destination="@id/SongFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/HomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/NewSongFragment"
@@ -38,7 +40,7 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/songFragment"
+        android:id="@+id/SongFragment"
         android:name="uz.suxa.metaworship.presentation.fragment.SongFragment"
         android:label="@string/song_fragment_label"
         tools:layout="@layout/fragment_song">
@@ -46,10 +48,11 @@
             android:name="songId"
             app:argType="string" />
         <action
-            android:id="@+id/action_songFragment_to_NewSongFragment"
+            android:id="@+id/action_SongFragment_to_NewSongFragment"
             app:destination="@id/NewSongFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/HomeFragment" />

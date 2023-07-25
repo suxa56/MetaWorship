@@ -149,6 +149,11 @@ class NewSongFragment : Fragment() {
                     getString(R.string.solo_error)
             }
         }
+//        lifecycleScope.launch {
+//            viewModel.getVocalists().observe(viewLifecycleOwner) {list ->
+//                list.map { it.name }.toTypedArray()
+//            }
+//        }
     }
 
     private fun setListener() {
@@ -267,10 +272,15 @@ class NewSongFragment : Fragment() {
         // Fill fields
         val vocalistField = view.findViewById<TextInputLayout>(R.id.vocalist)
         val tonalityField = view.findViewById<TextInputLayout>(R.id.tonality)
-        (vocalistField.editText
-                as? MaterialAutoCompleteTextView)?.setSimpleItems(
-            resources.getStringArray(R.array.vocalists)
-        )
+
+
+        viewModel.vocalists.observe(viewLifecycleOwner) {
+            (vocalistField.editText
+                    as? MaterialAutoCompleteTextView)?.setSimpleItems(
+                it
+            )
+        }
+
         (tonalityField.editText
                 as? MaterialAutoCompleteTextView)?.setSimpleItems(
             resources.getStringArray(R.array.tonalities)
