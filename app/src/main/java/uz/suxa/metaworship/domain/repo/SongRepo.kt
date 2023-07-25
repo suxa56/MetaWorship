@@ -9,6 +9,8 @@ interface SongRepo {
 
     suspend fun getSong(songId: String): SongModel
 
+    suspend fun getSongListByVocalist(vocalist: String): LiveData<List<SongModel>>
+
     suspend fun addSong(song: SongModel)
 
     suspend fun deleteSong(songId: String)

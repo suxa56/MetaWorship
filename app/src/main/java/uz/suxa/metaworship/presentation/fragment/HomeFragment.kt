@@ -71,6 +71,7 @@ class HomeFragment : Fragment() {
             binding.navView.menu[0].subMenu?.findItem(R.id.drawerHome)?.isChecked = false
             when (it.itemId) {
                 R.id.drawerHome -> {
+                    viewModel.getAllSongs()
                     binding.rvSongList.adapter = songAdapter
                     it.isChecked = true
                     binding.toolbar.title = findNavController().currentDestination?.label
@@ -131,7 +132,7 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
         val rvSongList = binding.rvSongList
         songAdapter = SongAdapter(requireContext())
-        vocalistAdapter = VocalistAdapter(requireContext())
+        vocalistAdapter = VocalistAdapter()
         rvSongList.adapter = songAdapter
         songAdapter.onSongItemClickListener = {
             findNavController().navigate(
@@ -155,6 +156,12 @@ class HomeFragment : Fragment() {
                     dialog.cancel()
                 }
                 .show()
+        }
+
+        vocalistAdapter.onItemClick = {
+            binding.toolbar.title = it
+            viewModel.getSongsByVocalist(it)
+            rvSongList.adapter = songAdapter
         }
     }
 

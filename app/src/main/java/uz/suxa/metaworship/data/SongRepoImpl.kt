@@ -26,6 +26,14 @@ class SongRepoImpl(
         return mapper.mapDbModelToEntity(songDao.getSong(songId))
     }
 
+    override suspend fun getSongListByVocalist(vocalist: String): LiveData<List<SongModel>> {
+        return MediatorLiveData<List<SongModel>>().apply {
+            addSource(songDao.getSongsByVocalist(vocalist)) {
+                value = mapper.mapListDbModelDtoToListEntity(it)
+            }
+        }
+    }
+
     override suspend fun addSong(song: SongModel) {
         songDao.addSong(mapper.mapEntityToDbModel(song))
     }

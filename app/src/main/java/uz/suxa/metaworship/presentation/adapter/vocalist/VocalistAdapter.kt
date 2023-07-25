@@ -1,18 +1,17 @@
 package uz.suxa.metaworship.presentation.adapter.vocalist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import uz.suxa.metaworship.databinding.CardVocalistBinding
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 
-class VocalistAdapter(private val context: Context) :
+class VocalistAdapter :
     ListAdapter<VocalistSongDto, VocalistViewHolder>(
         VocalistDiffUtil
     ) {
 
-    var onItemClickListener: ((String) -> Unit)? = null
+    var onItemClick: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VocalistViewHolder {
         val binding = CardVocalistBinding.inflate(
@@ -29,6 +28,9 @@ class VocalistAdapter(private val context: Context) :
             vocalistIcon.text = item.name[0].toString()
             vocalistTitle.text = item.name
             vocalistSongCount.text = item.songsCount.toString()
+            root.setOnClickListener {
+                onItemClick?.invoke(item.name)
+            }
         }
     }
 }
