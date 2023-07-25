@@ -59,14 +59,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        binding.toolbar.inflateMenu(R.menu.menu_main)
+        binding.searchBar.inflateMenu(R.menu.menu_main)
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.searchBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
         }
 
         binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
-            binding.toolbar.text = binding.searchView.text
+            binding.searchBar.text = binding.searchView.text
             binding.searchView.hide()
             return@setOnEditorActionListener false
         }
@@ -77,18 +77,18 @@ class HomeFragment : Fragment() {
             when (it.itemId) {
                 R.id.drawerHome -> {
                     viewModel.getAllSongs()
-                    binding.rvSongList.adapter = songAdapter
+                    binding.homeRV.adapter = songAdapter
                     it.isChecked = true
-                    binding.toolbar.hint = getString(R.string.search_hint)
+                    binding.searchBar.hint = getString(R.string.search_hint)
                     binding.drawerLayout.close()
                     true
                 }
 
                 R.id.drawerVocalists -> {
                     viewModel.getVocalists()
-                    binding.rvSongList.adapter = vocalistAdapter
+                    binding.homeRV.adapter = vocalistAdapter
                     it.isChecked = true
-                    binding.toolbar.hint = getString(R.string.vocalists)
+                    binding.searchBar.hint = getString(R.string.vocalists)
                     binding.drawerLayout.close()
                     true
                 }
@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.toolbar.setOnMenuItemClickListener {
+        binding.searchBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.createVocalist -> {
                     val bottomSheet = CreateVocalistBottomSheet()
@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val rvSongList = binding.rvSongList
+        val rvSongList = binding.homeRV
         songAdapter = SongAdapter(requireContext())
         vocalistAdapter = VocalistAdapter()
         rvSongList.adapter = songAdapter
@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
         }
 
         vocalistAdapter.onItemClick = {
-            binding.toolbar.hint = it
+            binding.searchBar.hint = it
             viewModel.getSongsByVocalist(it)
             rvSongList.adapter = songAdapter
         }
