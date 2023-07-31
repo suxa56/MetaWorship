@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.VocalistModel
-import uz.suxa.metaworship.domain.usecase.AddVocalistUseCase
-import uz.suxa.metaworship.domain.usecase.GetVocalistWithSongCountUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistWithSongCountUseCase
 import java.util.UUID
 
 class VocalistViewModel(application: Application) : AndroidViewModel(application) {

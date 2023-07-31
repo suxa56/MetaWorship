@@ -65,6 +65,7 @@
     <string name="action_cancel">Закрыть</string>
     <string name="action_copy">Скопировать</string>
     <string name="action_copy_in">Скопировать в …</string>
+    <string name="action_add_to_composition">Добавить в …</string>
 
     <!-- Tonalities -->
     <string name="tonality_c">C</string>

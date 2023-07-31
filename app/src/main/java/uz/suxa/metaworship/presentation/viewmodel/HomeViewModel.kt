@@ -11,11 +11,11 @@ import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongListByQueryUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongListByVocalistUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongListUseCase
-import uz.suxa.metaworship.domain.usecase.GetVocalistWithSongCountUseCase
+import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongListByQueryUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongListByVocalistUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistWithSongCountUseCase
 
 class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
