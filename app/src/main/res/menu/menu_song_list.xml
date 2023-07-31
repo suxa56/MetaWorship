@@ -6,8 +6,15 @@
         android:title="@string/action_edit"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/copyChords"
+        android:title="@string/action_copy"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/copyChordsIn"
+        android:title="@string/action_copy_in"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/deleteSong"
-        android:icon="@drawable/ic_delete"
         android:title="@string/action_delete"
         app:showAsAction="never" />
 

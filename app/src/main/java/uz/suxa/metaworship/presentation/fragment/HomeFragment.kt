@@ -1,9 +1,12 @@
 package uz.suxa.metaworship.presentation.fragment
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.widget.addTextChangedListener
@@ -17,6 +20,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
+import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.presentation.CreateVocalistBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.adapter.vocalist.VocalistAdapter
@@ -172,6 +177,12 @@ class HomeFragment : Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
             )
         }
+        songAdapter.onSongItemCopy = {
+            copyChords(it, it.defaultTonality)
+        }
+        songAdapter.onSongItemCopyInTonality = { song, tonality ->
+            copyChords(song, tonality)
+        }
         songAdapter.onSongItemDelete = {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.delete_song_confirmation_title)
@@ -203,6 +214,13 @@ class HomeFragment : Fragment() {
         viewModel.vocalistsDto.observe(viewLifecycleOwner) {
             vocalistAdapter.submitList(it)
         }
+    }
+
+    private fun copyChords(song: SongModel, tonality: Tonality) {
+        val clipboard =
+            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySongChords(song, tonality))
+        clipboard.setPrimaryClip(clipData)
     }
 
     override fun onDestroyView() {

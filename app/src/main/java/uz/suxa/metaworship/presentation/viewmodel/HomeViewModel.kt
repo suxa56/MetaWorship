@@ -1,7 +1,6 @@
 package uz.suxa.metaworship.presentation.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,13 +10,14 @@ import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongListByQueryUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongListByVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongListUseCase
 import uz.suxa.metaworship.domain.usecase.GetVocalistWithSongCountUseCase
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private val songRepo = SongRepoImpl(application)
     private val getSongList = GetSongListUseCase(songRepo)
@@ -43,6 +43,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 _songs.value = it
             }
         }
+    }
+
+    fun copySongChords(song: SongModel, tonality: Tonality): CharSequence {
+        var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
+        text += convertNumbersToNotes(tonality, song.chords)
+        return text
     }
 
     fun getVocalists() {

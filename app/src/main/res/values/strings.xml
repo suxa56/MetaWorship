@@ -63,6 +63,22 @@
     <string name="action_delete">Удалить</string>
     <string name="action_edit">Изменить</string>
     <string name="action_cancel">Закрыть</string>
+    <string name="action_copy">Скопировать</string>
+    <string name="action_copy_in">Скопировать в …</string>
+
+    <!-- Tonalities -->
+    <string name="tonality_c">C</string>
+    <string name="tonality_c_sharp">C#</string>
+    <string name="tonality_d">D</string>
+    <string name="tonality_e_flat">Eb</string>
+    <string name="tonality_e">E</string>
+    <string name="tonality_f">F</string>
+    <string name="tonality_f_sharp">F#</string>
+    <string name="tonality_g">G</string>
+    <string name="tonality_a_flat">Ab</string>
+    <string name="tonality_a">A</string>
+    <string name="tonality_h_flat">Hb</string>
+    <string name="tonality_h">H</string>
 
     <!-- Temp text -->
     <string name="card_title_temp">Я буду петь среди шторма и волн</string>

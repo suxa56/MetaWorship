@@ -5,6 +5,7 @@ data class SongDbModelDto(
     val title: String,
     val lyrics: String,
     val defaultTonality: String,
+    val chords: String,
     val vocalist: String,
     val tonality: String,
 )
