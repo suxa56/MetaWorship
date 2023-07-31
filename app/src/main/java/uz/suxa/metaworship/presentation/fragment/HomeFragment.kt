@@ -1,9 +1,12 @@
 package uz.suxa.metaworship.presentation.fragment
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.widget.addTextChangedListener
@@ -171,6 +174,11 @@ class HomeFragment : Fragment() {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
             )
+        }
+        songAdapter.onSongItemCopy = {
+            val clipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+            val clipData = ClipData.newPlainText(it.title, viewModel.copySongChords(it, it.defaultTonality))
+            clipboard.setPrimaryClip(clipData)
         }
         songAdapter.onSongItemDelete = {
             MaterialAlertDialogBuilder(requireContext())

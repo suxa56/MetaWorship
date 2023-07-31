@@ -63,6 +63,8 @@
     <string name="action_delete">Удалить</string>
     <string name="action_edit">Изменить</string>
     <string name="action_cancel">Закрыть</string>
+    <string name="action_copy">Скопировать</string>
+    <string name="action_copy_in">Скопировать в …</string>
 
     <!-- Temp text -->
     <string name="card_title_temp">Я буду петь среди шторма и волн</string>

@@ -11,7 +11,7 @@ interface SongDao {
 
     @Query(
         "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
-                "defaultTonality, vocalist, tonality " +
+                "defaultTonality, chords, vocalist, tonality " +
                 "FROM songs"
     )
     fun getSongs(): LiveData<List<SongDbModelDto>>
@@ -27,7 +27,7 @@ interface SongDao {
 
     @Query(
         "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
-                "defaultTonality, vocalist, tonality " +
+                "defaultTonality, chords, vocalist, tonality " +
                 "FROM songs " +
                 "WHERE vocalist LIKE '%'||:vocalist||'%'"
     )
@@ -35,7 +35,7 @@ interface SongDao {
 
     @Query(
         "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
-                "defaultTonality, vocalist, tonality " +
+                "defaultTonality, chords, vocalist, tonality " +
                 "FROM songs " +
                 "WHERE title LIKE '%'||:query||'%' OR lyrics LIKE '%'||:query||'%' "
     )
