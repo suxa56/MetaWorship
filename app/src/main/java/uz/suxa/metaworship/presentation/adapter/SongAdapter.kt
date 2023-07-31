@@ -18,6 +18,7 @@ class SongAdapter(private val context: Context) :
     var onSongItemClickListener: ((String) -> Unit)? = null
     var onSongItemEdit: ((String) -> Unit)? = null
     var onSongItemCopy: ((SongModel) -> Unit)? = null
+    var onSongItemCopyInTonality: ((SongModel, Tonality) -> Unit)? = null
     var onSongItemDelete: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
@@ -63,6 +64,7 @@ class SongAdapter(private val context: Context) :
             root.setOnLongClickListener {
                 val popup = PopupMenu(context, root)
                 popup.menuInflater.inflate(R.menu.menu_song_list, popup.menu)
+                popup.show()
                 popup.setOnMenuItemClickListener { menuItem: MenuItem ->
                     when (menuItem.itemId) {
                         R.id.editSong -> {
@@ -75,6 +77,78 @@ class SongAdapter(private val context: Context) :
                             true
                         }
 
+                        R.id.copyChordsIn -> {
+                            val popip = PopupMenu(context, root)
+                            popip.menuInflater.inflate(R.menu.menu_tonalities, popip.menu)
+                            popip.show()
+                            popip.setOnMenuItemClickListener {
+                                when (it.itemId) {
+                                    R.id.c -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.C)
+                                        true
+                                    }
+
+                                    R.id.cSharp -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.C_SHARP)
+                                        true
+                                    }
+
+                                    R.id.d -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.D)
+                                        true
+                                    }
+
+                                    R.id.eFlat -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.E_FLAT)
+                                        true
+                                    }
+
+                                    R.id.e -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.E)
+                                        true
+                                    }
+
+
+                                    R.id.f -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.F)
+                                        true
+                                    }
+
+                                    R.id.fSharp -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.F_SHARP)
+                                        true
+                                    }
+
+                                    R.id.g -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.G)
+                                        true
+                                    }
+
+                                    R.id.aFlat -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.A_FLAT)
+                                        true
+                                    }
+
+                                    R.id.a -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.A)
+                                        true
+                                    }
+
+                                    R.id.hFlat -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.H_FLAT)
+                                        true
+                                    }
+
+                                    R.id.h -> {
+                                        onSongItemCopyInTonality?.invoke(song, Tonality.H)
+                                        true
+                                    }
+
+                                    else -> false
+                                }
+                            }
+                            true
+                        }
 
                         R.id.deleteSong -> {
                             onSongItemDelete?.invoke(song.id)
@@ -84,7 +158,6 @@ class SongAdapter(private val context: Context) :
                         else -> false
                     }
                 }
-                popup.show()
 
                 true
             }

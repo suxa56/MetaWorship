@@ -20,6 +20,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
+import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.presentation.CreateVocalistBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.adapter.vocalist.VocalistAdapter
@@ -176,9 +178,10 @@ class HomeFragment : Fragment() {
             )
         }
         songAdapter.onSongItemCopy = {
-            val clipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
-            val clipData = ClipData.newPlainText(it.title, viewModel.copySongChords(it, it.defaultTonality))
-            clipboard.setPrimaryClip(clipData)
+            copyChords(it, it.defaultTonality)
+        }
+        songAdapter.onSongItemCopyInTonality = { song, tonality ->
+            copyChords(song, tonality)
         }
         songAdapter.onSongItemDelete = {
             MaterialAlertDialogBuilder(requireContext())
@@ -211,6 +214,13 @@ class HomeFragment : Fragment() {
         viewModel.vocalistsDto.observe(viewLifecycleOwner) {
             vocalistAdapter.submitList(it)
         }
+    }
+
+    private fun copyChords(song: SongModel, tonality: Tonality) {
+        val clipboard =
+            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySongChords(song, tonality))
+        clipboard.setPrimaryClip(clipData)
     }
 
     override fun onDestroyView() {

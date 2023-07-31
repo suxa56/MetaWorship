@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/c"
+        android:title="@string/tonality_c"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/cSharp"
+        android:title="@string/tonality_c_sharp"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/d"
+        android:title="@string/tonality_d"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/eFlat"
+        android:title="@string/tonality_e_flat"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/e"
+        android:title="@string/tonality_e"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/f"
+        android:title="@string/tonality_f"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/fSharp"
+        android:title="@string/tonality_f_sharp"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/g"
+        android:title="@string/tonality_g"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/aFlat"
+        android:title="@string/tonality_a_flat"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/a"
+        android:title="@string/tonality_a"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/hFlat"
+        android:title="@string/tonality_h_flat"
+        app:showAsAction="never"/>
+<item
+        android:id="@+id/h"
+        android:title="@string/tonality_h"
+        app:showAsAction="never"/>
+
+</menu>
