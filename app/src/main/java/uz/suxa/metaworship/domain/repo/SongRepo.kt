@@ -11,6 +11,8 @@ interface SongRepo {
 
     suspend fun getSongListByVocalist(vocalist: String): LiveData<List<SongModel>>
 
+    suspend fun getSongListByQuery(query: String): LiveData<List<SongModel>>
+
     suspend fun addSong(song: SongModel)
 
     suspend fun deleteSong(songId: String)

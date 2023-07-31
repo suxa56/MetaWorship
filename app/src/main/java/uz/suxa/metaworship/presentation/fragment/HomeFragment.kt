@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.core.view.get
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -59,11 +60,33 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        binding.toolbar.title = findNavController().currentDestination?.label
-        binding.toolbar.inflateMenu(R.menu.menu_main)
+        binding.searchBar.inflateMenu(R.menu.menu_main)
+        binding.searchBar.menu[0].isVisible = false
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.searchBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
+        }
+
+        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
+            binding.searchBar.text = binding.searchView.text
+            binding.searchView.hide()
+            return@setOnEditorActionListener false
+        }
+
+        binding.searchBar.textView.addTextChangedListener {
+            viewModel.getSongsByQuery(it.toString())
+
+            binding.searchBar.menu[0].isVisible = it.toString().isNotEmpty()
+
+        }
+
+        binding.searchView.editText.addTextChangedListener {
+            if (it.toString().isBlank()) {
+                binding.searchRV.visibility = View.GONE
+            } else {
+                viewModel.getSongsByQuery(it.toString())
+                binding.searchRV.visibility = View.VISIBLE
+            }
         }
 
 
@@ -72,18 +95,18 @@ class HomeFragment : Fragment() {
             when (it.itemId) {
                 R.id.drawerHome -> {
                     viewModel.getAllSongs()
-                    binding.rvSongList.adapter = songAdapter
+                    binding.homeRV.adapter = songAdapter
                     it.isChecked = true
-                    binding.toolbar.title = findNavController().currentDestination?.label
+                    binding.searchBar.hint = getString(R.string.search_hint)
                     binding.drawerLayout.close()
                     true
                 }
 
                 R.id.drawerVocalists -> {
                     viewModel.getVocalists()
-                    binding.rvSongList.adapter = vocalistAdapter
+                    binding.homeRV.adapter = vocalistAdapter
                     it.isChecked = true
-                    binding.toolbar.title = getString(R.string.vocalists)
+                    binding.searchBar.hint = getString(R.string.vocalists)
                     binding.drawerLayout.close()
                     true
                 }
@@ -92,7 +115,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.toolbar.setOnMenuItemClickListener {
+        binding.searchBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.createVocalist -> {
                     val bottomSheet = CreateVocalistBottomSheet()
@@ -116,6 +139,11 @@ class HomeFragment : Fragment() {
                     true
                 }
 
+                R.id.clearText -> {
+                    binding.searchBar.text = null
+                    true
+                }
+
                 else -> false
             }
         }
@@ -130,10 +158,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val rvSongList = binding.rvSongList
+        val homeRV = binding.homeRV
         songAdapter = SongAdapter(requireContext())
         vocalistAdapter = VocalistAdapter()
-        rvSongList.adapter = songAdapter
+        homeRV.adapter = songAdapter
         songAdapter.onSongItemClickListener = {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
@@ -158,10 +186,12 @@ class HomeFragment : Fragment() {
                 .show()
         }
 
+        binding.searchRV.adapter = songAdapter
+
         vocalistAdapter.onItemClick = {
-            binding.toolbar.title = it
+            binding.searchBar.hint = it
             viewModel.getSongsByVocalist(it)
-            rvSongList.adapter = songAdapter
+            homeRV.adapter = songAdapter
         }
     }
 

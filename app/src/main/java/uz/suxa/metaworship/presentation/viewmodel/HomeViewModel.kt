@@ -12,6 +12,7 @@ import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
+import uz.suxa.metaworship.domain.usecase.GetSongListByQueryUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongListByVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.GetSongListUseCase
 import uz.suxa.metaworship.domain.usecase.GetVocalistWithSongCountUseCase
@@ -21,6 +22,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val songRepo = SongRepoImpl(application)
     private val getSongList = GetSongListUseCase(songRepo)
     private val getSongListByVocalist = GetSongListByVocalistUseCase(songRepo)
+    private val getSongListByQuery = GetSongListByQueryUseCase(songRepo)
     private val deleteSongUseCase = DeleteSongUseCase(songRepo)
 
     private val vocalistRepo = VocalistRepoImpl(application)
@@ -53,27 +55,41 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getAllSongs() {
         viewModelScope.launch {
-            activeSource?.let { _songs.removeSource(it) }
+            clearSource()
             activeSource = getSongList()
-            _songs.addSource(activeSource!!) {
-                _songs.value = it
-            }
+            setSource()
+        }
+    }
+
+    fun getSongsByQuery(query: String) {
+        viewModelScope.launch {
+            clearSource()
+            activeSource = getSongListByQuery(query)
+            setSource()
         }
     }
 
     fun getSongsByVocalist(vocalist: String) {
         viewModelScope.launch {
-            activeSource?.let { _songs.removeSource(it) }
+            clearSource()
             activeSource = getSongListByVocalist(vocalist)
-            _songs.addSource(activeSource!!) {
-                _songs.value = it
-            }
+            setSource()
         }
     }
 
     fun deleteSong(songId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteSongUseCase(songId)
+        }
+    }
+
+    private fun clearSource() {
+        activeSource?.let { _songs.removeSource(it) }
+    }
+
+    private fun setSource() {
+        _songs.addSource(activeSource!!) {
+            _songs.value = it
         }
     }
 }
