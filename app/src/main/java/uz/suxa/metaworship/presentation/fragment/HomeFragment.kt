@@ -80,6 +80,15 @@ class HomeFragment : Fragment() {
 
         }
 
+        binding.searchView.editText.addTextChangedListener {
+            if (it.toString().isBlank()) {
+                binding.searchRV.visibility = View.GONE
+            } else {
+                viewModel.getSongsByQuery(it.toString())
+                binding.searchRV.visibility = View.VISIBLE
+            }
+        }
+
 
         binding.navView.setNavigationItemSelectedListener {
             binding.navView.menu[0].subMenu?.findItem(R.id.drawerHome)?.isChecked = false
@@ -149,10 +158,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val rvSongList = binding.homeRV
+        val homeRV = binding.homeRV
         songAdapter = SongAdapter(requireContext())
         vocalistAdapter = VocalistAdapter()
-        rvSongList.adapter = songAdapter
+        homeRV.adapter = songAdapter
         songAdapter.onSongItemClickListener = {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
@@ -177,10 +186,12 @@ class HomeFragment : Fragment() {
                 .show()
         }
 
+        binding.searchRV.adapter = songAdapter
+
         vocalistAdapter.onItemClick = {
             binding.searchBar.hint = it
             viewModel.getSongsByVocalist(it)
-            rvSongList.adapter = songAdapter
+            homeRV.adapter = songAdapter
         }
     }
 
