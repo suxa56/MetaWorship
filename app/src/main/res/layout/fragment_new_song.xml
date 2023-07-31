@@ -85,14 +85,14 @@
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageButton
+            <Button
                 android:id="@+id/cleatTonality"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:contentDescription="@string/remove_fields"
                 android:paddingHorizontal="8dp"
-                android:src="@drawable/ic_clear"
+                app:icon="@drawable/ic_clear"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/songTonalityTil"
                 app:layout_constraintEnd_toEndOf="parent"

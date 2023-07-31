@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
 import uz.suxa.metaworship.R
-import uz.suxa.metaworship.databinding.SongCardBinding
+import uz.suxa.metaworship.databinding.CardSongBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 
@@ -22,7 +22,7 @@ class SongAdapter(private val context: Context) :
     var onSongItemDelete: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
-        val binding = SongCardBinding.inflate(
+        val binding = CardSongBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

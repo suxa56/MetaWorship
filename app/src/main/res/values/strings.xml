@@ -43,6 +43,7 @@
 
     <!-- Bottom sheet -->
     <string name="vocalist_saved">Вокалист добавлен</string>
+    <string name="create_new_composition">Создать новый список</string>
 
     <!-- SnackBar -->
     <string name="snackbar_dismiss">Закрыть</string>
@@ -88,4 +89,5 @@
     <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
     <string name="card_vocalist_icon_temp">А</string>
     <string name="card_vocalist_song_count_temp">100</string>
+    <string name="card_composition_name_temp">Test composition</string>
 </resources>
