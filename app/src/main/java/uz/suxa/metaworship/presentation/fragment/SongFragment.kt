@@ -1,5 +1,7 @@
 package uz.suxa.metaworship.presentation.fragment
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentSongBinding
+import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.presentation.SongActionsBottomSheet
 import uz.suxa.metaworship.presentation.adapter.solo.SoloPartAdapter
@@ -119,19 +123,30 @@ class SongFragment : Fragment() {
 
             bottomSheet.setSong(song)
 
+            bottomSheet.onSongEdit = {
+                findNavController().navigate(
+                    SongFragmentDirections.actionSongFragmentToNewSongFragment(song.id)
+                )
+                bottomSheet.dismiss()
+            }
+
             bottomSheet.onSongCopy = {
-                viewModel.copySong(song, it)
+                copySong(song, it)
+                bottomSheet.dismiss()
             }
 
             bottomSheet.onSongCopyIn = {
-                viewModel.copySongChords(song, it)
+                copyChords(song, it)
+                bottomSheet.dismiss()
             }
 
             bottomSheet.onSongCopyLyrics = {
-                viewModel.copySongLyrics(song)
+                copyLyrics(song)
+                bottomSheet.dismiss()
             }
 
             bottomSheet.onSongDelete = {
+                bottomSheet.dismiss()
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.delete_song_confirmation_title)
                     .setMessage(R.string.delete_song_confirmation_message)
@@ -225,6 +240,36 @@ class SongFragment : Fragment() {
             "0",
             false
         )
+    }
+
+    private fun copySong(song: SongModel, tonality: Tonality) {
+        val clipboard =
+            ContextCompat.getSystemService(
+                requireContext(),
+                ClipboardManager::class.java
+            ) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySong(song, tonality))
+        clipboard.setPrimaryClip(clipData)
+    }
+
+    private fun copyChords(song: SongModel, tonality: Tonality) {
+        val clipboard =
+            ContextCompat.getSystemService(
+                requireContext(),
+                ClipboardManager::class.java
+            ) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySongChords(song, tonality))
+        clipboard.setPrimaryClip(clipData)
+    }
+
+    private fun copyLyrics(song: SongModel) {
+        val clipboard =
+            ContextCompat.getSystemService(
+                requireContext(),
+                ClipboardManager::class.java
+            ) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySongLyrics(song))
+        clipboard.setPrimaryClip(clipData)
     }
 
     override fun onDestroyView() {

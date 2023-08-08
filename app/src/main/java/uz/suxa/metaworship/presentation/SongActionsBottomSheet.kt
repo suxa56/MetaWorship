@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import uz.suxa.metaworship.databinding.BottomSheetSongActionsBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.presentation.fragment.HomeFragmentDirections
 
 class SongActionsBottomSheet : BottomSheetDialogFragment() {
 
@@ -17,6 +15,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private lateinit var song: SongModel
 
+    var onSongEdit: (() -> Unit)? = null
     var onSongCopy: ((Tonality) -> Unit)? = null
     var onSongCopyIn: ((Tonality) -> Unit)? = null
     var onSongCopyLyrics: (() -> Unit)? = null
@@ -42,11 +41,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupClickListener() {
         binding.songActionEdit.setOnClickListener {
-            findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToNewSongFragment(
-                    song.id
-                )
-            )
+            onSongEdit?.invoke()
         }
 
         binding.songActionCopy.setOnClickListener {
@@ -68,6 +63,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
             )
             bottomSheet.onTonalityClick = {
                 onSongCopyIn?.invoke(it)
+                bottomSheet.dismiss()
             }
         }
 

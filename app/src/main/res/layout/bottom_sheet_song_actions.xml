@@ -120,7 +120,7 @@
                     style="@style/TextAppearance.Material3.TitleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_copy_in" />
+                    android:text="@string/action_copy_chords" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

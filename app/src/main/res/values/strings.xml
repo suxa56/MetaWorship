@@ -65,7 +65,8 @@
     <string name="action_delete">Удалить</string>
     <string name="action_edit">Изменить</string>
     <string name="action_cancel">Закрыть</string>
-    <string name="action_copy">Скопировать</string>
+    <string name="action_copy">Скопировать песню</string>
+    <string name="action_copy_chords">Скопировать аккорды</string>
     <string name="action_copy_in">Скопировать в тональности</string>
     <string name="action_copy_lyrics">Скопировать слова</string>
     <string name="action_add_to_composition">Добавить в список</string>

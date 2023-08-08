@@ -68,19 +68,28 @@ class SongAdapter(private val fragmentManager: FragmentManager) :
                 )
                 bottomSheet.setSong(song)
 
+                bottomSheet.onSongEdit = {
+                    onSongItemEdit?.invoke(song.id)
+                    bottomSheet.dismiss()
+                }
+
                 bottomSheet.onSongCopy = {
                     onSongItemCopy?.invoke(song, it)
+                    bottomSheet.dismiss()
                 }
 
                 bottomSheet.onSongCopyIn = {
                     onSongItemCopyInTonality?.invoke(song, it)
+                    bottomSheet.dismiss()
                 }
 
                 bottomSheet.onSongCopyLyrics = {
                     onSongItemCopyLyrics?.invoke(song)
+                    bottomSheet.dismiss()
                 }
 
                 bottomSheet.onSongDelete = {
+                    bottomSheet.dismiss()
                     onSongItemDelete?.invoke(song.id)
                 }
                 true
