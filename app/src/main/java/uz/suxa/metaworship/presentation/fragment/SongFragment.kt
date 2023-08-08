@@ -1,7 +1,6 @@
 package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentSongBinding
 import uz.suxa.metaworship.domain.model.Tonality
+import uz.suxa.metaworship.presentation.SongActionsBottomSheet
 import uz.suxa.metaworship.presentation.adapter.solo.SoloPartAdapter
 import uz.suxa.metaworship.presentation.viewmodel.SongViewModel
 
@@ -27,6 +27,9 @@ class SongFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var soloAdapter: SoloPartAdapter
+    private val bottomSheet by lazy {
+        SongActionsBottomSheet()
+    }
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -60,29 +63,14 @@ class SongFragment : Fragment() {
 
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.editSong -> {
-                    findNavController().navigate(
-                        SongFragmentDirections.actionSongFragmentToNewSongFragment(args.songId)
+                R.id.showBottomSheet -> {
+                    bottomSheet.show(
+                        childFragmentManager,
+                        SongActionsBottomSheet.TAG
                     )
-                    true
                 }
-                R.id.deleteSong -> {
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(R.string.delete_song_confirmation_title)
-                        .setMessage(R.string.delete_song_confirmation_message)
-                        .setNegativeButton(R.string.action_cancel) {dialog, _ ->
-                            dialog.cancel()
-                        }
-                        .setPositiveButton(R.string.action_delete) {dialog, _ ->
-                            viewModel.deleteSong(args.songId)
-                            findNavController().popBackStack()
-                            dialog.cancel()
-                        }
-                        .show()
-                    true
-                }
-                else -> false
             }
+            true
         }
     }
 
@@ -93,12 +81,12 @@ class SongFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.song.observe(viewLifecycleOwner) {
+        viewModel.song.observe(viewLifecycleOwner) { song ->
             // Title
-            binding.toolbar.title = it.title
+            binding.toolbar.title = song.title
 
             // Tonality
-            if (it.defaultTonality == Tonality.UNDEFINED) {
+            if (song.defaultTonality == Tonality.UNDEFINED) {
                 binding.chipTonality.visibility = View.GONE
                 binding.songTonalityTil.visibility = View.GONE
                 binding.capoTil.visibility = View.GONE
@@ -108,25 +96,53 @@ class SongFragment : Fragment() {
                 binding.chipTonality.text = String.format(
                     getString(
                         R.string.chip_tonality,
-                        it.defaultTonality.toString()
+                        song.defaultTonality.toString()
                             .replace("_FLAT", "b")
                             .replace("_SHARP", "#")
                     )
                 )
 
                 (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
-                    viewModel.convertTonalityToSymbol(it.defaultTonality),
+                    viewModel.convertTonalityToSymbol(song.defaultTonality),
                     false
                 )
             }
 
             // Lyrics
-            if (it.lyrics.isBlank()) {
+            if (song.lyrics.isBlank()) {
                 binding.lyricsCard.visibility = View.GONE
                 binding.chipLyrics.isChecked = false
                 binding.chipLyrics.isEnabled = false
             } else {
-                binding.lyrics.text = it.lyrics
+                binding.lyrics.text = song.lyrics
+            }
+
+            bottomSheet.setSong(song)
+
+            bottomSheet.onSongCopy = {
+                viewModel.copySong(song, it)
+            }
+
+            bottomSheet.onSongCopyIn = {
+                viewModel.copySongChords(song, it)
+            }
+
+            bottomSheet.onSongCopyLyrics = {
+                viewModel.copySongLyrics(song)
+            }
+
+            bottomSheet.onSongDelete = {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.delete_song_confirmation_title)
+                    .setMessage(R.string.delete_song_confirmation_message)
+                    .setNegativeButton(R.string.action_cancel) { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .setPositiveButton(R.string.action_delete) { dialog, _ ->
+                        viewModel.deleteSong(song.id)
+                        dialog.cancel()
+                    }
+                    .show()
             }
         }
 
@@ -179,7 +195,6 @@ class SongFragment : Fragment() {
         (binding.songTonalityTil.editText as? AutoCompleteTextView)
             ?.setOnItemClickListener { _, view, _, _ ->
                 val tilText = (view as TextView).text
-                Log.d("loool", tilText.toString())
                 val tonality: String = if (tilText.length == 1) {
                     tilText[0].toString()
                 } else {

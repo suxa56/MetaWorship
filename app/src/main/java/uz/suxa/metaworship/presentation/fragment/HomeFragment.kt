@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val homeRV = binding.homeRV
-        songAdapter = SongAdapter(requireContext())
+        songAdapter = SongAdapter(childFragmentManager)
         vocalistAdapter = VocalistAdapter()
         homeRV.adapter = songAdapter
         songAdapter.onSongItemClickListener = {
@@ -177,11 +177,14 @@ class HomeFragment : Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
             )
         }
-        songAdapter.onSongItemCopy = {
-            copyChords(it, it.defaultTonality)
+        songAdapter.onSongItemCopy = { song, tonality ->
+            copySong(song, tonality)
         }
         songAdapter.onSongItemCopyInTonality = { song, tonality ->
             copyChords(song, tonality)
+        }
+        songAdapter.onSongItemCopyLyrics = {
+            copyLyrics(it)
         }
         songAdapter.onSongItemDelete = {
             MaterialAlertDialogBuilder(requireContext())
@@ -216,10 +219,24 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun copySong(song: SongModel, tonality: Tonality) {
+        val clipboard =
+            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySong(song, tonality))
+        clipboard.setPrimaryClip(clipData)
+    }
+
     private fun copyChords(song: SongModel, tonality: Tonality) {
         val clipboard =
             getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
         val clipData = ClipData.newPlainText(song.title, viewModel.copySongChords(song, tonality))
+        clipboard.setPrimaryClip(clipData)
+    }
+
+    private fun copyLyrics(song: SongModel) {
+        val clipboard =
+            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+        val clipData = ClipData.newPlainText(song.title, viewModel.copySongLyrics(song))
         clipboard.setPrimaryClip(clipData)
     }
 

@@ -10,7 +10,6 @@ import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
-import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByQueryUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByVocalistUseCase
@@ -43,12 +42,6 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
                 _songs.value = it
             }
         }
-    }
-
-    fun copySongChords(song: SongModel, tonality: Tonality): CharSequence {
-        var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
-        text += convertNumbersToNotes(tonality, song.chords)
-        return text
     }
 
     fun getVocalists() {

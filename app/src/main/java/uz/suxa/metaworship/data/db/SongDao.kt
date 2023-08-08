@@ -10,7 +10,7 @@ import androidx.room.Query
 interface SongDao {
 
     @Query(
-        "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
+        "SELECT id, title, lyrics, " +
                 "defaultTonality, chords, vocalist, tonality " +
                 "FROM songs"
     )
