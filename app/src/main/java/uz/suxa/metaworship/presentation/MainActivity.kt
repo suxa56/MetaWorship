@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.color.DynamicColors
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import uz.suxa.metaworship.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +18,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         DynamicColors.applyToActivityIfAvailable(this)
+
+        if (Firebase.auth.currentUser == null) {
+            Firebase.auth.signInAnonymously()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
