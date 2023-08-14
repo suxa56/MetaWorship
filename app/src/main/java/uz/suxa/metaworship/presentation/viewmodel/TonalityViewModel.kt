@@ -23,21 +23,21 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
     private val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
 
     fun copySong(song: SongModel, tonality: Tonality): CharSequence {
-        var text = song.title + ": " + convertTonalityToSymbol(song.defaultTonality) + "\n"
+        var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
         text += song.lyrics + "\n\n"
         text += convertNumbersToNotes(tonality, song.chords)
         return text
     }
 
-    fun copySongChords(song: SongModel, tonality: Tonality): CharSequence {
-        var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
-        text += convertNumbersToNotes(tonality, song.chords)
+    fun copySongChords(title: String, tonality: Tonality, chords: String): CharSequence {
+        var text = title + ": " + convertTonalityToSymbol(tonality) + "\n"
+        text += convertNumbersToNotes(tonality, chords)
         return text
     }
 
-    fun copySongLyrics(song: SongModel): CharSequence {
-        var text = song.title + "\n"
-        text += song.lyrics
+    fun copySongLyrics(title: String, lyrics: String): CharSequence {
+        var text = title + "\n"
+        text += lyrics
         return text
     }
 
@@ -49,6 +49,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
         val notes = getTonalityNotes(tonality)
         val numberedNotes = convertListToNumberedMap(notes)
         var converted = chords.uppercase()
+        converted = converted.replace("B", "b")
 
         // For first checks non-Tonality notes, then check Tonality notes
         // After every iteration save result to variable
@@ -77,6 +78,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
             }
         }
         converted = converted.replace("-", " ")
+        converted = converted.replace("B", "b")
 
         return converted
     }

@@ -45,7 +45,7 @@ class SongMapper {
         id = songDb.id,
         title = songDb.title,
         lyrics = songDb.lyrics,
-        chords = songDb.chords,
+        chords = "",
         defaultTonality = mapStringToTonality(songDb.defaultTonality),
         modulations = listOf<String>(),
         vocalistTonality = mapStringToVocalistTonality(songDb.vocalist, songDb.tonality),

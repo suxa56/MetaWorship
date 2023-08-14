@@ -222,24 +222,37 @@ class HomeFragment : Fragment() {
     }
 
     private fun copySong(song: SongModel, tonality: Tonality) {
-        val clipboard =
-            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
-        val clipData = ClipData.newPlainText(song.title, viewModel.copySong(song, tonality))
-        clipboard.setPrimaryClip(clipData)
+        viewModel.getSong(song.id)
+        viewModel.copySong.observe(viewLifecycleOwner) {
+            val clipboard =
+                getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+            val clipData = ClipData.newPlainText(it.title, viewModel.copySong(it, tonality))
+            clipboard.setPrimaryClip(clipData)
+        }
     }
 
     private fun copyChords(song: SongModel, tonality: Tonality) {
-        val clipboard =
-            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
-        val clipData = ClipData.newPlainText(song.title, viewModel.copySongChords(song, tonality))
-        clipboard.setPrimaryClip(clipData)
+        viewModel.getChords(song.id)
+        viewModel.copy.observe(viewLifecycleOwner) {
+            val clipboard =
+                getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+            val clipData = ClipData.newPlainText(
+                song.title,
+                viewModel.copySongChords(song.title, tonality, it)
+            )
+            clipboard.setPrimaryClip(clipData)
+        }
     }
 
     private fun copyLyrics(song: SongModel) {
-        val clipboard =
-            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
-        val clipData = ClipData.newPlainText(song.title, viewModel.copySongLyrics(song))
-        clipboard.setPrimaryClip(clipData)
+        viewModel.getLyrics(song.id)
+        viewModel.copy.observe(viewLifecycleOwner) {
+            val clipboard =
+                getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+            val clipData =
+                ClipData.newPlainText(song.title, viewModel.copySongLyrics(song.title, it))
+            clipboard.setPrimaryClip(clipData)
+        }
     }
 
     override fun onDestroyView() {

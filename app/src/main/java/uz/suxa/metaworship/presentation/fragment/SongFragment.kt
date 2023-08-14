@@ -258,7 +258,10 @@ class SongFragment : Fragment() {
                 requireContext(),
                 ClipboardManager::class.java
             ) as ClipboardManager
-        val clipData = ClipData.newPlainText(song.title, viewModel.copySongChords(song, tonality))
+        val clipData = ClipData.newPlainText(
+            song.title,
+            viewModel.copySongChords(song.title, tonality, song.chords)
+        )
         clipboard.setPrimaryClip(clipData)
     }
 
@@ -268,7 +271,8 @@ class SongFragment : Fragment() {
                 requireContext(),
                 ClipboardManager::class.java
             ) as ClipboardManager
-        val clipData = ClipData.newPlainText(song.title, viewModel.copySongLyrics(song))
+        val clipData =
+            ClipData.newPlainText(song.title, viewModel.copySongLyrics(song.title, song.lyrics))
         clipboard.setPrimaryClip(clipData)
     }
 

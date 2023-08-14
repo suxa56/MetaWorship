@@ -16,4 +16,8 @@ interface SongRepo {
     suspend fun addSong(song: SongModel)
 
     suspend fun deleteSong(songId: String)
+
+    suspend fun getLyrics(songId: String): String
+
+    suspend fun getChords(songId: String): String
 }
