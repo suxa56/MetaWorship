@@ -2,6 +2,7 @@ package uz.suxa.metaworship.presentation.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 
 abstract class TonalityViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,6 +22,25 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     private val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
 
+    fun copySong(song: SongModel, tonality: Tonality): CharSequence {
+        var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
+        text += song.lyrics + "\n\n"
+        text += convertNumbersToNotes(tonality, song.chords)
+        return text
+    }
+
+    fun copySongChords(title: String, tonality: Tonality, chords: String): CharSequence {
+        var text = title + ": " + convertTonalityToSymbol(tonality) + "\n"
+        text += convertNumbersToNotes(tonality, chords)
+        return text
+    }
+
+    fun copySongLyrics(title: String, lyrics: String): CharSequence {
+        var text = title + "\n"
+        text += lyrics
+        return text
+    }
+
     // Replace all chords and notes in incoming string to numbers
     fun convertNotesToNumbers(tonality: Tonality, chords: String): String {
         if (tonality == Tonality.UNDEFINED || chords.isBlank()) {
@@ -29,6 +49,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
         val notes = getTonalityNotes(tonality)
         val numberedNotes = convertListToNumberedMap(notes)
         var converted = chords.uppercase()
+        converted = converted.replace("B", "b")
 
         // For first checks non-Tonality notes, then check Tonality notes
         // After every iteration save result to variable
@@ -57,6 +78,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
             }
         }
         converted = converted.replace("-", " ")
+        converted = converted.replace("B", "b")
 
         return converted
     }

@@ -1,4 +1,4 @@
-package uz.suxa.metaworship.domain.usecase
+package uz.suxa.metaworship.domain.usecase.song
 
 import uz.suxa.metaworship.domain.repo.SongRepo
 

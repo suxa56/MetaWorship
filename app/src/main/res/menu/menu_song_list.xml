@@ -2,20 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/editSong"
-        android:title="@string/action_edit"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/copyChords"
-        android:title="@string/action_copy"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/copyChordsIn"
-        android:title="@string/action_copy_in"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/deleteSong"
-        android:title="@string/action_delete"
-        app:showAsAction="never" />
+        android:id="@+id/showBottomSheet"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/show_menu"
+        app:showAsAction="always"/>
+
 
 </menu>

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
@@ -246,7 +246,7 @@ class NewSongFragment : Fragment() {
                     as? MaterialAutoCompleteTextView)?.setText(modulation, false)
         }
         // Remove fields
-        view.findViewById<ImageButton>(R.id.modulationRemoveBtn).setOnClickListener {
+        view.findViewById<Button>(R.id.modulationRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
         }
         // Clear error on change
@@ -290,7 +290,7 @@ class NewSongFragment : Fragment() {
         (tonalityField.editText
                 as? MaterialAutoCompleteTextView)?.setText(vocalistTonality?.tonality, false)
         // Remove fields
-        view.findViewById<ImageButton>(R.id.vocalistTonalityRemoveBtn).setOnClickListener {
+        view.findViewById<Button>(R.id.vocalistTonalityRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
         }
         vocalistField.editText?.addTextChangedListener {
@@ -327,7 +327,7 @@ class NewSongFragment : Fragment() {
         soloField.editText?.setText(soloPart?.solo)
 
         // Remove fields
-        view.findViewById<ImageButton>(R.id.soloPartRemoveBtn).setOnClickListener {
+        view.findViewById<Button>(R.id.soloPartRemoveBtn).setOnClickListener {
             container.removeView(linearLayout)
         }
         // Clear error on change

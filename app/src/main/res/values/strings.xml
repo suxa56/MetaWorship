@@ -43,12 +43,16 @@
 
     <!-- Bottom sheet -->
     <string name="vocalist_saved">Вокалист добавлен</string>
+    <string name="create_new_composition">Создать новый список</string>
+    <string name="new_composition">Новый список</string>
+    <string name="new_composition_hint">Список</string>
 
     <!-- SnackBar -->
     <string name="snackbar_dismiss">Закрыть</string>
 
     <!-- Accessibility (acs = accessibility) -->
     <string name="acs_new_song_fab">Перейти на экран для добавления новой песни</string>
+    <string name="acs_add_remove_song_to_composition">Добавить или убрать песню из списка</string>
 
     <!-- Errors -->
     <string name="title_error">Пустое название</string>
@@ -63,8 +67,11 @@
     <string name="action_delete">Удалить</string>
     <string name="action_edit">Изменить</string>
     <string name="action_cancel">Закрыть</string>
-    <string name="action_copy">Скопировать</string>
-    <string name="action_copy_in">Скопировать в …</string>
+    <string name="action_copy">Скопировать песню</string>
+    <string name="action_copy_chords">Скопировать аккорды</string>
+    <string name="action_copy_in">Скопировать в тональности</string>
+    <string name="action_copy_lyrics">Скопировать слова</string>
+    <string name="action_add_to_composition">Добавить в список</string>
 
     <!-- Tonalities -->
     <string name="tonality_c">C</string>
@@ -83,8 +90,10 @@
     <!-- Temp text -->
     <string name="card_title_temp">Я буду петь среди шторма и волн</string>
     <string name="card_tonality_temp">G</string>
-    <string name="card_lyrics_temp">Пою я аллилуя всем что есть внутри меня, пою я аллилуя и прочь уйдут сомнения</string>
+    <string name="card_lyrics_temp">Пою я аллилуя всем что есть внутри меня, пою я аллилуя и прочь уйдут сомнения, пою я аллилуя</string>
     <string name="card_vocalists_temp">Саша: G, Рустам: C, Кети: A, Марина: D</string>
     <string name="card_vocalist_icon_temp">А</string>
     <string name="card_vocalist_song_count_temp">100</string>
+    <string name="card_composition_name_temp">Test composition</string>
+    <string name="show_menu">Показать меню</string>
 </resources>

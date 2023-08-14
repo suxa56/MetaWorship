@@ -3,6 +3,7 @@ package uz.suxa.metaworship.presentation.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -10,22 +11,31 @@ import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
-import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongListByQueryUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongListByVocalistUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongListUseCase
-import uz.suxa.metaworship.domain.usecase.GetVocalistWithSongCountUseCase
+import uz.suxa.metaworship.domain.model.VocalistModel
+import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetChordsUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetLyricsUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongListByQueryUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongListByVocalistUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistWithSongCountUseCase
+import java.util.UUID
 
 class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private val songRepo = SongRepoImpl(application)
     private val getSongList = GetSongListUseCase(songRepo)
+    private val getSongUseCase = GetSongUseCase(songRepo)
     private val getSongListByVocalist = GetSongListByVocalistUseCase(songRepo)
     private val getSongListByQuery = GetSongListByQueryUseCase(songRepo)
     private val deleteSongUseCase = DeleteSongUseCase(songRepo)
+    private val getLyricsUseCase = GetLyricsUseCase(songRepo)
+    private val getChordsUseCase = GetChordsUseCase(songRepo)
 
     private val vocalistRepo = VocalistRepoImpl(application)
+    private val addVocalistUseCase = AddVocalistUseCase(vocalistRepo)
     private val getVocalistWithSongCountUseCase = GetVocalistWithSongCountUseCase(vocalistRepo)
 
 
@@ -37,6 +47,12 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private var activeSource: LiveData<List<SongModel>>? = null
 
+    private val _copy = MutableLiveData<String>()
+    val copy: LiveData<String> get() = _copy
+
+    private val _copySong = MutableLiveData<SongModel>()
+    val copySong: LiveData<SongModel> get() = _copySong
+
     init {
         viewModelScope.launch {
             _songs.addSource(getSongList()) {
@@ -45,10 +61,18 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
         }
     }
 
-    fun copySongChords(song: SongModel, tonality: Tonality): CharSequence {
-        var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
-        text += convertNumbersToNotes(tonality, song.chords)
-        return text
+    fun createVocalist(vocalistString: String): Boolean {
+        if (vocalistString.isBlank()) {
+            return false
+        }
+        val vocalist = VocalistModel(
+            id = "voc_" + UUID.randomUUID().toString(),
+            name = vocalistString
+        )
+        viewModelScope.launch(Dispatchers.IO) {
+            addVocalistUseCase(vocalist)
+        }
+        return true
     }
 
     fun getVocalists() {
@@ -72,6 +96,27 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
             clearSource()
             activeSource = getSongListByQuery(query)
             setSource()
+        }
+    }
+
+    fun getSong(songId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val song = getSongUseCase(songId)
+            _copySong.postValue(song)
+        }
+    }
+
+    fun getLyrics(songId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lyrics = getLyricsUseCase(songId)
+            _copy.postValue(lyrics)
+        }
+    }
+
+    fun getChords(songId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lyrics = getChordsUseCase(songId)
+            _copy.postValue(lyrics)
         }
     }
 

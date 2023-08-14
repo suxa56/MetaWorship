@@ -49,4 +49,12 @@ class SongRepoImpl(
     override suspend fun deleteSong(songId: String) {
         songDao.deleteSong(songId)
     }
+
+    override suspend fun getLyrics(songId: String): String {
+        return songDao.getLyrics(songId)
+    }
+
+    override suspend fun getChords(songId: String): String {
+        return songDao.getChords(songId)
+    }
 }

@@ -16,9 +16,9 @@ import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.model.VocalistTonality
-import uz.suxa.metaworship.domain.usecase.AddSongUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongUseCase
-import uz.suxa.metaworship.domain.usecase.GetVocalistListUseCase
+import uz.suxa.metaworship.domain.usecase.song.AddSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistListUseCase
 import uz.suxa.metaworship.presentation.fragment.NewSongFragment
 import java.util.UUID
 

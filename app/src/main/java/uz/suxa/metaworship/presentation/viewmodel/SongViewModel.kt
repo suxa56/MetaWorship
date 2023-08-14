@@ -11,8 +11,8 @@ import uz.suxa.metaworship.domain.model.SoloPart
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistTonality
-import uz.suxa.metaworship.domain.usecase.DeleteSongUseCase
-import uz.suxa.metaworship.domain.usecase.GetSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
 
 class SongViewModel(application: Application) : TonalityViewModel(application) {
 

@@ -22,14 +22,14 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/modulationRemoveBtn"
+        style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/material_dynamic_neutral99"
         android:contentDescription="@string/remove_fields"
+        app:icon="@drawable/ic_close"
         app:layout_constraintBottom_toBottomOf="@+id/modulation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/modulation"
-        app:srcCompat="@drawable/ic_close" />
+        app:layout_constraintTop_toTopOf="@+id/modulation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

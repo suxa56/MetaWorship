@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="8dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingVertical="8dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/vocalist"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
-        android:layout_gravity="start|center"
         android:layout_height="wrap_content"
+        android:layout_gravity="start|center"
         android:layout_weight="@integer/material_motion_duration_long_2">
 
         <AutoCompleteTextView
@@ -24,8 +25,8 @@
         android:id="@+id/tonality"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="16dp"
         android:layout_weight="@integer/material_motion_duration_medium_2">
 
@@ -36,14 +37,14 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/vocalistTonalityRemoveBtn"
+        style="?attr/materialIconButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="@integer/material_motion_duration_short_1"
         android:layout_gravity="end|center"
-        android:background="@color/material_dynamic_neutral99"
+        android:layout_weight="@integer/material_motion_duration_short_1"
         android:contentDescription="@string/remove_fields"
-        android:src="@drawable/ic_close" />
+        app:icon="@drawable/ic_close" />
 
 </LinearLayout>

@@ -10,8 +10,8 @@ import androidx.room.Query
 interface SongDao {
 
     @Query(
-        "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
-                "defaultTonality, chords, vocalist, tonality " +
+        "SELECT id, title, SUBSTR(lyrics, 1, 100) as lyrics, " +
+                "defaultTonality, vocalist, tonality " +
                 "FROM songs"
     )
     fun getSongs(): LiveData<List<SongDbModelDto>>
@@ -26,18 +26,24 @@ interface SongDao {
     fun getSong(songId: String): SongDbModel
 
     @Query(
-        "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
-                "defaultTonality, chords, vocalist, tonality " +
+        "SELECT id, title, SUBSTR(lyrics, 1, 100) as lyrics, " +
+                "defaultTonality, vocalist, tonality " +
                 "FROM songs " +
                 "WHERE vocalist LIKE '%'||:vocalist||'%'"
     )
     fun getSongsByVocalist(vocalist: String): LiveData<List<SongDbModelDto>>
 
     @Query(
-        "SELECT id, title, SUBSTR(lyrics, 1, 150) as lyrics, " +
-                "defaultTonality, chords, vocalist, tonality " +
+        "SELECT id, title, SUBSTR(lyrics, 1, 100) as lyrics, " +
+                "defaultTonality, vocalist, tonality " +
                 "FROM songs " +
                 "WHERE title LIKE '%'||:query||'%' OR lyrics LIKE '%'||:query||'%' "
     )
     fun getSongsByQuery(query: String): LiveData<List<SongDbModelDto>>
+
+    @Query("SELECT lyrics FROM songs WHERE id=:songId LIMIT 1")
+    fun getLyrics(songId: String): String
+
+    @Query("SELECT chords FROM songs WHERE id=:songId LIMIT 1")
+    fun getChords(songId: String): String
 }
