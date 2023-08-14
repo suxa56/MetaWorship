@@ -8,7 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import uz.suxa.metaworship.databinding.BottomSheetTonalitiesBinding
 import uz.suxa.metaworship.domain.model.Tonality
 
-class SongCopyInBottomSheet : BottomSheetDialogFragment() {
+class TonalityBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetTonalitiesBinding? = null
     private val binding get() = _binding!!
@@ -68,6 +68,11 @@ class SongCopyInBottomSheet : BottomSheetDialogFragment() {
             }
         }
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         const val TAG = "songCopyInBottomSheet"
     }

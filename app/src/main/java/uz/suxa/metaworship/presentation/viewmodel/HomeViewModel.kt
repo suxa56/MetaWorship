@@ -10,11 +10,14 @@ import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByQueryUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistWithSongCountUseCase
+import java.util.UUID
 
 class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
@@ -25,6 +28,7 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     private val deleteSongUseCase = DeleteSongUseCase(songRepo)
 
     private val vocalistRepo = VocalistRepoImpl(application)
+    private val addVocalistUseCase = AddVocalistUseCase(vocalistRepo)
     private val getVocalistWithSongCountUseCase = GetVocalistWithSongCountUseCase(vocalistRepo)
 
 
@@ -42,6 +46,20 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
                 _songs.value = it
             }
         }
+    }
+
+    fun createVocalist(vocalistString: String): Boolean {
+        if (vocalistString.isBlank()) {
+            return false
+        }
+        val vocalist = VocalistModel(
+            id = "voc_" + UUID.randomUUID().toString(),
+            name = vocalistString
+        )
+        viewModelScope.launch(Dispatchers.IO) {
+            addVocalistUseCase(vocalist)
+        }
+        return true
     }
 
     fun getVocalists() {

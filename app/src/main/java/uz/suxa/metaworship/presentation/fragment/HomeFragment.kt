@@ -22,7 +22,7 @@ import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.presentation.CreateVocalistBottomSheet
+import uz.suxa.metaworship.presentation.InputBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.adapter.vocalist.VocalistAdapter
 import uz.suxa.metaworship.presentation.viewmodel.HomeViewModel
@@ -123,13 +123,14 @@ class HomeFragment : Fragment() {
         binding.searchBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.createVocalist -> {
-                    val bottomSheet = CreateVocalistBottomSheet()
+                    val bottomSheet = InputBottomSheet()
                     bottomSheet.show(
                         childFragmentManager,
-                        CreateVocalistBottomSheet.TAG
+                        InputBottomSheet.TAG
                     )
                     bottomSheet.onSave = {
                         lifecycleScope.launch {
+                            viewModel.createVocalist(it)
                             delay(500)
                             Snackbar.make(
                                 binding.root,
@@ -140,6 +141,7 @@ class HomeFragment : Fragment() {
                                 .setAnchorView(binding.addNewSongFab)
                                 .show()
                         }
+                        bottomSheet.dismiss()
                     }
                     true
                 }

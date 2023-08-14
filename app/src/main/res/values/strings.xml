@@ -44,6 +44,8 @@
     <!-- Bottom sheet -->
     <string name="vocalist_saved">Вокалист добавлен</string>
     <string name="create_new_composition">Создать новый список</string>
+    <string name="new_composition">Новый список</string>
+    <string name="new_composition_hint">Список</string>
 
     <!-- SnackBar -->
     <string name="snackbar_dismiss">Закрыть</string>

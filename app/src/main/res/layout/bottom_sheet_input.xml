@@ -8,7 +8,7 @@
     android:padding="24dp">
 
     <TextView
-        android:id="@+id/createVocalistLabel"
+        android:id="@+id/inputLabel"
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,14 +20,14 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/createVocalistTIL"
+        android:id="@+id/InputTIL"
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createVocalistLabel">
+        app:layout_constraintTop_toBottomOf="@id/inputLabel">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -43,5 +43,5 @@
         android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createVocalistTIL" />
+        app:layout_constraintTop_toBottomOf="@+id/InputTIL" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
     var onSongCopy: ((Tonality) -> Unit)? = null
     var onSongCopyIn: ((Tonality) -> Unit)? = null
     var onSongCopyLyrics: (() -> Unit)? = null
+    var onSongAddToComposition: (() -> Unit)? = null
     var onSongDelete: (() -> Unit)? = null
 
     override fun onCreateView(
@@ -32,11 +33,23 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.songActionsTitle.text = song.title
+        setupActions()
         setupClickListener()
     }
 
     fun setSong(song: SongModel) {
         this.song = song
+    }
+
+    private fun setupActions() {
+        if (song.defaultTonality == Tonality.UNDEFINED) {
+            binding.songActionCopyIn.visibility = View.GONE
+            binding.songActionCopy.visibility = View.GONE
+        }
+        if (song.lyrics.isBlank()) {
+            binding.songActionCopy.visibility = View.GONE
+            binding.songActionCopyLyrics.visibility = View.GONE
+        }
     }
 
     private fun setupClickListener() {
@@ -45,10 +58,10 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.songActionCopy.setOnClickListener {
-            val bottomSheet = SongCopyInBottomSheet()
+            val bottomSheet = TonalityBottomSheet()
             bottomSheet.show(
                 childFragmentManager,
-                SongCopyInBottomSheet.TAG
+                TonalityBottomSheet.TAG
             )
             bottomSheet.onTonalityClick = {
                 onSongCopy?.invoke(it)
@@ -56,10 +69,10 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.songActionCopyIn.setOnClickListener {
-            val bottomSheet = SongCopyInBottomSheet()
+            val bottomSheet = TonalityBottomSheet()
             bottomSheet.show(
                 childFragmentManager,
-                SongCopyInBottomSheet.TAG
+                TonalityBottomSheet.TAG
             )
             bottomSheet.onTonalityClick = {
                 onSongCopyIn?.invoke(it)
@@ -71,9 +84,24 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
             onSongCopyLyrics?.invoke()
         }
 
+        binding.songActionAddToComposition.setOnClickListener {
+            onSongAddToComposition?.invoke()
+            val bottomSheet = CompositionBottomSheet()
+            bottomSheet.setSongId(song.id)
+            bottomSheet.show(
+                childFragmentManager,
+                CompositionBottomSheet.TAG
+            )
+        }
+
         binding.songActionDelete.setOnClickListener {
             onSongDelete?.invoke()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

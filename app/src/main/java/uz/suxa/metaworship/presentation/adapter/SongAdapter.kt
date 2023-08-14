@@ -18,6 +18,7 @@ class SongAdapter(private val fragmentManager: FragmentManager) :
     var onSongItemCopy: ((SongModel, Tonality) -> Unit)? = null
     var onSongItemCopyLyrics: ((SongModel) -> Unit)? = null
     var onSongItemCopyInTonality: ((SongModel, Tonality) -> Unit)? = null
+    var onSongAddToComposition: (() -> Unit)? = null
     var onSongItemDelete: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
@@ -62,11 +63,11 @@ class SongAdapter(private val fragmentManager: FragmentManager) :
             }
             root.setOnLongClickListener {
                 val bottomSheet = SongActionsBottomSheet()
+                bottomSheet.setSong(song)
                 bottomSheet.show(
                     fragmentManager,
                     SongActionsBottomSheet.TAG
                 )
-                bottomSheet.setSong(song)
 
                 bottomSheet.onSongEdit = {
                     onSongItemEdit?.invoke(song.id)
@@ -86,6 +87,11 @@ class SongAdapter(private val fragmentManager: FragmentManager) :
                 bottomSheet.onSongCopyLyrics = {
                     onSongItemCopyLyrics?.invoke(song)
                     bottomSheet.dismiss()
+                }
+
+                bottomSheet.onSongAddToComposition = {
+                    onSongAddToComposition?.invoke()
+//                    bottomSheet.dismiss()
                 }
 
                 bottomSheet.onSongDelete = {
