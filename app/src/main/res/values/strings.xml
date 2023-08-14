@@ -96,4 +96,7 @@
     <string name="card_vocalist_song_count_temp">100</string>
     <string name="card_composition_name_temp">Test composition</string>
     <string name="show_menu">Показать меню</string>
+    <string name="cloud">Облако</string>
+    <string name="upload">Обновить облако</string>
+    <string name="download">Обновить песни</string>
 </resources>

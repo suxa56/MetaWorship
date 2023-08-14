@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import uz.suxa.metaworship.databinding.CardSongBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.presentation.SongActionsBottomSheet
+import uz.suxa.metaworship.presentation.fragment.SongActionsBottomSheet
 
 class SongAdapter(private val fragmentManager: FragmentManager) :
     ListAdapter<SongModel, SongViewHolder>(SongDiffUtil) {

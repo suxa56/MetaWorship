@@ -4,9 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
@@ -23,7 +20,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val getSongUseCase = GetSongUseCase(repo)
     private val deleteSongUseCase = DeleteSongUseCase(repo)
 
-    private lateinit var database: DatabaseReference
 
     private val _song = MutableLiveData<SongModel>()
     val song: LiveData<SongModel> get() = _song
@@ -83,8 +79,6 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteSongUseCase(songId)
         }
-        database = Firebase.database.getReference("song").child(songId)
-        database.removeValue()
     }
 
     private fun transpose() {

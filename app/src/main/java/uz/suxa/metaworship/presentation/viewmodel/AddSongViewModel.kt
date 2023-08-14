@@ -6,9 +6,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
@@ -32,8 +29,6 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
     private val addSongUseCase = AddSongUseCase(songRepo)
     private val getSongUseCase = GetSongUseCase(songRepo)
     private val getVocalistListUseCase = GetVocalistListUseCase(vocalistRepo)
-
-    private lateinit var database: DatabaseReference
 
     private val _song = MutableLiveData<SongDto>()
     val song: LiveData<SongDto> get() = _song
@@ -139,8 +134,6 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                     soloPart = soloPartList,
                     tempo = getTempo(tempo)
                 )
-                database = Firebase.database.getReference("song")
-                database.child(song.id).setValue(song)
                 addSongUseCase(song)
             }
             shouldClose?.onComplete()

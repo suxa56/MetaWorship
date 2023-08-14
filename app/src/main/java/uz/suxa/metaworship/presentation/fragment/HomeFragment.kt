@@ -22,7 +22,6 @@ import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.presentation.InputBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.adapter.vocalist.VocalistAdapter
 import uz.suxa.metaworship.presentation.viewmodel.HomeViewModel
@@ -112,6 +111,18 @@ class HomeFragment : Fragment() {
                     binding.homeRV.adapter = vocalistAdapter
                     it.isChecked = true
                     binding.searchBar.hint = getString(R.string.vocalists)
+                    binding.drawerLayout.close()
+                    true
+                }
+
+                R.id.downloadSongs -> {
+                    viewModel.downloadSongs()
+                    binding.drawerLayout.close()
+                    true
+                }
+
+                R.id.uploadSongs -> {
+                    viewModel.uploadSongs()
                     binding.drawerLayout.close()
                     true
                 }

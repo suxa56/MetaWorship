@@ -5,9 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
@@ -16,12 +13,14 @@ import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.DownloadSongsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetChordsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetLyricsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByQueryUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
+import uz.suxa.metaworship.domain.usecase.song.UploadSongsUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistWithSongCountUseCase
 import java.util.UUID
@@ -36,12 +35,12 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     private val deleteSongUseCase = DeleteSongUseCase(songRepo)
     private val getLyricsUseCase = GetLyricsUseCase(songRepo)
     private val getChordsUseCase = GetChordsUseCase(songRepo)
+    private val uploadSongsUseCase = UploadSongsUseCase(songRepo)
+    private val downloadSongsUseCase = DownloadSongsUseCase(songRepo)
 
     private val vocalistRepo = VocalistRepoImpl(application)
     private val addVocalistUseCase = AddVocalistUseCase(vocalistRepo)
     private val getVocalistWithSongCountUseCase = GetVocalistWithSongCountUseCase(vocalistRepo)
-
-    private lateinit var database: DatabaseReference
 
     private val _songs = MediatorLiveData<List<SongModel>>()
     val songs: LiveData<List<SongModel>> get() = _songs
@@ -62,6 +61,18 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
             _songs.addSource(getSongList()) {
                 _songs.value = it
             }
+        }
+    }
+
+    fun uploadSongs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            uploadSongsUseCase()
+        }
+    }
+
+    fun downloadSongs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            downloadSongsUseCase()
         }
     }
 
@@ -136,9 +147,6 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteSongUseCase(songId)
         }
-        database = Firebase.database.getReference("song").child(songId)
-        database.removeValue()
-
     }
 
     private fun clearSource() {
