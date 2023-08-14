@@ -22,6 +22,9 @@ interface SongDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSong(songDBModel: SongDbModel)
 
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun addSongs(vararg songDbModel: SongDbModel)
+
     @Query("DELETE FROM songs WHERE id=:songId")
     fun deleteSong(songId: String)
 

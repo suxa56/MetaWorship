@@ -1,18 +1,19 @@
 package uz.suxa.metaworship.data
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import uz.suxa.metaworship.data.db.AppDatabase
+import uz.suxa.metaworship.data.db.SongDbModel
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.repo.SongRepo
 
 class SongRepoImpl(
     application: Application
-): SongRepo {
+) : SongRepo {
 
     private val songDao = AppDatabase.getInstance(application).songDao()
     private val mapper = SongMapper()
@@ -68,7 +69,7 @@ class SongRepoImpl(
 
     override suspend fun uploadSongs() {
         MediatorLiveData<List<SongModel>>().apply {
-            addSource(songDao.getFullSongs()) {list ->
+            addSource(songDao.getFullSongs()) { list ->
                 list.forEach { song ->
                     database.child(song.id).setValue(song)
                 }
@@ -77,12 +78,17 @@ class SongRepoImpl(
     }
 
     override suspend fun downloadSongs() {
+        val songList = mutableListOf<SongDbModel>()
         database.get().addOnSuccessListener { songs ->
-            songs.children.forEach {
-                Log.d("download-key", it.key.toString())
-                Log.d("download-value", it.value.toString())
-                Log.d("download-childrenCount", it.childrenCount.toString())
+            songs.children.forEach { song ->
+                val songMap = song.getValue<Map<String, Any?>>()
+                songMap?.let {
+                    songList.add(mapper.mapFirebaseToDbModel(it))
+                }
             }
+        }
+        songList.forEach {
+            songDao.addSong(it)
         }
     }
 }
