@@ -156,6 +156,8 @@ class SongFragment : Fragment() {
                     .setPositiveButton(R.string.action_delete) { dialog, _ ->
                         viewModel.deleteSong(song.id)
                         dialog.cancel()
+                        findNavController().popBackStack()
+
                     }
                     .show()
             }
