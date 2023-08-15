@@ -82,8 +82,6 @@ class HomeFragment : Fragment() {
 
             binding.searchBar.menu[0].isVisible = it.toString().isNotEmpty()
             binding.searchBar.menu[1].isVisible = it.toString().isEmpty()
-            binding.searchBar.menu[2].isVisible = it.toString().isEmpty()
-
         }
 
         binding.searchView.editText.addTextChangedListener {
