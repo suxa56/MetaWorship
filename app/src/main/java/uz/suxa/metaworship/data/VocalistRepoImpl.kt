@@ -1,11 +1,15 @@
 package uz.suxa.metaworship.data
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import uz.suxa.metaworship.data.db.AppDatabase
 import uz.suxa.metaworship.data.db.VocalistDbModel
 import uz.suxa.metaworship.domain.dto.VocalistSongDto
@@ -42,7 +46,9 @@ class VocalistRepoImpl(
     }
 
     override suspend fun addVocalist(vocalist: VocalistModel) {
-        vocalistDao.addVocalist(mapper.mapEntityToDbModel(vocalist))
+        val vocalistDbModel = mapper.mapEntityToDbModel(vocalist)
+        vocalistDao.addVocalist(vocalistDbModel)
+        database.child(vocalist.id).setValue(vocalistDbModel)
     }
 
     override suspend fun deleteVocalist(vocalistId: String) {
@@ -50,6 +56,7 @@ class VocalistRepoImpl(
     }
 
     override suspend fun sync() {
+        Log.d("vocalist-repo", "")
         MediatorLiveData<List<VocalistModel>>().apply {
             addSource(vocalistDao.getVocalists()) { list ->
                 list.forEach { vocalist ->
@@ -58,17 +65,18 @@ class VocalistRepoImpl(
             }
         }
 
-        val songList = mutableListOf<VocalistDbModel>()
-        database.get().addOnSuccessListener { songs ->
-            songs.children.forEach { song ->
-                val songMap = song.getValue<Map<String, Any?>>()
-                songMap?.let {
-                    songList.add(mapper.mapFirebaseToDbModel(it))
-                }
+        val vocalistList = mutableListOf<VocalistDbModel>()
+        val dataSnapshot = database.get().await()
+        for (vocalist in dataSnapshot.children) {
+            val vocalistMap = vocalist.getValue<Map<String, Any?>>()
+            vocalistMap?.let {
+                vocalistList.add(mapper.mapFirebaseToDbModel(it))
             }
         }
-        songList.forEach {
-            vocalistDao.addVocalist(it)
+        withContext(Dispatchers.IO) {
+            vocalistList.forEach {
+                vocalistDao.addVocalist(it)
+            }
         }
     }
 

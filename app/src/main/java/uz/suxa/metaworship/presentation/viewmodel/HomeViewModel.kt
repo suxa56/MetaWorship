@@ -1,6 +1,7 @@
 package uz.suxa.metaworship.presentation.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -67,6 +68,7 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     fun syncCloud() {
         viewModelScope.launch(Dispatchers.IO) {
+            Log.d("vocalist-sync", "")
             uploadSongsUseCase()
             downloadSongsUseCase()
             syncVocalistsUseCase()

@@ -6,6 +6,9 @@ import androidx.lifecycle.MediatorLiveData
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import uz.suxa.metaworship.data.db.AppDatabase
 import uz.suxa.metaworship.data.db.SongDbModel
 import uz.suxa.metaworship.domain.model.SongModel
@@ -79,16 +82,17 @@ class SongRepoImpl(
 
     override suspend fun downloadSongs() {
         val songList = mutableListOf<SongDbModel>()
-        database.get().addOnSuccessListener { songs ->
-            songs.children.forEach { song ->
-                val songMap = song.getValue<Map<String, Any?>>()
-                songMap?.let {
-                    songList.add(mapper.mapFirebaseToDbModel(it))
-                }
+        val songs = database.get().await()
+        songs.children.forEach { song ->
+            val songMap = song.getValue<Map<String, Any?>>()
+            songMap?.let {
+                songList.add(mapper.mapFirebaseToDbModel(it))
             }
         }
-        songList.forEach {
-            songDao.addSong(it)
+        withContext(Dispatchers.IO) {
+            songList.forEach {
+                songDao.addSong(it)
+            }
         }
     }
 }
