@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import uz.suxa.metaworship.databinding.CardVocalistBinding
-import uz.suxa.metaworship.domain.dto.VocalistSongDto
+import uz.suxa.metaworship.domain.model.VocalistModel
 
 class VocalistAdapter :
-    ListAdapter<VocalistSongDto, VocalistViewHolder>(
+    ListAdapter<VocalistModel, VocalistViewHolder>(
         VocalistDiffUtil
     ) {
 
@@ -27,7 +27,6 @@ class VocalistAdapter :
         with(holder.binding) {
             vocalistIcon.text = item.name[0].toString()
             vocalistTitle.text = item.name
-            vocalistSongCount.text = item.songsCount.toString()
             root.setOnClickListener {
                 onItemClick?.invoke(item.name)
             }

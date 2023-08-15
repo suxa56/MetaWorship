@@ -153,8 +153,7 @@ class HomeFragment : Fragment() {
                 }
 
                 R.id.syncSongs -> {
-                    viewModel.uploadSongs()
-                    viewModel.downloadSongs()
+                    viewModel.syncCloud()
                     true
                 }
 

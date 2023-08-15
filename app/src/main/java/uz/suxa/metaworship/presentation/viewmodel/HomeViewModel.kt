@@ -9,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
-import uz.suxa.metaworship.domain.dto.VocalistSongDto
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
@@ -22,7 +21,8 @@ import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.UploadSongsUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
-import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistWithSongCountUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistListUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.SyncVocalistsUseCase
 import java.util.UUID
 
 class HomeViewModel(application: Application) : TonalityViewModel(application) {
@@ -40,13 +40,14 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private val vocalistRepo = VocalistRepoImpl(application)
     private val addVocalistUseCase = AddVocalistUseCase(vocalistRepo)
-    private val getVocalistWithSongCountUseCase = GetVocalistWithSongCountUseCase(vocalistRepo)
+    private val getVocalistUseCase = GetVocalistListUseCase(vocalistRepo)
+    private val syncVocalistsUseCase = SyncVocalistsUseCase(vocalistRepo)
 
     private val _songs = MediatorLiveData<List<SongModel>>()
     val songs: LiveData<List<SongModel>> get() = _songs
 
-    private val _vocalistsDto = MediatorLiveData<List<VocalistSongDto>>()
-    val vocalistsDto: LiveData<List<VocalistSongDto>> get() = _vocalistsDto
+    private val _vocalistsDto = MediatorLiveData<List<VocalistModel>>()
+    val vocalistsDto: LiveData<List<VocalistModel>> get() = _vocalistsDto
 
     private var activeSource: LiveData<List<SongModel>>? = null
 
@@ -64,15 +65,11 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
         }
     }
 
-    fun uploadSongs() {
+    fun syncCloud() {
         viewModelScope.launch(Dispatchers.IO) {
             uploadSongsUseCase()
-        }
-    }
-
-    fun downloadSongs() {
-        viewModelScope.launch(Dispatchers.IO) {
             downloadSongsUseCase()
+            syncVocalistsUseCase()
         }
     }
 
@@ -92,7 +89,7 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     fun getVocalists() {
         viewModelScope.launch {
-            _vocalistsDto.addSource(getVocalistWithSongCountUseCase()) {
+            _vocalistsDto.addSource(getVocalistUseCase()) {
                 _vocalistsDto.value = it
             }
         }
