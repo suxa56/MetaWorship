@@ -20,23 +20,4 @@
                 android:checkable="true"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/cloudCategory"
-        android:title="@string/cloud">
-        <menu>
-            <item
-                android:id="@+id/downloadSongs"
-                android:title="@string/download"
-                app:showAsAction="ifRoom"
-                android:icon="@drawable/ic_download"
-                android:checkable="true"/>
-            <item
-                android:id="@+id/uploadSongs"
-                android:title="@string/upload"
-                app:showAsAction="ifRoom"
-                android:icon="@drawable/ic_upload"
-                android:checkable="true"/>
-        </menu>
-    </item>
-
 </menu>

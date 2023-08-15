@@ -12,4 +12,10 @@
         android:icon="@drawable/ic_add_person"
         android:title="@string/menu_add_vocalist"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/syncSongs"
+        android:title="@string/sync_songs"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_sync"
+        android:checkable="false"/>
 </menu>

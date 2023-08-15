@@ -81,6 +81,8 @@ class HomeFragment : Fragment() {
             viewModel.getSongsByQuery(it.toString())
 
             binding.searchBar.menu[0].isVisible = it.toString().isNotEmpty()
+            binding.searchBar.menu[1].isVisible = it.toString().isEmpty()
+            binding.searchBar.menu[2].isVisible = it.toString().isEmpty()
 
         }
 
@@ -111,18 +113,6 @@ class HomeFragment : Fragment() {
                     binding.homeRV.adapter = vocalistAdapter
                     it.isChecked = true
                     binding.searchBar.hint = getString(R.string.vocalists)
-                    binding.drawerLayout.close()
-                    true
-                }
-
-                R.id.downloadSongs -> {
-                    viewModel.downloadSongs()
-                    binding.drawerLayout.close()
-                    true
-                }
-
-                R.id.uploadSongs -> {
-                    viewModel.uploadSongs()
                     binding.drawerLayout.close()
                     true
                 }
@@ -159,6 +149,12 @@ class HomeFragment : Fragment() {
 
                 R.id.clearText -> {
                     binding.searchBar.text = null
+                    true
+                }
+
+                R.id.syncSongs -> {
+                    viewModel.uploadSongs()
+                    viewModel.downloadSongs()
                     true
                 }
 

@@ -28,6 +28,7 @@
     <string name="chords">Аккорды</string>
     <string name="lyrics">Слова</string>
     <string name="solo">Соло</string>
+    <string name="show_menu">Показать меню</string>
 
     <!-- Drawer Layout -->
     <string name="navigation">Навигация</string>
@@ -36,6 +37,8 @@
     <!-- Search -->
     <string name="search_hint">Поиск песен</string>
     <string name="search_clear">Очистить поиск</string>
+    <string name="new_vocalist">Новый вокалист</string>
+    <string name="sync_songs">Обновить</string>
 
     <!-- Dialog -->
     <string name="delete_song_confirmation_title">Удалить песню?</string>
@@ -61,7 +64,6 @@
     <string name="solo_error">Пустая партия</string>
     <string name="chords_error">Нет аккордов</string>
     <string name="vocalist_error">Не выбран вокалист</string>
-    <string name="new_vocalist">Новый вокалист</string>
 
     <!-- Actions -->
     <string name="action_delete">Удалить</string>
@@ -95,8 +97,4 @@
     <string name="card_vocalist_icon_temp">А</string>
     <string name="card_vocalist_song_count_temp">100</string>
     <string name="card_composition_name_temp">Test composition</string>
-    <string name="show_menu">Показать меню</string>
-    <string name="cloud">Облако</string>
-    <string name="upload">Обновить облако</string>
-    <string name="download">Обновить песни</string>
 </resources>
