@@ -51,7 +51,8 @@ class VocalistRepoImpl(
     }
 
     override suspend fun deleteVocalist(vocalistId: String) {
-        TODO("Not yet implemented")
+        vocalistDao.deleteVocalist(vocalistId)
+        database.child(vocalistId).removeValue()
     }
 
     override suspend fun sync() {

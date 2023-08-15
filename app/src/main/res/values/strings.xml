@@ -42,7 +42,9 @@
 
     <!-- Dialog -->
     <string name="delete_song_confirmation_title">Удалить песню?</string>
+    <string name="delete_vocalist_confirmation_title">Удалить вокалиста?</string>
     <string name="delete_song_confirmation_message">Песня будет удалена со всех устройств.</string>
+    <string name="delete_vocalist_confirmation_message">Вокалист будет удален со всех устройств.</string>
 
     <!-- Bottom sheet -->
     <string name="vocalist_saved">Вокалист добавлен</string>

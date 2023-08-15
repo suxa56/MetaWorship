@@ -20,6 +20,7 @@ import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.SyncSongUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
+import uz.suxa.metaworship.domain.usecase.vocalist.DeleteVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistListUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.SyncVocalistsUseCase
 import java.util.UUID
@@ -39,6 +40,7 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     private val vocalistRepo = VocalistRepoImpl(application)
     private val addVocalistUseCase = AddVocalistUseCase(vocalistRepo)
     private val getVocalistUseCase = GetVocalistListUseCase(vocalistRepo)
+    private val deleteVocalistUseCase = DeleteVocalistUseCase(vocalistRepo)
     private val syncVocalistsUseCase = SyncVocalistsUseCase(vocalistRepo)
 
     private val _songs = MediatorLiveData<List<SongModel>>()
@@ -65,17 +67,17 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     fun syncCloud() {
         viewModelScope.launch(Dispatchers.IO) {
-            syncSongsUseCase
+            syncSongsUseCase()
             syncVocalistsUseCase()
         }
     }
 
-    fun createVocalist(vocalistString: String): Boolean {
+    fun createVocalist(id: String?, vocalistString: String): Boolean {
         if (vocalistString.isBlank()) {
             return false
         }
         val vocalist = VocalistModel(
-            id = "voc_" + UUID.randomUUID().toString(),
+            id = id ?: ("voc_" + UUID.randomUUID().toString()),
             name = vocalistString
         )
         viewModelScope.launch(Dispatchers.IO) {
@@ -89,6 +91,12 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
             _vocalistsDto.addSource(getVocalistUseCase()) {
                 _vocalistsDto.value = it
             }
+        }
+    }
+
+    fun deleteVocalist(vocalistId: String) {
+        viewModelScope.launch {
+            deleteVocalistUseCase(vocalistId)
         }
     }
 

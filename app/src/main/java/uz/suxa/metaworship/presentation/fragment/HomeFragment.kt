@@ -131,7 +131,7 @@ class HomeFragment : Fragment() {
                     )
                     bottomSheet.onSave = {
                         lifecycleScope.launch {
-                            viewModel.createVocalist(it)
+                            viewModel.createVocalist(null, it)
                             delay(500)
                             Snackbar.make(
                                 binding.root,
@@ -214,6 +214,50 @@ class HomeFragment : Fragment() {
             binding.searchBar.hint = it
             viewModel.getSongsByVocalist(it)
             homeRV.adapter = songAdapter
+        }
+        vocalistAdapter.onItemLongClick = { vocalist ->
+            val bottomSheet = SongActionsBottomSheet()
+            bottomSheet.setVocalist(vocalist)
+            bottomSheet.show(childFragmentManager, SongActionsBottomSheet.TAG)
+
+            bottomSheet.onSongEdit = {
+                val inputBottomSheet = InputBottomSheet()
+                inputBottomSheet.getVocalist(vocalist.name)
+                inputBottomSheet.show(
+                    childFragmentManager,
+                    InputBottomSheet.TAG
+                )
+                inputBottomSheet.onSave = {
+                    lifecycleScope.launch {
+                        viewModel.createVocalist(vocalist.id, it)
+                        delay(500)
+                        Snackbar.make(
+                            binding.root,
+                            R.string.vocalist_saved,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setAction(R.string.snackbar_dismiss) {}
+                            .setAnchorView(binding.addNewSongFab)
+                            .show()
+                    }
+                    inputBottomSheet.dismiss()
+                    bottomSheet.dismiss()
+                }
+            }
+            bottomSheet.onSongDelete = {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.delete_vocalist_confirmation_title)
+                    .setMessage(R.string.delete_vocalist_confirmation_message)
+                    .setNegativeButton(R.string.action_cancel) { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .setPositiveButton(R.string.action_delete) { dialog, _ ->
+                        viewModel.deleteVocalist(vocalist.id)
+                        dialog.cancel()
+                    }
+                    .show()
+                bottomSheet.dismiss()
+            }
         }
     }
 

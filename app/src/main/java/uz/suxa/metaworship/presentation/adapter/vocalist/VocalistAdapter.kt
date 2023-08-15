@@ -12,6 +12,7 @@ class VocalistAdapter :
     ) {
 
     var onItemClick: ((String) -> Unit)? = null
+    var onItemLongClick: ((VocalistModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VocalistViewHolder {
         val binding = CardVocalistBinding.inflate(
@@ -29,6 +30,11 @@ class VocalistAdapter :
             vocalistTitle.text = item.name
             root.setOnClickListener {
                 onItemClick?.invoke(item.name)
+            }
+
+            root.setOnLongClickListener {
+                onItemLongClick?.invoke(item)
+                true
             }
         }
     }
