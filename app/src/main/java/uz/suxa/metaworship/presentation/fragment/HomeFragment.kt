@@ -152,11 +152,6 @@ class HomeFragment : Fragment() {
                     true
                 }
 
-                R.id.syncSongs -> {
-                    viewModel.syncCloud()
-                    true
-                }
-
                 else -> false
             }
         }
@@ -172,6 +167,12 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val homeRV = binding.homeRV
+        binding.swipeHomeRV.setOnRefreshListener {
+            lifecycleScope.launch {
+            viewModel.syncCloud()
+            binding.swipeHomeRV.isRefreshing = false
+            }
+        }
         songAdapter = SongAdapter(childFragmentManager)
         vocalistAdapter = VocalistAdapter()
         homeRV.adapter = songAdapter
