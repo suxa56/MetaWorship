@@ -55,10 +55,6 @@ class VocalistRepoImpl(
     }
 
     override suspend fun sync() {
-        vocalistDao.getVocalistsList().forEach {
-            database.child(it.id).setValue(it)
-        }
-
         val vocalistList = mutableListOf<VocalistDbModel>()
         val dataSnapshot = database.get().await()
         for (vocalist in dataSnapshot.children) {
@@ -72,6 +68,11 @@ class VocalistRepoImpl(
                 vocalistDao.addVocalist(it)
             }
         }
+
+        vocalistDao.getVocalistsList().forEach {
+            database.child(it.id).setValue(it)
+        }
+
     }
 
 }

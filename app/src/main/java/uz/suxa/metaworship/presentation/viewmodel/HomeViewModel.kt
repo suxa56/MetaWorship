@@ -1,7 +1,6 @@
 package uz.suxa.metaworship.presentation.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,14 +12,13 @@ import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.VocalistModel
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
-import uz.suxa.metaworship.domain.usecase.song.DownloadSongsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetChordsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetLyricsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByQueryUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListByVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongListUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetSongUseCase
-import uz.suxa.metaworship.domain.usecase.song.UploadSongsUseCase
+import uz.suxa.metaworship.domain.usecase.song.SyncSongUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.AddVocalistUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.GetVocalistListUseCase
 import uz.suxa.metaworship.domain.usecase.vocalist.SyncVocalistsUseCase
@@ -36,8 +34,7 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     private val deleteSongUseCase = DeleteSongUseCase(songRepo)
     private val getLyricsUseCase = GetLyricsUseCase(songRepo)
     private val getChordsUseCase = GetChordsUseCase(songRepo)
-    private val uploadSongsUseCase = UploadSongsUseCase(songRepo)
-    private val downloadSongsUseCase = DownloadSongsUseCase(songRepo)
+    private val syncSongsUseCase = SyncSongUseCase(songRepo)
 
     private val vocalistRepo = VocalistRepoImpl(application)
     private val addVocalistUseCase = AddVocalistUseCase(vocalistRepo)
@@ -68,9 +65,7 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     fun syncCloud() {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("vocalist-sync", "")
-            uploadSongsUseCase()
-            downloadSongsUseCase()
+            syncSongsUseCase
             syncVocalistsUseCase()
         }
     }

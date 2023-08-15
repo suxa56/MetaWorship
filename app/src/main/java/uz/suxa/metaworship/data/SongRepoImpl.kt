@@ -70,13 +70,7 @@ class SongRepoImpl(
         return songDao.getChords(songId)
     }
 
-    override suspend fun uploadSongs() {
-        songDao.getFullSongs().forEach {
-            database.child(it.id).setValue(it)
-        }
-    }
-
-    override suspend fun downloadSongs() {
+    override suspend fun sync() {
         val songList = mutableListOf<SongDbModel>()
         val songs = database.get().await()
         songs.children.forEach { song ->
@@ -89,6 +83,10 @@ class SongRepoImpl(
             songList.forEach {
                 songDao.addSong(it)
             }
+        }
+
+        songDao.getFullSongs().forEach {
+            database.child(it.id).setValue(it)
         }
     }
 }
