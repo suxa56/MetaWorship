@@ -20,7 +20,8 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
 
     private val flatNotes = listOf("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Hb", "H")
 
-    private val tonalitiesList = listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
+    private val tonalitiesList =
+        listOf("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Hb", "H")
 
     fun copySong(song: SongModel, tonality: Tonality): CharSequence {
         var text = song.title + ": " + convertTonalityToSymbol(tonality) + "\n"
@@ -199,6 +200,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
                 tonality
                     .replace("#", "_SHARP")
                     .replace("b", "_FLAT")
+                    .replace(" ", "")
 
             Tonality.valueOf(refactoredTonality)
         }
