@@ -22,7 +22,6 @@ import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.FragmentHomeBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
-import uz.suxa.metaworship.presentation.InputBottomSheet
 import uz.suxa.metaworship.presentation.adapter.SongAdapter
 import uz.suxa.metaworship.presentation.adapter.vocalist.VocalistAdapter
 import uz.suxa.metaworship.presentation.viewmodel.HomeViewModel
@@ -82,6 +81,8 @@ class HomeFragment : Fragment() {
             viewModel.getSongsByQuery(it.toString())
 
             binding.searchBar.menu[0].isVisible = it.toString().isNotEmpty()
+            binding.searchBar.menu[1].isVisible = it.toString().isEmpty()
+            binding.searchBar.menu[2].isVisible = it.toString().isEmpty()
 
         }
 
@@ -130,7 +131,7 @@ class HomeFragment : Fragment() {
                     )
                     bottomSheet.onSave = {
                         lifecycleScope.launch {
-                            viewModel.createVocalist(it)
+                            viewModel.createVocalist(null, it)
                             delay(500)
                             Snackbar.make(
                                 binding.root,
@@ -148,6 +149,11 @@ class HomeFragment : Fragment() {
 
                 R.id.clearText -> {
                     binding.searchBar.text = null
+                    true
+                }
+
+                R.id.syncSongs -> {
+                    viewModel.syncCloud()
                     true
                 }
 
@@ -208,6 +214,50 @@ class HomeFragment : Fragment() {
             binding.searchBar.hint = it
             viewModel.getSongsByVocalist(it)
             homeRV.adapter = songAdapter
+        }
+        vocalistAdapter.onItemLongClick = { vocalist ->
+            val bottomSheet = SongActionsBottomSheet()
+            bottomSheet.setVocalist(vocalist)
+            bottomSheet.show(childFragmentManager, SongActionsBottomSheet.TAG)
+
+            bottomSheet.onSongEdit = {
+                val inputBottomSheet = InputBottomSheet()
+                inputBottomSheet.getVocalist(vocalist.name)
+                inputBottomSheet.show(
+                    childFragmentManager,
+                    InputBottomSheet.TAG
+                )
+                inputBottomSheet.onSave = {
+                    lifecycleScope.launch {
+                        viewModel.createVocalist(vocalist.id, it)
+                        delay(500)
+                        Snackbar.make(
+                            binding.root,
+                            R.string.vocalist_saved,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setAction(R.string.snackbar_dismiss) {}
+                            .setAnchorView(binding.addNewSongFab)
+                            .show()
+                    }
+                    inputBottomSheet.dismiss()
+                    bottomSheet.dismiss()
+                }
+            }
+            bottomSheet.onSongDelete = {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.delete_vocalist_confirmation_title)
+                    .setMessage(R.string.delete_vocalist_confirmation_message)
+                    .setNegativeButton(R.string.action_cancel) { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .setPositiveButton(R.string.action_delete) { dialog, _ ->
+                        viewModel.deleteVocalist(vocalist.id)
+                        dialog.cancel()
+                    }
+                    .show()
+                bottomSheet.dismiss()
+            }
         }
     }
 

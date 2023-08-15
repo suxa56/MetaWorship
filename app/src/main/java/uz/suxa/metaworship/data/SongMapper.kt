@@ -37,6 +37,21 @@ class SongMapper {
         tempo = songDb.tempo,
     )
 
+    fun mapFirebaseToDbModel(data: Map<String, Any?>) = SongDbModel(
+        id = data["id"] as String,
+        title = data["title"] as String,
+        lyrics = data["lyrics"] as String,
+        defaultTonality = data["defaultTonality"] as String,
+        chords = data["chords"] as String,
+        modulations = data["modulations"] as String,
+        vocalist = data["vocalist"] as String,
+        tonality = data["tonality"] as String,
+        soloPart = data["soloPart"] as String,
+        solo = data["solo"] as String,
+        tempo = (data["tempo"] as Long).toInt(),
+        lastUpdate = data["lastUpdate"] as Long
+    )
+
     fun mapListDbModelDtoToListEntity(list: List<SongDbModelDto>) = list.map {
         mapDbModelDtoToEntityDto(it)
     }

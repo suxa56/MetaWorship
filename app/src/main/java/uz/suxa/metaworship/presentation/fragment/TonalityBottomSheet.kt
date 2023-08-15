@@ -1,4 +1,4 @@
-package uz.suxa.metaworship.presentation
+package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

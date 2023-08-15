@@ -16,14 +16,17 @@ interface SongDao {
     )
     fun getSongs(): LiveData<List<SongDbModelDto>>
 
+    @Query("SELECT * FROM songs")
+    suspend fun getFullSongs(): List<SongDbModel>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSong(songDBModel: SongDbModel)
 
     @Query("DELETE FROM songs WHERE id=:songId")
-    fun deleteSong(songId: String)
+    suspend fun deleteSong(songId: String)
 
     @Query("SELECT * FROM songs WHERE id=:songId LIMIT 1")
-    fun getSong(songId: String): SongDbModel
+    suspend fun getSong(songId: String): SongDbModel
 
     @Query(
         "SELECT id, title, SUBSTR(lyrics, 1, 100) as lyrics, " +
@@ -42,8 +45,8 @@ interface SongDao {
     fun getSongsByQuery(query: String): LiveData<List<SongDbModelDto>>
 
     @Query("SELECT lyrics FROM songs WHERE id=:songId LIMIT 1")
-    fun getLyrics(songId: String): String
+    suspend fun getLyrics(songId: String): String
 
     @Query("SELECT chords FROM songs WHERE id=:songId LIMIT 1")
-    fun getChords(songId: String): String
+    suspend fun getChords(songId: String): String
 }

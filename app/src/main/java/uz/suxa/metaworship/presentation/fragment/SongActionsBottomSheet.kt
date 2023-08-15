@@ -1,4 +1,4 @@
-package uz.suxa.metaworship.presentation
+package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import uz.suxa.metaworship.databinding.BottomSheetSongActionsBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
+import uz.suxa.metaworship.domain.model.VocalistModel
 
 class SongActionsBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetSongActionsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var song: SongModel
+    private var song: SongModel? = null
+    private var vocalist: VocalistModel? = null
 
     var onSongEdit: (() -> Unit)? = null
     var onSongCopy: ((Tonality) -> Unit)? = null
@@ -32,7 +34,6 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.songActionsTitle.text = song.title
         setupActions()
         setupClickListener()
     }
@@ -41,13 +42,25 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
         this.song = song
     }
 
+    fun setVocalist(vocalist: VocalistModel) {
+        this.vocalist = vocalist
+    }
+
     private fun setupActions() {
-        if (song.defaultTonality == Tonality.UNDEFINED) {
+        if (song != null) {
+            binding.songActionsTitle.text = song!!.title
+            if (song!!.defaultTonality == Tonality.UNDEFINED) {
+                binding.songActionCopyIn.visibility = View.GONE
+                binding.songActionCopy.visibility = View.GONE
+            }
+            if (song!!.lyrics.isBlank()) {
+                binding.songActionCopy.visibility = View.GONE
+                binding.songActionCopyLyrics.visibility = View.GONE
+            }
+        } else if (vocalist != null) {
+            binding.songActionsTitle.text = vocalist!!.name
+            binding.songActionCopy.visibility = View.GONE
             binding.songActionCopyIn.visibility = View.GONE
-            binding.songActionCopy.visibility = View.GONE
-        }
-        if (song.lyrics.isBlank()) {
-            binding.songActionCopy.visibility = View.GONE
             binding.songActionCopyLyrics.visibility = View.GONE
         }
     }
@@ -87,7 +100,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
         binding.songActionAddToComposition.setOnClickListener {
             onSongAddToComposition?.invoke()
             val bottomSheet = CompositionBottomSheet()
-            bottomSheet.setSongId(song.id)
+            bottomSheet.setSongId(song!!.id)
             bottomSheet.show(
                 childFragmentManager,
                 CompositionBottomSheet.TAG

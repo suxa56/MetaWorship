@@ -15,4 +15,6 @@ interface VocalistRepo {
     suspend fun addVocalist(vocalist: VocalistModel)
 
     suspend fun deleteVocalist(vocalistId: String)
+
+    suspend fun sync()
 }

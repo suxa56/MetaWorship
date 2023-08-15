@@ -1,9 +1,10 @@
-package uz.suxa.metaworship.presentation
+package uz.suxa.metaworship.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import uz.suxa.metaworship.databinding.BottomSheetInputBinding
 
@@ -11,6 +12,8 @@ class InputBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetInputBinding? = null
     private val binding get() = _binding!!
+
+    private var vocalist: String = ""
 
     var onSave: ((String) -> Unit)? = null
 
@@ -25,17 +28,19 @@ class InputBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupClickListener()
+        if (vocalist.isNotBlank()) {
+            (binding.InputTIL.editText as TextView).text = vocalist
+        }
+    }
+
+    fun getVocalist(vocalist: String) {
+        this.vocalist = vocalist
     }
 
     private fun setupClickListener() {
         binding.createVocalistSubmit.setOnClickListener {
             onSave?.invoke(binding.InputTIL.editText?.text.toString())
         }
-    }
-
-    fun customizeView(label: Int, inputHint: Int) {
-        binding.inputLabel.text = getString(label)
-        binding.InputTIL.hint = getString(inputHint)
     }
 
     override fun onDestroyView() {

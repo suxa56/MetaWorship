@@ -20,4 +20,5 @@ interface SongRepo {
     suspend fun getLyrics(songId: String): String
 
     suspend fun getChords(songId: String): String
+    suspend fun sync()
 }

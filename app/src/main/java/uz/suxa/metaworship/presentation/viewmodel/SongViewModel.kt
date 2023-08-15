@@ -20,6 +20,7 @@ class SongViewModel(application: Application) : TonalityViewModel(application) {
     private val getSongUseCase = GetSongUseCase(repo)
     private val deleteSongUseCase = DeleteSongUseCase(repo)
 
+
     private val _song = MutableLiveData<SongModel>()
     val song: LiveData<SongModel> get() = _song
 

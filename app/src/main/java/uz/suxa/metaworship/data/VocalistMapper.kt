@@ -21,6 +21,11 @@ class VocalistMapper {
         songsCount = dto.songsCount
     )
 
+    fun mapFirebaseToDbModel(data: Map<String, Any?>) = VocalistDbModel(
+        id = data["id"] as String,
+        name = data["name"] as String
+    )
+
     fun mapListDbDtoToListEntityDto(listDto: List<VocalistSongDbDto>) = listDto.map {
         mapDbDtoToEntityDto(it)
     }
