@@ -71,12 +71,8 @@ class SongRepoImpl(
     }
 
     override suspend fun uploadSongs() {
-        MediatorLiveData<List<SongModel>>().apply {
-            addSource(songDao.getFullSongs()) { list ->
-                list.forEach { song ->
-                    database.child(song.id).setValue(song)
-                }
-            }
+        songDao.getFullSongs().forEach {
+            database.child(it.id).setValue(it)
         }
     }
 

@@ -1,7 +1,6 @@
 package uz.suxa.metaworship.data
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.firebase.database.ktx.database
@@ -56,13 +55,8 @@ class VocalistRepoImpl(
     }
 
     override suspend fun sync() {
-        Log.d("vocalist-repo", "")
-        MediatorLiveData<List<VocalistModel>>().apply {
-            addSource(vocalistDao.getVocalists()) { list ->
-                list.forEach { vocalist ->
-                    database.child(vocalist.id).setValue(vocalist)
-                }
-            }
+        vocalistDao.getVocalistsList().forEach {
+            database.child(it.id).setValue(it)
         }
 
         val vocalistList = mutableListOf<VocalistDbModel>()

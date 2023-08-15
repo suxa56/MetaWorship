@@ -17,7 +17,7 @@ interface SongDao {
     fun getSongs(): LiveData<List<SongDbModelDto>>
 
     @Query("SELECT * FROM songs")
-    fun getFullSongs(): LiveData<List<SongDbModel>>
+    fun getFullSongs(): List<SongDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSong(songDBModel: SongDbModel)
