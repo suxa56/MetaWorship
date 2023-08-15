@@ -200,6 +200,7 @@ abstract class TonalityViewModel(application: Application) : AndroidViewModel(ap
                 tonality
                     .replace("#", "_SHARP")
                     .replace("b", "_FLAT")
+                    .replace(" ", "")
 
             Tonality.valueOf(refactoredTonality)
         }
