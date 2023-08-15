@@ -216,7 +216,7 @@ class SongFragment : Fragment() {
                 } else {
                     tilText[0].toString() + tilText[1].toString()
                 }
-                viewModel.changeTonality(tonality)
+                viewModel.changeTonality(tonality.replace(" ", ""))
             }
 
         (binding.capoTil.editText as? AutoCompleteTextView)
