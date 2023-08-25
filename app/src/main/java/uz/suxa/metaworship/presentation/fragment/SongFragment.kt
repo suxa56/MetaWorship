@@ -129,6 +129,16 @@ class SongFragment : Fragment() {
                 bottomSheet.dismiss()
             }
 
+            bottomSheet.onSongEditTonality = {
+                viewModel.editTonality(song.id, it)
+                viewModel.changeTonality(viewModel.convertTonalityToSymbol(it))
+                (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
+                    viewModel.convertTonalityToSymbol(it),
+                    false
+                )
+                bottomSheet.dismiss()
+            }
+
             bottomSheet.onSongCopy = {
                 copySong(song, it)
                 bottomSheet.dismiss()
@@ -201,10 +211,12 @@ class SongFragment : Fragment() {
                 binding.songTonalityTil.visibility = View.VISIBLE
                 binding.capoTil.visibility = View.VISIBLE
                 binding.chordsCard.visibility = View.VISIBLE
+                binding.rvSolo.visibility = View.VISIBLE
             } else {
                 binding.songTonalityTil.visibility = View.GONE
                 binding.capoTil.visibility = View.GONE
                 binding.chordsCard.visibility = View.GONE
+                binding.rvSolo.visibility = View.GONE
             }
         }
 

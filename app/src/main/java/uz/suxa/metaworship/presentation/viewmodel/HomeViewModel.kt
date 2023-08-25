@@ -5,12 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistModel
+import uz.suxa.metaworship.domain.usecase.song.AddSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetChordsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetLyricsUseCase
@@ -28,6 +32,7 @@ import java.util.UUID
 class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private val songRepo = SongRepoImpl(application)
+    private val addSongUseCase = AddSongUseCase(songRepo)
     private val getSongList = GetSongListUseCase(songRepo)
     private val getSongUseCase = GetSongUseCase(songRepo)
     private val getSongListByVocalist = GetSongListByVocalistUseCase(songRepo)
@@ -57,6 +62,9 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     private val _copySong = MutableLiveData<SongModel>()
     val copySong: LiveData<SongModel> get() = _copySong
 
+    private val _refreshing = MutableLiveData<Boolean>()
+    val refreshing: LiveData<Boolean> get() = _refreshing
+
     init {
         viewModelScope.launch {
             _songs.addSource(getSongList()) {
@@ -66,9 +74,22 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     }
 
     fun syncCloud() {
-        viewModelScope.launch(Dispatchers.IO) {
-            syncSongsUseCase()
-            syncVocalistsUseCase()
+        if (Firebase.auth.currentUser == null) {
+            Firebase.auth.signInAnonymously().addOnCompleteListener {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _refreshing.postValue(true)
+                    syncSongsUseCase()
+                    syncVocalistsUseCase()
+                    _refreshing.postValue(false)
+                }
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                _refreshing.postValue(true)
+                syncSongsUseCase()
+                syncVocalistsUseCase()
+                _refreshing.postValue(false)
+            }
         }
     }
 
@@ -142,6 +163,24 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
             clearSource()
             activeSource = getSongListByVocalist(vocalist)
             setSource()
+        }
+    }
+
+    fun editTonality(songId: String, tonality: Tonality) {
+        viewModelScope.launch {
+            val song = getSongUseCase(songId)
+            val copy = song.copy(
+                id = song.id,
+                title = song.title,
+                lyrics = song.lyrics,
+                chords = song.chords,
+                defaultTonality = tonality,
+                modulations = song.modulations,
+                vocalistTonality = song.vocalistTonality,
+                soloPart = song.soloPart,
+                tempo = song.tempo
+            )
+            addSongUseCase(copy)
         }
     }
 

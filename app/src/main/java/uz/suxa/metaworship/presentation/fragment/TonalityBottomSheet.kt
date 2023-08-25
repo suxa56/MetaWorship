@@ -13,6 +13,8 @@ class TonalityBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetTonalitiesBinding? = null
     private val binding get() = _binding!!
 
+    private var title: String? = null
+
     var onTonalityClick: ((Tonality) -> Unit)? = null
 
     override fun onCreateView(
@@ -26,6 +28,13 @@ class TonalityBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupClickListener()
+        if (!title.isNullOrBlank()) {
+            binding.songCopyInTitle.text = title
+        }
+    }
+
+    fun setupTitle(title: String) {
+        this.title = title
     }
 
     private fun setupClickListener() {
@@ -68,6 +77,7 @@ class TonalityBottomSheet : BottomSheetDialogFragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

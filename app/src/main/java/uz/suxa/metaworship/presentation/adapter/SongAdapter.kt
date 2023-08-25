@@ -15,6 +15,7 @@ class SongAdapter(private val fragmentManager: FragmentManager) :
 
     var onSongItemClickListener: ((String) -> Unit)? = null
     var onSongItemEdit: ((String) -> Unit)? = null
+    var onSongItemEditTonality: ((String, Tonality) -> Unit)? = null
     var onSongItemCopy: ((SongModel, Tonality) -> Unit)? = null
     var onSongItemCopyLyrics: ((SongModel) -> Unit)? = null
     var onSongItemCopyInTonality: ((SongModel, Tonality) -> Unit)? = null
@@ -71,6 +72,11 @@ class SongAdapter(private val fragmentManager: FragmentManager) :
 
                 bottomSheet.onSongEdit = {
                     onSongItemEdit?.invoke(song.id)
+                    bottomSheet.dismiss()
+                }
+
+                bottomSheet.onSongEditTonality = {
+                    onSongItemEditTonality?.invoke(song.id, it)
                     bottomSheet.dismiss()
                 }
 

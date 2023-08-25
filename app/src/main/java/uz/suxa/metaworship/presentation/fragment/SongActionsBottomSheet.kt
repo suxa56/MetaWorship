@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import uz.suxa.metaworship.R
 import uz.suxa.metaworship.databinding.BottomSheetSongActionsBinding
 import uz.suxa.metaworship.domain.model.SongModel
 import uz.suxa.metaworship.domain.model.Tonality
@@ -18,6 +19,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
     private var vocalist: VocalistModel? = null
 
     var onSongEdit: (() -> Unit)? = null
+    var onSongEditTonality: ((Tonality) -> Unit)? = null
     var onSongCopy: ((Tonality) -> Unit)? = null
     var onSongCopyIn: ((Tonality) -> Unit)? = null
     var onSongCopyLyrics: (() -> Unit)? = null
@@ -50,6 +52,7 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
         if (song != null) {
             binding.songActionsTitle.text = song!!.title
             if (song!!.defaultTonality == Tonality.UNDEFINED) {
+                binding.songActionEditTonality.visibility = View.GONE
                 binding.songActionCopyIn.visibility = View.GONE
                 binding.songActionCopy.visibility = View.GONE
             }
@@ -68,6 +71,18 @@ class SongActionsBottomSheet : BottomSheetDialogFragment() {
     private fun setupClickListener() {
         binding.songActionEdit.setOnClickListener {
             onSongEdit?.invoke()
+        }
+
+        binding.songActionEditTonality.setOnClickListener {
+            val bottomSheet = TonalityBottomSheet()
+            bottomSheet.setupTitle(getString(R.string.change_tonality))
+            bottomSheet.show(
+                childFragmentManager,
+                TonalityBottomSheet.TAG
+            )
+            bottomSheet.onTonalityClick = {
+                onSongEditTonality?.invoke(it)
+            }
         }
 
         binding.songActionCopy.setOnClickListener {
