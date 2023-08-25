@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
@@ -57,6 +59,9 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     private val _copySong = MutableLiveData<SongModel>()
     val copySong: LiveData<SongModel> get() = _copySong
 
+    private val _refreshing = MutableLiveData<Boolean>()
+    val refreshing: LiveData<Boolean> get() = _refreshing
+
     init {
         viewModelScope.launch {
             _songs.addSource(getSongList()) {
@@ -66,9 +71,22 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
     }
 
     fun syncCloud() {
-        viewModelScope.launch(Dispatchers.IO) {
-            syncSongsUseCase()
-            syncVocalistsUseCase()
+        if (Firebase.auth.currentUser == null) {
+            Firebase.auth.signInAnonymously().addOnCompleteListener {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _refreshing.postValue(true)
+                    syncSongsUseCase()
+                    syncVocalistsUseCase()
+                    _refreshing.postValue(false)
+                }
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                _refreshing.postValue(true)
+                syncSongsUseCase()
+                syncVocalistsUseCase()
+                _refreshing.postValue(false)
+            }
         }
     }
 

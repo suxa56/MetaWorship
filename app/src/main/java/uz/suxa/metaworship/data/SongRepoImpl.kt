@@ -3,6 +3,7 @@ package uz.suxa.metaworship.data
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -71,22 +72,26 @@ class SongRepoImpl(
     }
 
     override suspend fun sync() {
-        val songList = mutableListOf<SongDbModel>()
-        val songs = database.get().await()
-        songs.children.forEach { song ->
-            val songMap = song.getValue<Map<String, Any?>>()
-            songMap?.let {
-                songList.add(mapper.mapFirebaseToDbModel(it))
+        try {
+            val songList = mutableListOf<SongDbModel>()
+            val songs = database.get().await()
+            songs.children.forEach { song ->
+                val songMap = song.getValue<Map<String, Any?>>()
+                songMap?.let {
+                    songList.add(mapper.mapFirebaseToDbModel(it))
+                }
             }
-        }
-        withContext(Dispatchers.IO) {
-            songList.forEach {
-                songDao.addSong(it)
+            withContext(Dispatchers.IO) {
+                songList.forEach {
+                    songDao.addSong(it)
+                }
             }
-        }
 
-        songDao.getFullSongs().forEach {
-            database.child(it.id).setValue(it)
+            songDao.getFullSongs().forEach {
+                database.child(it.id).setValue(it)
+            }
+        } catch (e: Exception) {
+            Firebase.auth.signInAnonymously()
         }
     }
 }

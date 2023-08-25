@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        viewModel.syncCloud()
         return binding.root
     }
 
@@ -166,10 +167,7 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
         val homeRV = binding.homeRV
         binding.swipeHomeRV.setOnRefreshListener {
-            lifecycleScope.launch {
             viewModel.syncCloud()
-            binding.swipeHomeRV.isRefreshing = false
-            }
         }
         songAdapter = SongAdapter(childFragmentManager)
         vocalistAdapter = VocalistAdapter()
@@ -267,6 +265,10 @@ class HomeFragment : Fragment() {
 
         viewModel.vocalistsDto.observe(viewLifecycleOwner) {
             vocalistAdapter.submitList(it)
+        }
+
+        viewModel.refreshing.observe(viewLifecycleOwner) {
+            binding.swipeHomeRV.isRefreshing = it
         }
     }
 

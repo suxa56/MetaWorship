@@ -3,6 +3,7 @@ package uz.suxa.metaworship.data
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -56,24 +57,27 @@ class VocalistRepoImpl(
     }
 
     override suspend fun sync() {
-        val vocalistList = mutableListOf<VocalistDbModel>()
-        val dataSnapshot = database.get().await()
-        for (vocalist in dataSnapshot.children) {
-            val vocalistMap = vocalist.getValue<Map<String, Any?>>()
-            vocalistMap?.let {
-                vocalistList.add(mapper.mapFirebaseToDbModel(it))
+        try {
+            val vocalistList = mutableListOf<VocalistDbModel>()
+            val dataSnapshot = database.get().await()
+            for (vocalist in dataSnapshot.children) {
+                val vocalistMap = vocalist.getValue<Map<String, Any?>>()
+                vocalistMap?.let {
+                    vocalistList.add(mapper.mapFirebaseToDbModel(it))
+                }
             }
-        }
-        withContext(Dispatchers.IO) {
-            vocalistList.forEach {
-                vocalistDao.addVocalist(it)
+            withContext(Dispatchers.IO) {
+                vocalistList.forEach {
+                    vocalistDao.addVocalist(it)
+                }
             }
-        }
 
-        vocalistDao.getVocalistsList().forEach {
-            database.child(it.id).setValue(it)
+            vocalistDao.getVocalistsList().forEach {
+                database.child(it.id).setValue(it)
+            }
+        } catch (e: Exception) {
+            Firebase.auth.signInAnonymously()
         }
-
     }
 
 }
