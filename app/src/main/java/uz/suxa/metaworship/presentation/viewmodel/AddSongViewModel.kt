@@ -118,6 +118,13 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                     )
                 )
             }
+            var refactoredChords = chords
+            if (!refactoredChords.isNullOrBlank()) {
+                 refactoredChords = refactoredChords.replace("B", "H")
+                for (i in 1..9) {
+                    refactoredChords = refactoredChords!!.replace(i.toString(), "")
+                }
+            }
 
             val modeId: String? = if (id == NewSongFragment.NEW_MODE) null
             else id
@@ -127,7 +134,7 @@ class AddSongViewModel(application: Application) : TonalityViewModel(application
                     id = modeId ?: ("song_" + UUID.randomUUID().toString()),
                     title = title ?: "",
                     lyrics = lyrics ?: "",
-                    chords = convertNotesToNumbers(tonality, chords ?: ""),
+                    chords = convertNotesToNumbers(tonality, refactoredChords ?: ""),
                     defaultTonality = tonality,
                     modulations = convertModulationToString(tonality, modulations),
                     vocalistTonality = vocalistTonality,
