@@ -211,10 +211,12 @@ class SongFragment : Fragment() {
                 binding.songTonalityTil.visibility = View.VISIBLE
                 binding.capoTil.visibility = View.VISIBLE
                 binding.chordsCard.visibility = View.VISIBLE
+                binding.rvSolo.visibility = View.VISIBLE
             } else {
                 binding.songTonalityTil.visibility = View.GONE
                 binding.capoTil.visibility = View.GONE
                 binding.chordsCard.visibility = View.GONE
+                binding.rvSolo.visibility = View.GONE
             }
         }
 
