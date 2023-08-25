@@ -149,11 +149,6 @@ class NewSongFragment : Fragment() {
                     getString(R.string.solo_error)
             }
         }
-//        lifecycleScope.launch {
-//            viewModel.getVocalists().observe(viewLifecycleOwner) {list ->
-//                list.map { it.name }.toTypedArray()
-//            }
-//        }
     }
 
     private fun setListener() {

@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 import uz.suxa.metaworship.data.SongRepoImpl
 import uz.suxa.metaworship.data.VocalistRepoImpl
 import uz.suxa.metaworship.domain.model.SongModel
+import uz.suxa.metaworship.domain.model.Tonality
 import uz.suxa.metaworship.domain.model.VocalistModel
+import uz.suxa.metaworship.domain.usecase.song.AddSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.DeleteSongUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetChordsUseCase
 import uz.suxa.metaworship.domain.usecase.song.GetLyricsUseCase
@@ -30,6 +32,7 @@ import java.util.UUID
 class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private val songRepo = SongRepoImpl(application)
+    private val addSongUseCase = AddSongUseCase(songRepo)
     private val getSongList = GetSongListUseCase(songRepo)
     private val getSongUseCase = GetSongUseCase(songRepo)
     private val getSongListByVocalist = GetSongListByVocalistUseCase(songRepo)
@@ -160,6 +163,24 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
             clearSource()
             activeSource = getSongListByVocalist(vocalist)
             setSource()
+        }
+    }
+
+    fun editTonality(songId: String, tonality: Tonality) {
+        viewModelScope.launch {
+            val song = getSongUseCase(songId)
+            val copy = song.copy(
+                id = song.id,
+                title = song.title,
+                lyrics = song.lyrics,
+                chords = song.chords,
+                defaultTonality = tonality,
+                modulations = song.modulations,
+                vocalistTonality = song.vocalistTonality,
+                soloPart = song.soloPart,
+                tempo = song.tempo
+            )
+            addSongUseCase(copy)
         }
     }
 

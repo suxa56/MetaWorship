@@ -182,6 +182,9 @@ class HomeFragment : Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
             )
         }
+        songAdapter.onSongItemEditTonality = {songId, tonality ->
+            viewModel.editTonality(songId, tonality)
+        }
         songAdapter.onSongItemCopy = { song, tonality ->
             copySong(song, tonality)
         }

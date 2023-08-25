@@ -129,6 +129,16 @@ class SongFragment : Fragment() {
                 bottomSheet.dismiss()
             }
 
+            bottomSheet.onSongEditTonality = {
+                viewModel.editTonality(song.id, it)
+                viewModel.changeTonality(viewModel.convertTonalityToSymbol(it))
+                (binding.songTonalityTil.editText as? AutoCompleteTextView)?.setText(
+                    viewModel.convertTonalityToSymbol(it),
+                    false
+                )
+                bottomSheet.dismiss()
+            }
+
             bottomSheet.onSongCopy = {
                 copySong(song, it)
                 bottomSheet.dismiss()

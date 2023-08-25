@@ -51,6 +51,7 @@
     <string name="create_new_composition">Создать новый список</string>
     <string name="new_composition">Новый список</string>
     <string name="new_composition_hint">Список</string>
+    <string name="change_tonality">Изменить тональность</string>
 
     <!-- SnackBar -->
     <string name="snackbar_dismiss">Закрыть</string>
@@ -70,6 +71,7 @@
     <!-- Actions -->
     <string name="action_delete">Удалить</string>
     <string name="action_edit">Изменить</string>
+    <string name="action_edit_tonality">Изменить тональность</string>
     <string name="action_cancel">Закрыть</string>
     <string name="action_copy">Скопировать песню</string>
     <string name="action_copy_chords">Скопировать аккорды</string>
