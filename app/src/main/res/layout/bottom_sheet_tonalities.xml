@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Theme.Material3.DayNight.BottomSheetDialog"
     android:id="@+id/songCopyIn"
+    style="@style/Theme.Material3.DayNight.BottomSheetDialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="24dp">
@@ -18,242 +18,248 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/songCopyInTitle">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityC"
-            style="?attr/materialCardViewFilledStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_marginStart="24dp"
-                android:layout_marginVertical="14dp"
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityC"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tonality_c" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityCSharp"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_c" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityCSharp"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_c_sharp" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityD"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_c_sharp" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityD"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_d" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityEFlat"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_d" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityEFlat"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_e_flat" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityE"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_e_flat" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityE"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_e" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityF"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_e" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityF"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_f" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityFSharp"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_f" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityFSharp"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_f_sharp" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityG"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_f_sharp" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityG"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_g" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityAFlat"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_g" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityAFlat"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_a_flat" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityA"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_a_flat" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityA"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_a" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityHFlat"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_a" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityHFlat"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_h_flat" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tonalityH"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true">
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_h_flat" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tonalityH"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:layout_marginStart="24dp"
-                android:text="@string/tonality_h" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginBottom="4dp"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/tonality_h" />
+            </com.google.android.material.card.MaterialCardView>
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,4 +49,7 @@ interface SongDao {
 
     @Query("SELECT chords FROM songs WHERE id=:songId LIMIT 1")
     suspend fun getChords(songId: String): String
+
+    @Query("SELECT MAX(lastUpdate) FROM songs")
+    suspend fun getLastUpdate(): Long
 }
