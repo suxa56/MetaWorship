@@ -73,12 +73,19 @@ class SongRepoImpl(
 
     override suspend fun sync() {
         try {
+            val localLastUpdate = songDao.getLastUpdate()
+            var remoteLastUpdate: Long = 0
             val songList = mutableListOf<SongDbModel>()
             val songs = database.get().await()
             songs.children.forEach { song ->
                 val songMap = song.getValue<Map<String, Any?>>()
                 songMap?.let {
-                    songList.add(mapper.mapFirebaseToDbModel(it))
+                    if (remoteLastUpdate < songMap["lastUpdate"] as Long) {
+                        remoteLastUpdate = songMap["lastUpdate"] as Long
+                    }
+                    if (songMap["lastUpdate"] as Long >= localLastUpdate) {
+                        songList.add(mapper.mapFirebaseToDbModel(it))
+                    }
                 }
             }
             withContext(Dispatchers.IO) {
@@ -88,7 +95,9 @@ class SongRepoImpl(
             }
 
             songDao.getFullSongs().forEach {
-                database.child(it.id).setValue(it)
+                if (it.lastUpdate > remoteLastUpdate) {
+                    database.child(it.id).setValue(it)
+                }
             }
         } catch (e: Exception) {
             Firebase.auth.signInAnonymously()
