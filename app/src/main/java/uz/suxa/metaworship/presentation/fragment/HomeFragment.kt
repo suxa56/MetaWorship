@@ -32,6 +32,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var songAdapter: SongAdapter
+    private lateinit var searchAdapter: SongAdapter
     private lateinit var vocalistAdapter: VocalistAdapter
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(
@@ -66,23 +67,14 @@ class HomeFragment : Fragment() {
 
     private fun setupToolbar() {
         binding.searchBar.inflateMenu(R.menu.menu_main)
-        binding.searchBar.menu[0].isVisible = false
 
         binding.searchBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
         }
 
         binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
-            binding.searchBar.text = binding.searchView.text
             binding.searchView.hide()
             return@setOnEditorActionListener false
-        }
-
-        binding.searchBar.textView.addTextChangedListener {
-            viewModel.getSongsByQuery(it.toString())
-
-            binding.searchBar.menu[0].isVisible = it.toString().isNotEmpty()
-            binding.searchBar.menu[1].isVisible = it.toString().isEmpty()
         }
 
         binding.searchView.editText.addTextChangedListener {
@@ -146,12 +138,6 @@ class HomeFragment : Fragment() {
                     true
                 }
 
-                R.id.clearText -> {
-                    binding.searchBar.text = null
-                    viewModel.getAllSongs()
-                    true
-                }
-
                 else -> false
             }
         }
@@ -171,7 +157,9 @@ class HomeFragment : Fragment() {
             viewModel.syncCloud()
         }
         songAdapter = SongAdapter(childFragmentManager)
+        searchAdapter = SongAdapter(childFragmentManager)
         vocalistAdapter = VocalistAdapter()
+        binding.searchRV.adapter = searchAdapter
         homeRV.adapter = songAdapter
         songAdapter.onSongItemClickListener = {
             findNavController().navigate(
@@ -209,7 +197,41 @@ class HomeFragment : Fragment() {
                 .show()
         }
 
-        binding.searchRV.adapter = songAdapter
+        searchAdapter.onSongItemClickListener = {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToSongFragment(it)
+            )
+        }
+        searchAdapter.onSongItemEdit = {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToNewSongFragment(it)
+            )
+        }
+        searchAdapter.onSongItemEditTonality = {songId, tonality ->
+            viewModel.editTonality(songId, tonality)
+        }
+        searchAdapter.onSongItemCopy = { song, tonality ->
+            copySong(song, tonality)
+        }
+        searchAdapter.onSongItemCopyInTonality = { song, tonality ->
+            copyChords(song, tonality)
+        }
+        searchAdapter.onSongItemCopyLyrics = {
+            copyLyrics(it)
+        }
+        searchAdapter.onSongItemDelete = {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.delete_song_confirmation_title)
+                .setMessage(R.string.delete_song_confirmation_message)
+                .setNegativeButton(R.string.action_cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .setPositiveButton(R.string.action_delete) { dialog, _ ->
+                    viewModel.deleteSong(it)
+                    dialog.cancel()
+                }
+                .show()
+        }
 
         vocalistAdapter.onItemClick = {
             binding.searchBar.hint = it
@@ -265,6 +287,10 @@ class HomeFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.songs.observe(viewLifecycleOwner) {
             songAdapter.submitList(it)
+        }
+
+        viewModel.searchSongs.observe(viewLifecycleOwner) {
+            searchAdapter.submitList(it)
         }
 
         viewModel.vocalistsDto.observe(viewLifecycleOwner) {

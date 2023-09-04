@@ -50,6 +50,8 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     private val _songs = MediatorLiveData<List<SongModel>>()
     val songs: LiveData<List<SongModel>> get() = _songs
+    private val _searchSongs = MediatorLiveData<List<SongModel>>()
+    val searchSongs: LiveData<List<SongModel>> get() = _searchSongs
 
     private val _vocalistsDto = MediatorLiveData<List<VocalistModel>>()
     val vocalistsDto: LiveData<List<VocalistModel>> get() = _vocalistsDto
@@ -131,9 +133,9 @@ class HomeViewModel(application: Application) : TonalityViewModel(application) {
 
     fun getSongsByQuery(query: String) {
         viewModelScope.launch {
-            clearSource()
-            activeSource = getSongListByQuery(query)
-            setSource()
+            _searchSongs.addSource(getSongListByQuery(query)) {
+                _searchSongs.value = it
+            }
         }
     }
 
