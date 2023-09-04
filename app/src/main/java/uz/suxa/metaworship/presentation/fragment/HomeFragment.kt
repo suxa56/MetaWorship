@@ -148,6 +148,7 @@ class HomeFragment : Fragment() {
 
                 R.id.clearText -> {
                     binding.searchBar.text = null
+                    viewModel.getAllSongs()
                     true
                 }
 
